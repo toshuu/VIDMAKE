@@ -1,0 +1,288 @@
+/**
+ * M0 — Scene graph contracts (JSON-compatible declarative model).
+ * The central runtime representation. No React in the compositor path.
+ *
+ * M3: transform/opacity props accept AnimNumber — plain-data animation
+ * bindings evaluated against the node's local frame (still JSON-serializable).
+ */
+
+import type { AnimNumber } from '../animation/bindings.js';
+import type { Caption, CaptionHighlightMode, CaptionReveal } from '../captions/types.js';
+
+export interface Vec2 {
+  x: number;
+  y: number;
+}
+
+/** Independent transform props (never one opaque string). */
+export interface Transform {
+  translateX?: number;
+  translateY?: number;
+  scaleX?: number;
+  scaleY?: number;
+  /** Degrees, clockwise. */
+  rotation?: number;
+  /** Anchor / origin in local units, default depends on node. */
+  anchorX?: number;
+  anchorY?: number;
+}
+
+export type BlendMode =
+  | 'source-over'
+  | 'multiply'
+  | 'screen'
+  | 'overlay'
+  | 'darken'
+  | 'lighten'
+  | 'color-dodge'
+  | 'color-burn'
+  | 'hard-light'
+  | 'soft-light'
+  | 'difference'
+  | 'exclusion'
+  | 'hue'
+  | 'saturation'
+  | 'color'
+  | 'luminosity';
+
+export interface ClipRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/** Effect invocation in the compositing pipeline (composable, ordered). */
+export interface Effect {
+  type: string;
+  params?: Record<string, unknown>;
+  disabled?: boolean;
+}
+
+export interface BaseNode {
+  id: string;
+  x?: AnimNumber;
+  y?: AnimNumber;
+  scaleX?: AnimNumber;
+  scaleY?: AnimNumber;
+  rotation?: AnimNumber;
+  anchorX?: number;
+  anchorY?: number;
+  opacity?: AnimNumber;
+  visible?: boolean;
+  blendMode?: BlendMode;
+  crop?: ClipRect;
+  clip?: ClipRect;
+  /** Reference to a mask node id. */
+  mask?: string;
+  effects?: Effect[];
+  children?: SceneNode[];
+}
+
+export interface ContainerNode extends BaseNode {
+  type: 'container';
+}
+
+export interface GroupNode extends BaseNode {
+  type: 'group';
+}
+
+export interface RectangleNode extends BaseNode {
+  type: 'rect';
+  width: number;
+  height: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+}
+
+export interface RoundedRectangleNode extends BaseNode {
+  type: 'rrect';
+  width: number;
+  height: number;
+  radius: number | [number, number, number, number];
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+}
+
+export interface CircleNode extends BaseNode {
+  type: 'circle';
+  radius: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+}
+
+export interface PathNode extends BaseNode {
+  type: 'path';
+  /** SVG path data. */
+  d: string;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+}
+
+export interface SvgNode extends BaseNode {
+  type: 'svg';
+  /** Raw SVG markup or asset id (see assets/types). */
+  svg: string;
+  width?: number;
+  height?: number;
+}
+
+export interface TextNode extends BaseNode {
+  type: 'text';
+  text: string;
+  fontFamily: string;
+  fontSize: number;
+  fontWeight?: number | string;
+  fontStyle?: 'normal' | 'italic' | 'oblique';
+  /** Multiplier of fontSize (default 1.2). */
+  lineHeight?: number;
+  letterSpacing?: number;
+  textAlign?: 'left' | 'center' | 'right' | 'justify';
+  textTransform?: 'none' | 'uppercase' | 'lowercase';
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  shadow?: TextShadow;
+  maxWidth?: number;
+}
+
+export interface TextShadow {
+  color: string;
+  blur?: number;
+  offsetX?: number;
+  offsetY?: number;
+}
+
+/**
+ * M8 — Caption node: timed word captions rendered TikTok-style.
+ * Pure data: the compositor derives pages (combineMs), lines
+ * (maxCharsPerLine), highlight and reveal from (localFrame, fps).
+ */
+export interface CaptionNode extends BaseNode {
+  type: 'caption';
+  /** Word-timed captions (Whisper-style JSON, no transcription inside). */
+  captions: Caption[];
+  /** TikTok pagination window (ms of speech per page). */
+  combineMs: number;
+  /** Silence gap (ms) that forces a page break. */
+  breakSilenceMs?: number;
+  /** Hard line length (chars); pages split into lines via segments. */
+  maxCharsPerLine?: number;
+  /** Spoken vs upcoming coloring. */
+  highlight?: CaptionHighlightMode;
+  /** Future-hiding behavior. */
+  reveal?: CaptionReveal;
+  fontFamily: string;
+  fontSize: number;
+  fontWeight?: number | string;
+  fontStyle?: 'normal' | 'italic' | 'oblique';
+  letterSpacing?: number;
+  lineHeight?: number;
+  textAlign?: 'left' | 'center' | 'right' | 'justify';
+  textTransform?: 'none' | 'uppercase' | 'lowercase';
+  /** Upcoming-word fill (base). */
+  fill?: string;
+  /** Spoken/active-word fill. */
+  highlightFill?: string;
+  /** Box behind every visible word (subtitle background). */
+  background?: string;
+  /** Box behind spoken/active words (karaoke wash). Overrides background. */
+  activeBackground?: string;
+  backgroundPadding?: number;
+  backgroundRadius?: number | [number, number, number, number];
+  stroke?: string;
+  strokeWidth?: number;
+  shadow?: TextShadow;
+  maxWidth?: number;
+  /** Per-token fade-in after its start (ms, 0 = instant). */
+  enterFadeMs?: number;
+  /** Page fade-out before its end (ms, 0 = hard cut). */
+  exitFadeMs?: number;
+}
+
+export interface ImageNode extends BaseNode {
+  type: 'image';
+  /** Asset id (preferred) or inline src. */
+  src: string;
+  width?: number;
+  height?: number;
+  /** CSS-like fit inside width/height box. */
+  fit?: 'cover' | 'contain' | 'fill' | 'none';
+}
+
+export interface VideoNode extends BaseNode {
+  type: 'video';
+  src: string;
+  /** Offset into the source timeline, in seconds. */
+  startFrom?: number;
+  /** Seconds of (offset) media skipped before the first local frame. */
+  trimBefore?: number;
+  /** Media-time end (seconds) for trim/loop window. */
+  trimAfter?: number;
+  volume?: number;
+  playbackRate?: number;
+  loop?: boolean;
+  fit?: 'cover' | 'contain' | 'fill' | 'none';
+  width?: number;
+  height?: number;
+}
+
+export interface ShapeNode extends BaseNode {
+  type: 'shape';
+  shape: 'star' | 'polygon' | 'arrow' | 'ellipse' | 'line';
+  width: number;
+  height: number;
+  points?: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+}
+
+export interface MaskNode extends BaseNode {
+  type: 'mask';
+}
+
+export interface EffectLayerNode extends BaseNode {
+  type: 'effectLayer';
+  /** Full-node effect applied to everything beneath in paint order. */
+  effect: Effect;
+}
+
+export type SceneNode =
+  | ContainerNode
+  | GroupNode
+  | RectangleNode
+  | RoundedRectangleNode
+  | CircleNode
+  | PathNode
+  | SvgNode
+  | TextNode
+  | CaptionNode
+  | ImageNode
+  | VideoNode
+  | ShapeNode
+  | MaskNode
+  | EffectLayerNode;
+
+export interface VideoComposition {
+  id: string;
+  width: number;
+  height: number;
+  fps: number;
+  durationInFrames: number;
+  root: SceneNode;
+}
+
+/** Top-level plan: composition + timeline binding + assets. */
+export interface VideoPlan {
+  composition: VideoComposition;
+  /** Timeline overlay (sequences/series/loops) bound to scene refs. */
+  timeline?: import('../timeline/types.js').TimelineNode;
+  assets?: import('../assets/types.js').AssetRef[];
+  /** Mixed at encode time (see @x80/media); compositor ignores audio. */
+  audio?: import('../assets/types.js').AudioMixRequest[];
+}

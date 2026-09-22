@@ -1,0 +1,28 @@
+{
+  "name": "@x80/renderer-skia",
+  "version": "0.1.0",
+  "description": "X80 Skia rendering backend (@napi-rs/canvas) behind the agnostic Renderer interface",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "0.1.65",
+    "@x80/core": "0.1.0",
+    "@x80/effects": "0.1.0"
+  },
+  "devDependencies": {
+    "@x80/encoding": "0.1.0",
+    "@x80/media": "0.1.0",
+    "typescript": "5.9.3",
+    "vitest": "3.2.4"
+  }
+}

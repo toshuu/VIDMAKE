@@ -1,0 +1,25 @@
+{
+  "name": "@x80/encoding",
+  "version": "0.1.0",
+  "description": "X80 output pipeline: in-process H.264/AAC → MP4 (webcodecs + Mediabunny mux)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@napi-rs/webcodecs": "1.4.2",
+    "mediabunny": "1.59.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vitest": "3.2.4"
+  }
+}
