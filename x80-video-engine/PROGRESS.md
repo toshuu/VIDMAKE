@@ -480,3 +480,61 @@ single-digit milliseconds. Full-frame render baseline (§3b): 2.20 ms/frame
    real content hits them (they will fail loudly, not silently).
 4. Variable-font axes control is unimplemented (M4 limitation); revisit if M9
    compositions need it.
+
+## 8. Premium capability upgrade (2026-09-22, engine-wide)
+
+**Why:** iPhone v1 looked cheap; audit vs `my-video` reels + Remotion
+Agent Skills (`remotion-markup`: Google Fonts, SFX, timing, rough-notation
+highlights) showed the gap was ~40% missing primitives (radial glow, cheap
+grain, blur-as-paint, animated color, kinetic type, premium faces) and ~60%
+plan taste (silence, no grain, linear moves, flat fills).
+
+**Engine changes (all tested, suite 257 → 271/271):**
+- `FillInput` gains radial + conic gradients (`renderer/types.ts`;
+  bbox-relative CSS semantics; conic staged if backend lacks it).
+- `{binding:'color'}` keyframed fills via strict `interpolateColors`
+  grammar (`animation/bindings.ts`; gradient stops stay static by design).
+- Kinetic `fontSize`/`letterSpacing` on text nodes (re-laid-out per frame,
+  loud on non-positive sizes).
+- `createGrainTile()` (`renderer-skia/texture.ts`): seeded tile baked once
+  (~90 ms), drifted via x/y bindings under `overlay` — animated grain at
+  ~1 ms/frame instead of 100 ms+ pixel loops.
+- Vendored faces: Inter 400/700, Playfair Italic 500/700
+  (`examples/iphone-reel/fonts/`); Liberation kept as fallback.
+- Contract doc: `assetInfo` dims must describe decoded handles (proxy
+  cover-crop bug found via café reel: container dims + proxy frames =
+  half-black video).
+
+**Proof (both 540×960/30fps/300f, H.264+AAC verified):**
+- `output/iphone-premium/`: Inter, grain, whoosh SFX on act cuts.
+- `output/cafe-premium/`: original design (no reference), real clips,
+  alpha scrims, hairline gradients, marker swash, Playfair quote,
+  Ken Burns, music bed + 3 whooshes.
+
+**Still not Remotion (honest):** no GPU (blur/grain cost CPU), no
+streaming media (decode-all breaks past ~10s footage), no flex/grid,
+no webfonts/variable axes, no ecosystem (Lottie/Three/Tailwind), fills
+beyond color + shadow geometry not animatable.
+
+## 9. Groundwork sprint (2026-09-22, answers "any new reel?")
+
+CSS survey across all my-video comps ranked every used property; the
+entire gap was three items — now closed:
+- Declarative `filter` (blur/brightness/contrast/saturate/grayscale) on
+  every node, native `ctx.filter` (no pixel loops), loud on bad values.
+- Rounded `clip` radius (overflow:hidden + border-radius equivalent).
+- `examples/kit/kit.mjs`: tokens (APPLE/WARM), EASE/SPRING, column()/
+  centerX() layout helpers, kicker/rule/marker/scrim/glow/grain/pill
+  builders, audioBed() finishing chain.
+- Proof: `examples/kit/plan-water.mjs` ("Every drop counts", stills +
+  Ken Burns + marker + glows + trickle bed) built kit-only, zero
+  reference — premium on first render.
+- Chrome conformance: `my-video/GroundworkCompare` (radial glow + blur
+  + gradients + gradient text + box-shadow + kicker) vs X80 twin —
+  mean abs diff 3.94/255; bar/card regions 0.1 (exact); text 13–15
+  (Arial-vs-Liberation glyphs), glow 9.1 (blur kernels). Locked as
+  `renderer-skia/tests/conformance.test.ts` with the Chrome PNG golden.
+
+Suite: 276/276. Still honestly missing: GPU (irrelevant — headless
+Chrome is CPU raster too), streaming media, flex/grid authoring,
+variable fonts, ecosystem libs, animated paint beyond color.

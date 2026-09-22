@@ -21,9 +21,13 @@ import type {
   DrawRectOptions,
   DrawRoundedRectOptions,
   DrawTextOptions,
+  FillInput,
   FrameBuffer,
+  GradientFill,
+  GradientStop,
   Renderer,
   Surface,
+  TextShadowSpec,
   TransitionApplier,
   TransitionSpec,
 } from '@x80/core';
@@ -114,21 +118,160 @@ const colorToCss = (color: ColorInput): string => {
   return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
 };
 
+const isGradientFill = (fill: FillInput): fill is GradientFill =>
+  typeof fill === 'object' && fill !== null && 'kind' in fill;
+
+const validateStops = (stops: GradientStop[] | undefined): GradientStop[] => {
+  if (!Array.isArray(stops) || stops.length < 2) {
+    throw new Error(`Gradient fill needs at least 2 stops (got ${String(stops?.length)})`);
+  }
+  let prev = -Infinity;
+  for (const stop of stops) {
+    if (!Number.isFinite(stop.offset) || stop.offset < 0 || stop.offset > 1) {
+      throw new Error(`Gradient stop offset must be in [0, 1] (got ${String(stop.offset)})`);
+    }
+    if (stop.offset < prev) {
+      throw new Error('Gradient stop offsets must ascend');
+    }
+    prev = stop.offset;
+    if (typeof stop.color !== 'string' || stop.color.length === 0) {
+      throw new Error('Gradient stop needs a non-empty color string');
+    }
+  }
+  return stops;
+};
+
+/** CSS linear-gradient(angle) endpoints over a box (angle: deg clockwise from up). */
+const linearEndpoints = (
+  angle: number,
+  box: { x: number; y: number; width: number; height: number },
+): [number, number, number, number] => {
+  const t = (angle * Math.PI) / 180;
+  const dx = Math.sin(t);
+  const dy = -Math.cos(t);
+  const len = Math.abs(box.width * dx) + Math.abs(box.height * dy);
+  const cx = box.x + box.width / 2;
+  const cy = box.y + box.height / 2;
+  return [cx - (dx * len) / 2, cy - (dy * len) / 2, cx + (dx * len) / 2, cy + (dy * len) / 2];
+};
+
+/**
+ * Resolve a declarative fill to canvas state. Gradients resolve over the
+ * shape's own bounding box. Throws loudly on bad specs (fewer than 2
+ * stops, offsets outside [0, 1] or out of order, non-finite geometry).
+ */
+const resolveFillStyle = (
+  ctx: SKRSContext2D,
+  fill: FillInput,
+  box: { x: number; y: number; width: number; height: number },
+): string | CanvasGradient => {
+  if (!isGradientFill(fill)) {
+    return colorToCss(fill);
+  }
+  const stops = validateStops(fill.stops);
+  if (fill.kind === 'linear') {
+    const angle = fill.angle ?? 180;
+    if (!Number.isFinite(angle)) {
+      throw new Error(`Gradient fill needs a finite angle (got ${String(angle)})`);
+    }
+    const [x0, y0, x1, y1] = linearEndpoints(angle, box);
+    const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
+    for (const stop of stops) {
+      gradient.addColorStop(stop.offset, stop.color);
+    }
+    return gradient;
+  }
+  if (fill.kind === 'radial') {
+    const cxF = fill.cx ?? 0.5;
+    const cyF = fill.cy ?? 0.5;
+    const innerF = fill.inner ?? 0;
+    const outerF = fill.outer ?? 1;
+    for (const [name, v] of [['cx', cxF], ['cy', cyF], ['inner', innerF], ['outer', outerF]] as const) {
+      if (!Number.isFinite(v)) {
+        throw new Error(`Radial gradient needs finite ${name} (got ${String(v)})`);
+      }
+    }
+    if (innerF < 0 || outerF <= 0 || innerF >= outerF) {
+      throw new Error(`Radial gradient needs 0 <= inner < outer (got ${innerF}, ${outerF})`);
+    }
+    const half = Math.hypot(box.width, box.height) / 2;
+    const gradient = ctx.createRadialGradient(
+      box.x + cxF * box.width,
+      box.y + cyF * box.height,
+      innerF * half,
+      box.x + cxF * box.width,
+      box.y + cyF * box.height,
+      outerF * half,
+    );
+    for (const stop of stops) {
+      gradient.addColorStop(stop.offset, stop.color);
+    }
+    return gradient;
+  }
+  const cxF = fill.cx ?? 0.5;
+  const cyF = fill.cy ?? 0.5;
+  const angle = fill.angle ?? 0;
+  for (const [name, v] of [['cx', cxF], ['cy', cyF], ['angle', angle]] as const) {
+    if (!Number.isFinite(v)) {
+      throw new Error(`Conic gradient needs finite ${name} (got ${String(v)})`);
+    }
+  }
+  const createConic = (ctx as unknown as {
+    createConicGradient?: (angle: number, x: number, y: number) => CanvasGradient;
+  }).createConicGradient;
+  if (typeof createConic !== 'function') {
+    throw new Error('Conic gradient fill is staged (backend lacks createConicGradient)');
+  }
+  // CSS from-angle (clockwise from up) → canvas start angle (clockwise from east).
+  const gradient = createConic.call(
+    ctx,
+    ((angle - 90) * Math.PI) / 180,
+    box.x + cxF * box.width,
+    box.y + cyF * box.height,
+  );
+  for (const stop of stops) {
+    gradient.addColorStop(stop.offset, stop.color);
+  }
+  return gradient;
+};
+
+const applyShadow = (ctx: SKRSContext2D, shadow: TextShadowSpec | undefined): void => {
+  if (shadow === undefined) {
+    return;
+  }
+  ctx.shadowColor = colorToCss(shadow.color);
+  ctx.shadowBlur = shadow.blur ?? 0;
+  ctx.shadowOffsetX = shadow.offsetX ?? 0;
+  ctx.shadowOffsetY = shadow.offsetY ?? 0;
+};
+
+const resetShadow = (ctx: SKRSContext2D): void => {
+  ctx.shadowColor = 'rgba(0,0,0,0)';
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
+};
+
 const applyFillStroke = (
   ctx: SKRSContext2D,
   opts: DrawRectOptions | undefined,
+  box: { x: number; y: number; width: number; height: number },
   fillPath: () => void,
 ): void => {
   if (opts?.fill !== undefined) {
-    ctx.fillStyle = colorToCss(opts.fill);
+    ctx.fillStyle = resolveFillStyle(ctx, opts.fill, box) as string;
+    applyShadow(ctx, opts.shadow);
     fillPath();
     ctx.fill();
+    resetShadow(ctx);
   }
   if (opts?.stroke !== undefined) {
     ctx.strokeStyle = colorToCss(opts.stroke);
     ctx.lineWidth = opts.strokeWidth ?? 1;
+    applyShadow(ctx, opts.shadow);
     fillPath();
     ctx.stroke();
+    resetShadow(ctx);
   }
 };
 
@@ -219,6 +362,10 @@ export class SkiaRenderer implements Renderer {
     this.stateOf(surface).ctx.globalCompositeOperation = blendMode as never;
   }
 
+  setFilter(surface: Surface, filter: string | undefined): void {
+    this.stateOf(surface).ctx.filter = (filter ?? 'none') as never;
+  }
+
   setTransform(
     surface: Surface,
     transform: {
@@ -256,11 +403,15 @@ export class SkiaRenderer implements Renderer {
 
   clipRect(
     surface: Surface,
-    rect: { x: number; y: number; width: number; height: number },
+    rect: { x: number; y: number; width: number; height: number; radius?: number | [number, number, number, number] },
   ): void {
     const { ctx } = this.stateOf(surface);
     ctx.beginPath();
-    ctx.rect(rect.x, rect.y, rect.width, rect.height);
+    if (rect.radius === undefined) {
+      ctx.rect(rect.x, rect.y, rect.width, rect.height);
+    } else {
+      roundedRectPath(ctx, rect.x, rect.y, rect.width, rect.height, rect.radius);
+    }
     ctx.clip();
   }
 
@@ -273,7 +424,7 @@ export class SkiaRenderer implements Renderer {
     opts?: DrawRectOptions,
   ): void {
     const { ctx } = this.stateOf(surface);
-    applyFillStroke(ctx, opts, () => {
+    applyFillStroke(ctx, opts, { x, y, width, height }, () => {
       ctx.beginPath();
       ctx.rect(x, y, width, height);
     });
@@ -288,7 +439,7 @@ export class SkiaRenderer implements Renderer {
     opts: DrawRoundedRectOptions,
   ): void {
     const { ctx } = this.stateOf(surface);
-    applyFillStroke(ctx, opts, () => {
+    applyFillStroke(ctx, opts, { x, y, width, height }, () => {
       ctx.beginPath();
       roundedRectPath(ctx, x, y, width, height, opts.radius);
     });
@@ -302,23 +453,35 @@ export class SkiaRenderer implements Renderer {
     opts?: DrawRectOptions,
   ): void {
     const { ctx } = this.stateOf(surface);
-    applyFillStroke(ctx, opts, () => {
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-    });
+    applyFillStroke(
+      ctx,
+      opts,
+      { x: cx - radius, y: cy - radius, width: radius * 2, height: radius * 2 },
+      () => {
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      },
+    );
   }
 
   drawPath(surface: Surface, d: string, opts?: DrawRectOptions): void {
     const { ctx } = this.stateOf(surface);
     const path = new Path2D(d);
     if (opts?.fill !== undefined) {
+      if (isGradientFill(opts.fill)) {
+        throw new Error('Gradient fill on path nodes is staged (no bbox without rasterizing)');
+      }
       ctx.fillStyle = colorToCss(opts.fill);
+      applyShadow(ctx, opts.shadow);
       ctx.fill(path);
+      resetShadow(ctx);
     }
     if (opts?.stroke !== undefined) {
       ctx.strokeStyle = colorToCss(opts.stroke);
       ctx.lineWidth = opts.strokeWidth ?? 1;
+      applyShadow(ctx, opts.shadow);
       ctx.stroke(path);
+      resetShadow(ctx);
     }
   }
 
@@ -358,7 +521,18 @@ export class SkiaRenderer implements Renderer {
       // letterSpacing unsupported — non-fatal in M3.
     }
     if (opts.fill !== undefined) {
-      ctx.fillStyle = colorToCss(opts.fill);
+      if (isGradientFill(opts.fill)) {
+        // backgroundClip:text equivalent: gradient over the run's own box.
+        const w = Math.max(1, ctx.measureText(text).width);
+        ctx.fillStyle = resolveFillStyle(ctx, opts.fill, {
+          x,
+          y,
+          width: w,
+          height: opts.fontSize,
+        }) as string;
+      } else {
+        ctx.fillStyle = colorToCss(opts.fill);
+      }
       ctx.fillText(text, x, y, opts.maxWidth);
     }
     if (opts.stroke !== undefined) {

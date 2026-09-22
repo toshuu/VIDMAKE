@@ -7,7 +7,7 @@
  * can reuse this file unchanged.
  */
 
-import { resolveAnimNumber } from '../animation/bindings.js';
+import { isColorBinding, resolveAnimColor, resolveAnimNumber } from '../animation/bindings.js';
 import {
   activePageIndexAt,
   activeTokenIndexAt,
@@ -24,8 +24,8 @@ import type { CaptionNode } from '../scene/types.js';
 import { layoutText, layoutWords } from '../text/layout.js';
 import type { TextMeasurer } from '../text/types.js';
 import { collectLeaves, resolveTimeline } from '../timeline/resolve.js';
-import type { Renderer, Surface } from '../renderer/types.js';
-import type { Effect, SceneNode, VideoPlan } from '../scene/types.js';
+import type { Renderer, Surface, TextShadowSpec } from '../renderer/types.js';
+import type { Effect, Fill, SceneNode, TextShadow, VideoPlan } from '../scene/types.js';
 import { computeFit, mediaFrameIndexAt } from './fit.js';
 
 /** Sync lookup of a preloaded backend-native asset handle (image, svg, …). */
@@ -41,7 +41,12 @@ export interface AssetInfo {
   fps?: number;
 }
 
-/** Sync lookup of intrinsic asset metadata (decode-once at preload). */
+/**
+ * Sync lookup of intrinsic asset metadata (decode-once at preload).
+ * width/height MUST describe the resolved handle's actual pixels (e.g. a
+ * 540x960 proxy decodes to 540x960 handles — never report container dims):
+ * the compositor builds its source-crop rect from these numbers.
+ */
 export type AssetInfoResolver = (src: string) => AssetInfo | undefined;
 
 export interface FrameContext {
@@ -387,6 +392,12 @@ const drawNode = (
       }
       renderer.setBlendMode(surface, node.blendMode);
     }
+    if (node.filter !== undefined) {
+      if (typeof renderer.setFilter !== 'function') {
+        throw new Error(`filter needs Renderer.setFilter (node "${node.id}")`);
+      }
+      renderer.setFilter(surface, toFilterString(node.id, node.filter));
+    }
     renderer.setTransform(surface, {
       translateX: resolveAnimNumber(node.x ?? 0, frame, fps),
       translateY: resolveAnimNumber(node.y ?? 0, frame, fps),
@@ -440,6 +451,64 @@ const drawNode = (
  * Paint a node's own geometry (no transform/opacity/effects orchestration).
  * Children are painted by the caller so effect temps include subtrees.
  */
+const toShadowSpec = (shadow: TextShadow | undefined): TextShadowSpec | undefined =>
+  shadow === undefined
+    ? undefined
+    : {
+        color: shadow.color,
+        blur: shadow.blur,
+        offsetX: shadow.offsetX,
+        offsetY: shadow.offsetY,
+      };
+
+/** Resolve a shape/text fill: keyframed colors via strict grammar, all else through. */
+const resolveFill = (
+  fill: Fill | undefined,
+  frame: number,
+): import('../renderer/types.js').FillInput | undefined => {
+  if (fill === undefined) {
+    return undefined;
+  }
+  if (isColorBinding(fill)) {
+    return resolveAnimColor(fill, frame);
+  }
+  if (typeof fill === 'string' || 'r' in fill || 'kind' in fill) {
+    return fill;
+  }
+  throw new Error('Bad fill: need a color string, gradient, or {binding: "color"}');
+};
+
+/**
+ * Build a CSS filter string from a declarative NodeFilter. Static per
+ * node (filter animation is not a used pattern — fade nodes instead).
+ * Throws loudly on non-finite or negative values.
+ */
+const toFilterString = (
+  nodeId: string,
+  filter: import('../scene/types.js').NodeFilter,
+): string => {
+  const parts: string[] = [];
+  const check = (name: 'blur' | 'brightness' | 'contrast' | 'saturate' | 'grayscale'): void => {
+    const v = filter[name];
+    if (v === undefined) {
+      return;
+    }
+    if (!Number.isFinite(v) || v < 0) {
+      throw new Error(`filter.${name} on "${nodeId}" must be finite and >= 0 (got ${String(v)})`);
+    }
+    parts.push(name === 'blur' ? `blur(${v}px)` : `${name}(${v})`);
+  };
+  check('blur');
+  check('brightness');
+  check('contrast');
+  check('saturate');
+  check('grayscale');
+  if (parts.length === 0) {
+    throw new Error(`filter on "${nodeId}" sets no operation`);
+  }
+  return parts.join(' ');
+};
+
 const paintNode = (
   renderer: Renderer,
   surface: Surface,
@@ -458,33 +527,36 @@ const paintNode = (
         break;
       case 'rect': {
         renderer.drawRect(surface, 0, 0, node.width, node.height, {
-          fill: node.fill,
+          fill: resolveFill(node.fill, frame),
           stroke: node.stroke,
           strokeWidth: node.strokeWidth,
+          shadow: toShadowSpec(node.shadow),
         });
         break;
       }
       case 'rrect': {
         renderer.drawRoundedRect(surface, 0, 0, node.width, node.height, {
           radius: node.radius,
-          fill: node.fill,
+          fill: resolveFill(node.fill, frame),
           stroke: node.stroke,
           strokeWidth: node.strokeWidth,
+          shadow: toShadowSpec(node.shadow),
         });
         break;
       }
       case 'circle': {
         // Local geometry: bounding box (0,0,2r,2r), center (r,r).
         renderer.drawCircle(surface, node.radius, node.radius, node.radius, {
-          fill: node.fill,
+          fill: resolveFill(node.fill, frame),
           stroke: node.stroke,
           strokeWidth: node.strokeWidth,
+          shadow: toShadowSpec(node.shadow),
         });
         break;
       }
       case 'path': {
         renderer.drawPath(surface, node.d, {
-          fill: node.fill,
+          fill: resolveFill(node.fill, frame),
           stroke: node.stroke,
           strokeWidth: node.strokeWidth,
         });
@@ -519,6 +591,11 @@ const paintNode = (
         break;
       }
       case 'text': {
+        const fontSize = resolveAnimNumber(node.fontSize, frame, fps);
+        if (!Number.isFinite(fontSize) || fontSize <= 0) {
+          throw new Error(`Text node "${node.id}" resolved to bad fontSize ${String(fontSize)}`);
+        }
+        const letterSpacing = resolveAnimNumber(node.letterSpacing ?? 0, frame, fps);
         const shadow = node.shadow
           ? {
               color: node.shadow.color,
@@ -529,11 +606,11 @@ const paintNode = (
           : undefined;
         const baseOpts = {
           fontFamily: node.fontFamily,
-          fontSize: node.fontSize,
+          fontSize,
           fontWeight: node.fontWeight,
           fontStyle: node.fontStyle,
-          letterSpacing: node.letterSpacing,
-          fill: node.fill,
+          letterSpacing,
+          fill: resolveFill(node.fill, frame),
           stroke: node.stroke,
           strokeWidth: node.strokeWidth,
           shadow,
@@ -541,10 +618,10 @@ const paintNode = (
         if (measureText !== undefined) {
           const style = {
             fontFamily: node.fontFamily,
-            fontSize: node.fontSize,
+            fontSize,
             fontWeight: node.fontWeight,
             fontStyle: node.fontStyle,
-            letterSpacing: node.letterSpacing,
+            letterSpacing,
             lineHeight: node.lineHeight,
             textAlign: node.textAlign,
             textTransform: node.textTransform,

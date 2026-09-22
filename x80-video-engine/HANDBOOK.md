@@ -209,12 +209,46 @@ to everything beneath in paint order).
 - `text`: `fontFamily/Size/Weight/Style`, `lineHeight` (×fontSize, default
   1.2), `letterSpacing`, `textAlign` (incl. `justify` with `maxWidth`),
   `textTransform`, `fill/stroke/strokeWidth`, `shadow`, `maxWidth`.
+  `fontSize` and `letterSpacing` accept `AnimNumber` (kinetic type,
+  re-laid-out per frame — keep to a few nodes).
 - `image`/`svg`: `src` asset id (preferred) or inline; `width/height` or
   probed asset info; `fit: cover|contain|fill|none` (`crop` currently aliases `clip`).
 - `video`: `src`, `startFrom/trimBefore/trimAfter`, `volume`,
   `playbackRate`, `loop`, `fit`, `width/height`. Needs a video-frame
   resolver + asset info with `fps + durationSec` (see §4.4).
+  **Proxy rule:** info dims must describe the *decoded handles*, never the
+  container (a 540×960 proxy reports 540×960, or cover-crops misfire).
 - `caption`: timed word captions (see §3.5).
+- Paint: every shape/text `fill` accepts a flat color, a linear/radial/
+  conic gradient (`{kind, angle?, cx?, cy?, inner?, outer?, stops[]}`,
+  CSS semantics, resolved over the shape's bbox), or a keyframed
+  `{binding:'color', inputRange, colorStops}` (strict color grammar;
+  gradient stops are NOT animatable — cross-fade via node `opacity`).
+  Shapes also take `shadow` (box-shadow approximation, no spread/inset).
+  Paths reject gradient fills loudly (no bbox without rasterizing).
+
+### 2.5b Premium look (recipes, all declarative)
+
+- **Depth without GPU:** gradient scrims over footage (alpha stops),
+  radial top-glows with `screen` blend, one `shadow` per hero shape.
+  Prefer these to full-frame pixel effects (50–200 ms/frame at 1080×1920).
+- **Film grain, zero per-frame cost:** `createGrainTile(w, h, {seed,
+  amount})` once (oversize vs the comp, e.g. 660×1080 for 540×960),
+  draw as an `image` node with `blendMode: 'overlay'`, opacity 0.05–0.12,
+  and drift `x/y` across frames. Baked once (~90 ms), ~1 ms/frame after.
+- **Marker annotations** (rough-notation Highlight equivalent): a
+  translucent `rrect` behind the word, `scaleX` 0→1 with `anchorX: 0`.
+- **Kinetic type:** animate `fontSize`/`letterSpacing` with clamp +
+  expo-out easing; keep 1–3 such nodes (each re-runs layout per frame).
+- **Timing surface (all in `interpolate` options):** per-segment
+  `easing` arrays, `output: 'perceptual-scale'` for scale ramps,
+  `posterize` for stepped looks — same vocabulary as the reference.
+- **Sound is picture:** `decodeAudioToPCM` + `mixTracks` (bed with
+  `fadeIn/OutFrames`, stingers at `fromFrame`) → `renderToMp4({audio})`.
+  Silent reels read as unfinished; budget audio like footage.
+- **Typefaces:** vendor static TTF/OTF next to the plan (Inter-class
+  grotesque for UI, one expressive serif italic for quotes); register
+  both weights up front. No implicit fallback timing, ever.
 
 ### 2.6 Renderer abstraction
 

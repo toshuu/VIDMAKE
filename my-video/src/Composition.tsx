@@ -6,6 +6,7 @@ import { WaterReelV2 } from "./WaterReelV2";
 import { CafeReel } from "./CafeReel";
 import { M3Compare } from "./M3Compare";
 import { M4Compare } from "./M4Compare";
+import { GroundworkCompare } from "./GroundworkCompare";
 
 export const MyComposition = () => {
   return (
@@ -65,6 +66,14 @@ export const MyComposition = () => {
         fps={30}
         width={1080}
         height={1920}
+      />
+      <Composition
+        id="GroundworkCompare"
+        component={GroundworkCompare}
+        durationInFrames={30}
+        fps={30}
+        width={540}
+        height={960}
       />
     </>
   );

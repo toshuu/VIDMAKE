@@ -6,8 +6,12 @@
  * bindings evaluated against the node's local frame (still JSON-serializable).
  */
 
-import type { AnimNumber } from '../animation/bindings.js';
+import type { AnimNumber, ColorBinding } from '../animation/bindings.js';
 import type { Caption, CaptionHighlightMode, CaptionReveal } from '../captions/types.js';
+import type { FillInput } from '../renderer/types.js';
+
+/** Paint for shape/text fills: flat, gradient, or keyframed color. */
+export type Fill = FillInput | ColorBinding;
 
 export interface Vec2 {
   x: number;
@@ -50,6 +54,21 @@ export interface ClipRect {
   y: number;
   width: number;
   height: number;
+  /** Rounded clipping (CSS overflow:hidden + border-radius equivalent). */
+  radius?: number | [number, number, number, number];
+}
+
+/**
+ * Declarative filter stack (CSS `filter` essentials, static per node).
+ * Applied natively by the backend (no pixel loops): blur in px, the rest
+ * as unitless factors. All values must be finite and non-negative.
+ */
+export interface NodeFilter {
+  blur?: number;
+  brightness?: number;
+  contrast?: number;
+  saturate?: number;
+  grayscale?: number;
 }
 
 /** Effect invocation in the compositing pipeline (composable, ordered). */
@@ -73,6 +92,8 @@ export interface BaseNode {
   blendMode?: BlendMode;
   crop?: ClipRect;
   clip?: ClipRect;
+  /** Declarative GPU-style filter (blur/grades), static per node. */
+  filter?: NodeFilter;
   /** Reference to a mask node id. */
   mask?: string;
   effects?: Effect[];
@@ -91,9 +112,11 @@ export interface RectangleNode extends BaseNode {
   type: 'rect';
   width: number;
   height: number;
-  fill?: string;
+  fill?: Fill;
   stroke?: string;
   strokeWidth?: number;
+  /** Drop shadow (CSS box-shadow approximation, no spread/inset). */
+  shadow?: TextShadow;
 }
 
 export interface RoundedRectangleNode extends BaseNode {
@@ -101,24 +124,28 @@ export interface RoundedRectangleNode extends BaseNode {
   width: number;
   height: number;
   radius: number | [number, number, number, number];
-  fill?: string;
+  fill?: Fill;
   stroke?: string;
   strokeWidth?: number;
+  /** Drop shadow (CSS box-shadow approximation, no spread/inset). */
+  shadow?: TextShadow;
 }
 
 export interface CircleNode extends BaseNode {
   type: 'circle';
   radius: number;
-  fill?: string;
+  fill?: Fill;
   stroke?: string;
   strokeWidth?: number;
+  /** Drop shadow (CSS box-shadow approximation, no spread/inset). */
+  shadow?: TextShadow;
 }
 
 export interface PathNode extends BaseNode {
   type: 'path';
   /** SVG path data. */
   d: string;
-  fill?: string;
+  fill?: Fill;
   stroke?: string;
   strokeWidth?: number;
 }
@@ -135,15 +162,17 @@ export interface TextNode extends BaseNode {
   type: 'text';
   text: string;
   fontFamily: string;
-  fontSize: number;
+  /** Kinetic type: grows/shrinks with the local frame (re-laid-out per frame). */
+  fontSize: AnimNumber;
   fontWeight?: number | string;
   fontStyle?: 'normal' | 'italic' | 'oblique';
   /** Multiplier of fontSize (default 1.2). */
   lineHeight?: number;
-  letterSpacing?: number;
+  /** Kinetic tracking: animatable like fontSize. */
+  letterSpacing?: AnimNumber;
   textAlign?: 'left' | 'center' | 'right' | 'justify';
   textTransform?: 'none' | 'uppercase' | 'lowercase';
-  fill?: string;
+  fill?: Fill;
   stroke?: string;
   strokeWidth?: number;
   shadow?: TextShadow;

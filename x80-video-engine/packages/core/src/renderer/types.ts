@@ -13,6 +13,57 @@ export interface RgbaColor {
 
 export type ColorInput = string | RgbaColor;
 
+/**
+ * Declarative linear gradient fill (CSS `linear-gradient(angle, stops)`
+ * semantics, JSON-serializable). `angle` is CSS degrees clockwise from up:
+ * 90 = left→right, 180 = top→bottom (default). Offsets must ascend in
+ * [0, 1]; backends resolve the gradient over the shape's own bounding box.
+ */
+export interface GradientStop {
+  offset: number;
+  color: string;
+}
+
+export interface LinearGradientFill {
+  kind: 'linear';
+  angle?: number;
+  stops: GradientStop[];
+}
+
+/**
+ * Declarative radial gradient (CSS `radial-gradient()` essentials,
+ * JSON-serializable). Center as bbox fractions (default 0.5, 0.5);
+ * radii as fractions of half the bbox diagonal (default inner 0,
+ * outer 1 = edge-to-corner coverage, the ambient-glow workhorse).
+ */
+export interface RadialGradientFill {
+  kind: 'radial';
+  cx?: number;
+  cy?: number;
+  inner?: number;
+  outer?: number;
+  stops: GradientStop[];
+}
+
+/**
+ * Declarative conic gradient (CSS `conic-gradient(from angle)`
+ * essentials). Angle is CSS degrees clockwise from up; center as
+ * bbox fractions (default 0.5, 0.5). Staged if the backend lacks
+ * `createConicGradient`.
+ */
+export interface ConicGradientFill {
+  kind: 'conic';
+  angle?: number;
+  cx?: number;
+  cy?: number;
+  stops: GradientStop[];
+}
+
+export type GradientFill = LinearGradientFill | RadialGradientFill | ConicGradientFill;
+
+/** Any paint a shape or text run accepts: flat color or gradient. */
+export type FillInput = ColorInput | GradientFill;
+
 export interface Surface {
   readonly width: number;
   readonly height: number;
@@ -29,9 +80,11 @@ export interface FrameBuffer {
 }
 
 export interface DrawRectOptions {
-  fill?: ColorInput;
+  fill?: FillInput;
   stroke?: ColorInput;
   strokeWidth?: number;
+  /** Canvas-style drop shadow (color/blur/offset); fill AND stroke cast it. */
+  shadow?: TextShadowSpec;
 }
 
 export interface DrawRoundedRectOptions extends DrawRectOptions {
@@ -66,7 +119,7 @@ export interface DrawTextOptions {
   fontStyle?: 'normal' | 'italic' | 'oblique';
   letterSpacing?: number;
   textAlign?: 'left' | 'center' | 'right' | 'justify';
-  fill?: ColorInput;
+  fill?: FillInput;
   stroke?: ColorInput;
   strokeWidth?: number;
   maxWidth?: number;
@@ -83,6 +136,12 @@ export interface Renderer {
   setOpacity(surface: Surface, opacity: number): void;
   /** Optional; compositor uses it only when a node sets a non-default blendMode. */
   setBlendMode?(surface: Surface, blendMode: string): void;
+  /**
+   * Optional; compositor uses it only when a node sets `filter`.
+   * Takes a CSS filter string (e.g. `"blur(35px) brightness(1.1)"`) or
+   * `undefined` to clear. Scoped by the caller's save/restore.
+   */
+  setFilter?(surface: Surface, filter: string | undefined): void;
   setTransform(
     surface: Surface,
     transform: {
@@ -95,7 +154,7 @@ export interface Renderer {
       anchorY?: number;
     },
   ): void;
-  clipRect(surface: Surface, rect: { x: number; y: number; width: number; height: number }): void;
+  clipRect(surface: Surface, rect: { x: number; y: number; width: number; height: number; radius?: number | [number, number, number, number] }): void;
   drawRect(
     surface: Surface,
     x: number,

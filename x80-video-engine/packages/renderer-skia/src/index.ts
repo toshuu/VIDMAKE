@@ -14,3 +14,5 @@ export {
 export type { RegisteredFont } from './fonts.js';
 export { framesToCanvases, clipResolver } from './video-frames.js';
 export type { RgbaFrameStore } from './video-frames.js';
+export { createGrainTile } from './texture.js';
+export type { GrainTileOptions } from './texture.js';
