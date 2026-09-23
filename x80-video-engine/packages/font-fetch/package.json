@@ -1,0 +1,20 @@
+{
+  "name": "@x80/font-fetch",
+  "version": "0.1.0",
+  "description": "Google Fonts API fetch + pinned cache for the X80 deterministic renderer (network lives only here, never at render)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

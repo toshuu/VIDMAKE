@@ -4,6 +4,7 @@
  * Open:  http://localhost:8099/
  */
 import http from 'node:http';
+import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,6 +31,31 @@ for (const [f, fam] of LIB.fonts) {
   registerFontFile(join(LIB.fontDir, f), fam);
 }
 console.log(`[studio] fonts registered: ${LIB.fonts.length}`);
+// ---- boot: Google Fonts manifest (offline, pinned, fail-loud) ----
+// fonts/manifest.json + fonts/cache/ are the only render-time font source for
+// API families. Fetching lives in packages/font-fetch (network); here we only
+// verify sha256 and register. Any mismatch/miss throws — never fallback.
+const ROOT = dirname(DIR);
+const FONT_MANIFEST = JSON.parse(readFileSync(join(ROOT, 'fonts', 'manifest.json'), 'utf8'));
+{
+  let n = 0;
+  for (const [family, combos] of Object.entries(FONT_MANIFEST)) {
+    for (const [combo, meta] of Object.entries(combos)) {
+      const [slug] = [family.toLowerCase().trim().replace(/[\s_]+/g, '-').replace(/[^a-z0-9-]/g, '')];
+      const p = join(ROOT, 'fonts', 'cache', slug, `${combo}.ttf`);
+      if (!existsSync(p)) {
+        throw new Error(`font manifest: missing cached file for "${family}" ${combo} (expected ${p}) — run fetch-fonts`);
+      }
+      const digest = createHash('sha256').update(readFileSync(p)).digest('hex');
+      if (digest !== meta.sha256) {
+        throw new Error(`font manifest: hash mismatch for "${family}" ${combo} (pinned ${meta.sha256}, got ${digest})`);
+      }
+      registerFontFile(p, family);
+      n += 1;
+    }
+  }
+  console.log(`[studio] manifest fonts registered: ${n}`);
+}
 const renderer = new SkiaRenderer();
 const measure = createSkiaMeasurer();
 const measureFn = (text, size, weight, ls = 0, family = 'Inter') =>
@@ -100,8 +126,54 @@ const resolveFile = (id) => {
   throw new Error(`unknown asset id "${id}" — see GET /api/assets for the library`);
 };
 
-const cutsOf = (durations) => {
-  const cuts = [];
+const LEGACY_FONT_FAMILIES = new Set(LIB.fonts.map(([, fam]) => fam));
+
+/**
+ * Spec-validate-time font check (Q4): every text node's (family, weight, style)
+ * must resolve against fonts/manifest.json. Legacy hand-shipped families
+ * (LIB.fonts, e.g. Hindi) are family-allowed; anything else throws before a
+ * single frame renders — never silent fallback.
+ */
+const assertPlanFontsPinned = (plan) => {
+  const seen = new Map(); // "family|weight|style" -> node id
+  const walk = (n) => {
+    if (n === null || typeof n !== 'object') {
+      return;
+    }
+    if (typeof n.fontFamily === 'string' && (n.type === 'text' || n.text !== undefined)) {
+      const weight = typeof n.fontWeight === 'number' ? n.fontWeight : 400;
+      const style = n.fontStyle ?? 'normal';
+      seen.set(`${n.fontFamily}|${weight}|${style}`, n.id ?? '?');
+    }
+    for (const v of Object.values(n)) {
+      if (Array.isArray(v)) {
+        for (const item of v) walk(item);
+      } else {
+        walk(v);
+      }
+    }
+  };
+  walk(plan.composition.root);
+  const bad = [];
+  for (const [key, id] of seen) {
+    const [family, weight, style] = key.split('|');
+    const combos = FONT_MANIFEST[family];
+    if (combos !== undefined) {
+      if (combos[`${weight}-${style}`] === undefined) {
+        bad.push(`node "${id}": "${family}" ${weight}-${style} not pinned (pinned: ${Object.keys(combos).join(', ')})`);
+      }
+      continue;
+    }
+    if (!LEGACY_FONT_FAMILIES.has(family)) {
+      bad.push(`node "${id}": unknown font family "${family}" (not in manifest, not legacy)`);
+    }
+  }
+  if (bad.length > 0) {
+    throw new Error(`unpinned fonts:\n- ${bad.join('\n- ')}`);
+  }
+};
+
+const cutsOf = (durations) => {  const cuts = [];
   let acc = 0;
   for (let i = 0; i < durations.length - 1; i += 1) {
     acc += durations[i];
@@ -119,6 +191,7 @@ const runJob = async (job) => {
     const { plan, decisions } = compileReel(job.spec, { measure: measureFn });
     job.decisions = decisions;
     validateTimeline(plan.timeline, plan.composition.root);
+    assertPlanFontsPinned(plan);
 
     job.state = 'assets';
     const ids = collectIds(job.spec);
