@@ -78,5 +78,89 @@
       "apiVersion": "v16",
       "fetchedAt": "2026-09-23T18:21:45.393Z"
     }
+  },
+  "Space Grotesk": {
+    "400-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7oUUsjNsFjTDJK.ttf",
+      "sha256": "637578d47b0e70e02b3eb5056847dd9add17bd683234d28f5d11a6cf66ff2725",
+      "apiVersion": "v22",
+      "fetchedAt": "2026-09-23T18:37:33.823Z"
+    },
+    "500-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7aUUsjNsFjTDJK.ttf",
+      "sha256": "d8135bce6603398f3d0cdb478a018d7fa869b0168d037a9408cad23e030bfa7a",
+      "apiVersion": "v22",
+      "fetchedAt": "2026-09-23T18:37:33.839Z"
+    },
+    "600-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj42VksjNsFjTDJK.ttf",
+      "sha256": "279a5d22b8ab377f41706af566610667db3941b069b50187b98af09ca3b08f91",
+      "apiVersion": "v22",
+      "fetchedAt": "2026-09-23T18:37:33.869Z"
+    },
+    "700-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj4PVksjNsFjTDJK.ttf",
+      "sha256": "8fb63865c6afd083723dc1775548306b7751f20397bebcb79646032c598c81b9",
+      "apiVersion": "v22",
+      "fetchedAt": "2026-09-23T18:37:33.887Z"
+    }
+  },
+  "Manrope": {
+    "400-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk79FO_F87jxeN7B.ttf",
+      "sha256": "6383bd9f81e56d61139884d8e42cb7b2146a11dde4efde55c8bff1e4c2c0bbe8",
+      "apiVersion": "v20",
+      "fetchedAt": "2026-09-23T18:37:33.920Z"
+    },
+    "500-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk7PFO_F87jxeN7B.ttf",
+      "sha256": "88d3f8ef004b53483a202772d09acaab17ca99dd41905d9b4ab07ac635632378",
+      "apiVersion": "v20",
+      "fetchedAt": "2026-09-23T18:37:33.933Z"
+    },
+    "600-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk4jE-_F87jxeN7B.ttf",
+      "sha256": "abbefa1f58c7355b663c19f29ffe4cd7fc8c93a9e5f8b68f08d1e9ba2bc4ba0d",
+      "apiVersion": "v20",
+      "fetchedAt": "2026-09-23T18:37:33.949Z"
+    },
+    "700-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk4aE-_F87jxeN7B.ttf",
+      "sha256": "4aed5d180a4f41ed21f07e678486f889bb40eb0ddf5f473769b6302f507d1e36",
+      "apiVersion": "v20",
+      "fetchedAt": "2026-09-23T18:37:33.968Z"
+    },
+    "800-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk59E-_F87jxeN7B.ttf",
+      "sha256": "5be6d9b21d23981ab520f0bfc7800c434c9d093467ef24b85b16877e7709b03b",
+      "apiVersion": "v20",
+      "fetchedAt": "2026-09-23T18:37:33.982Z"
+    }
+  },
+  "IBM Plex Mono": {
+    "400-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n5igg1l9kn-s.ttf",
+      "sha256": "ab08018ccd276b79fb2c636bb95b9c543598f9d50505fe92506fcb4dae7810cd",
+      "apiVersion": "v20",
+      "fetchedAt": "2026-09-23T18:37:34.017Z"
+    },
+    "500-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJ8ldPg-IUDNg.ttf",
+      "sha256": "8ae925744d53758b67a77ea35c2fc46d7b688c7d8c04da3b579902bed0ca0e17",
+      "apiVersion": "v20",
+      "fetchedAt": "2026-09-23T18:37:34.034Z"
+    },
+    "600-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAO8ldPg-IUDNg.ttf",
+      "sha256": "b1a936f96266fbe036b112f659155f7c32222af44a9a20f3bb011f51050669d5",
+      "apiVersion": "v20",
+      "fetchedAt": "2026-09-23T18:37:34.049Z"
+    },
+    "700-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3pQP8ldPg-IUDNg.ttf",
+      "sha256": "dbd2a2fb024579438d6400a84e57579bfd2dbe67c306c8fd9fde92a61e4f2eea",
+      "apiVersion": "v20",
+      "fetchedAt": "2026-09-23T18:37:34.063Z"
+    }
   }
 }

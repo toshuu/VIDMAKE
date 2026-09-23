@@ -5,7 +5,7 @@
  */
 import http from 'node:http';
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join, dirname, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compileReel, validateSpec } from '../packages/reelspec/dist/index.js';
@@ -222,7 +222,86 @@ const assertPlanFontsPinned = (plan, decisions = []) => {
   }
 };
 
-const cutsOf = (durations) => {  const cuts = [];
+/**
+ * Register one sheet's rows into LIB + alias maps from frame counts.
+ * Used by POST /api/sheets (counts from parse) and by the boot rescan
+ * (counts from files on disk) so uploads survive restarts and clones.
+ * Returns { casts, props } id lists.
+ */
+const ingestSheetRows = (name, rows, counts, dir) => {
+  const casts = [];
+  const props = [];
+  for (let r = 0; r < rows.length; r += 1) {
+    const rd = rows[r];
+    const rname = String(rd.name || '').replace(/[^a-zA-Z0-9_-]/g, '');
+    if (!rname) throw new Error(`rows[${r}].name required`);
+    const n = counts[r] ?? 0;
+    if (rd.kind === 'props') {
+      const cells = Array.isArray(rd.cells) && rd.cells.length > 0
+        ? rd.cells.map((c) => String(c).replace(/[^a-zA-Z0-9_-]/g, ''))
+        : Array.from({ length: n }, (_, c) => `${rname}-${c}`);
+      for (let c = 0; c < n; c += 1) {
+        const file = join(dir, `${rname}-${c}.png`);
+        const pid = `${name}/${cells[c] ?? `${rname}-${c}`}`;
+        LIB.props[pid] = file;
+        props.push(pid);
+        if (!propByName.has(cells[c])) propByName.set(cells[c], pid);
+        if (!propByName.has(`${cells[c]}-${c}`)) propByName.set(`${cells[c]}-${c}`, pid);
+      }
+      const firstPid = `${name}/${cells[0] ?? `${rname}-0`}`;
+      if (!propByName.has(rname)) propByName.set(rname, firstPid);
+    } else {
+      const cid = `${name}/${rname}`;
+      LIB.casts[cid] = { dir, row: rname, frames: n };
+      castByName.set(rname, cid);
+      casts.push(cid);
+    }
+  }
+  return { casts, props };
+};
+
+/** Boot rescan: re-register every uploads/<sheet>/sheet.json sidecar. */
+const rescanUploads = () => {
+  const upRoot = join(DIR, 'uploads');
+  let sheets = [];
+  try {
+    sheets = readdirSync(upRoot, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
+  } catch {
+    return { casts: [], props: [] };
+  }
+  const casts = [];
+  const props = [];
+  for (const name of sheets) {
+    const dir = join(upRoot, name);
+    const sidecar = join(dir, 'sheet.json');
+    if (!existsSync(sidecar)) {
+      console.log(`[studio] uploads/${name}: no sheet.json, skipped (re-upload to persist)`);
+      continue;
+    }
+    const { rows } = JSON.parse(readFileSync(sidecar, 'utf8'));
+    const counts = rows.map((rd) => {
+      const rname = String(rd.name || '').replace(/[^a-zA-Z0-9_-]/g, '');
+      let n = 0;
+      try {
+        for (const f of readdirSync(dir)) {
+          const m = new RegExp(`^${rname}-(\\d+)\\.png$`).exec(f);
+          if (m) n = Math.max(n, Number(m[1]) + 1);
+        }
+      } catch { /* ignore */ }
+      return n;
+    });
+    const r = ingestSheetRows(name, rows, counts, dir);
+    casts.push(...r.casts);
+    props.push(...r.props);
+  }
+  if (casts.length + props.length > 0) {
+    console.log(`[studio] restored uploads: ${casts.length} casts, ${props.length} props`);
+  }
+  return { casts, props };
+};
+
+const cutsOf = (durations) => {
+  const cuts = [];
   let acc = 0;
   for (let i = 0; i < durations.length - 1; i += 1) {
     acc += durations[i];
@@ -397,8 +476,6 @@ const server = http.createServer((req, res) => {
         });
         const dir = join(DIR, 'uploads', name);
         mkdirSync(dir, { recursive: true });
-        const casts = [];
-        const props = [];
         const saveFrame = async (f, file) => {
           const tmp = createCanvas(f.boxW, f.boxH);
           const tctx = tmp.getContext('2d');
@@ -416,34 +493,13 @@ const server = http.createServer((req, res) => {
           const rd = rows[r];
           const rname = String(rd.name || '').replace(/[^a-zA-Z0-9_-]/g, '');
           if (!rname) throw new Error(`rows[${r}].name required`);
-          if (rd.kind === 'props') {
-            const cells = Array.isArray(rd.cells) && rd.cells.length > 0
-              ? rd.cells.map((c) => String(c).replace(/[^a-zA-Z0-9_-]/g, ''))
-              : found[r].map((_, c) => `${rname}-${c}`);
-            for (let c = 0; c < found[r].length; c += 1) {
-              const file = join(dir, `${rname}-${c}.png`);
-              await saveFrame(found[r][c], file);
-              const pid = `${name}/${cells[c] ?? `${rname}-${c}`}`;
-              LIB.props[pid] = file;
-              props.push(pid);
-              // Lenient aliases: bare cell name → first matching frame.
-              if (!propByName.has(cells[c])) propByName.set(cells[c], pid);
-              if (!propByName.has(`${cells[c]}-${c}`)) propByName.set(`${cells[c]}-${c}`, pid);
-            }
-            // Bare row name (e.g. "AppleLogo") → cell 0.
-            const firstPid = `${name}/${cells[0] ?? `${rname}-0`}`;
-            if (!propByName.has(rname)) propByName.set(rname, firstPid);
-          } else {
-            for (let c = 0; c < found[r].length; c += 1) {
-              const file = join(dir, `${rname}-${c}.png`);
-              await saveFrame(found[r][c], file);
-            }
-            const cid = `${name}/${rname}`;
-            LIB.casts[cid] = { dir, row: rname, frames: found[r].length };
-            castByName.set(rname, cid);
-            casts.push(cid);
+          for (let c = 0; c < found[r].length; c += 1) {
+            await saveFrame(found[r][c], join(dir, `${rname}-${c}.png`));
           }
         }
+        // Sidecar so uploads survive restarts/clones (boot rescan re-registers).
+        writeFileSync(join(dir, 'sheet.json'), JSON.stringify({ name, rows }, null, 2));
+        const { casts, props } = ingestSheetRows(name, rows, found.map((f) => f.length), dir);
         send(200, { ok: true, casts, props });
       } catch (e) {
         send(400, { ok: false, errors: [String(e && e.message ? e.message : e)] });
@@ -494,4 +550,5 @@ const server = http.createServer((req, res) => {
 });
 
 const port = Number(process.argv[2] ?? 8099);
+rescanUploads();
 server.listen(port, () => console.log(`[studio] http://localhost:${port}/`));

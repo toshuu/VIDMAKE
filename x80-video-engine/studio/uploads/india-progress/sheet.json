@@ -1,0 +1,1 @@
+{"name": "india-progress", "rows": [{"kind": "cast", "name": "IndiaOutline"}, {"cells": ["upi"], "kind": "props", "name": "upi"}, {"cells": ["metro"], "kind": "props", "name": "metro"}, {"cells": ["chip"], "kind": "props", "name": "chip"}, {"cells": ["factory"], "kind": "props", "name": "factory"}, {"cells": ["rocket"], "kind": "props", "name": "rocket"}]}
