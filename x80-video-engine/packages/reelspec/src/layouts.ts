@@ -73,7 +73,7 @@ export const autoFit = (
 };
 
 const inkOf = (fill: string, pal: ReelConcept['palette']): string =>
-  fill === 'ink' ? pal.ink : fill === 'accent' ? pal.accent : fill;
+  fill === 'ink' ? pal.ink : fill === 'accent' ? pal.accent : fill === 'accent2' ? pal.accent2 : fill;
 
 /* ---------- shared atoms ---------- */
 

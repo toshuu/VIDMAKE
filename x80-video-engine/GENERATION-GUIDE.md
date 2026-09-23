@@ -44,7 +44,7 @@ new capability, ask for a new JSON option + engine pairing instead.
 ```
 
 - Colors: `#rrggbb`, `#rrggbbaa`, or `rgba(...)`. Title `fill` additionally
-  accepts the aliases `"ink"` and `"accent"`.
+  accepts the aliases `"ink"`, `"accent"`, `"accent2"` (palette slots).
 - `faces`: **verbatim Google Fonts family names** (`"Rozha One"`, never
   `"RozhaOne"`). `display` = giant titles, `hero` = subtitles/body,
   `kicker` = pills/numerals/overlines. **Any family auto-installs** from
@@ -107,7 +107,7 @@ new capability, ask for a new JSON option + engine pairing instead.
 ```
 
 - `lines`: **1–2** items (`ticket` layout: must be `[]`). No `…`/`...` in text.
-- `fill`: `"ink"` \| `"accent"` \| hex \| rgba.
+- `fill`: `"ink"` \| `"accent"` \| `"accent2"` \| hex \| rgba.
 - `glow`: optional shadow color (accent fills default to accent glow).
 - Per-text font: line `face` wins → title `face` → slot face
   (`display` for kinetic/giant titles, `hero` for stack/lowtitle titles,

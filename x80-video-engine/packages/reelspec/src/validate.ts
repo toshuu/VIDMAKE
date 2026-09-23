@@ -13,7 +13,7 @@ const LAYOUTS = new Set([
 const COLOR_RE = /^(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{8}|rgba?\([^)]*\))$/;
 
 const isColor = (s: string): boolean =>
-  s === 'ink' || s === 'accent' || COLOR_RE.test(s);
+  s === 'ink' || s === 'accent' || s === 'accent2' || COLOR_RE.test(s);
 
 export const validateSpec = (spec: ReelSpec): string[] => {
   const errs: string[] = [];

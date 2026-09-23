@@ -136,7 +136,7 @@ export type SubjectSpec =
 
 export interface TitleLine {
   text: string;
-  /** 'ink' | 'accent' | any explicit color. */
+  /** 'ink' | 'accent' | 'accent2' | any explicit color. */
   fill: string;
   /** Colored glow shadow; defaults to accent for accent fills. */
   glow?: string;
