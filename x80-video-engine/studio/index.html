@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>X80 Studio — JSON in, MP4 out</title>
+<style>
+  :root { color-scheme: dark; }
+  body { background: #0b1026; color: #f2f4fa; font: 15px/1.5 system-ui, sans-serif; margin: 0; }
+  main { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  p.sub { color: #9aa3b5; margin: 0 0 18px; }
+  textarea { width: 100%; min-height: 260px; background: #10141f; color: #e8ecf4;
+    border: 1px solid #2a3350; border-radius: 10px; padding: 12px;
+    font: 12.5px/1.5 ui-monospace, monospace; box-sizing: border-box; }
+  .row { display: flex; gap: 10px; margin: 12px 0; flex-wrap: wrap; }
+  button { background: #4ade80; color: #0b1020; border: 0; border-radius: 8px;
+    padding: 10px 22px; font-weight: 800; font-size: 14px; cursor: pointer; }
+  button.ghost { background: transparent; color: #f3d9a0; border: 1px solid #4a5468; }
+  button:disabled { opacity: 0.45; cursor: default; }
+  #bar { height: 10px; background: #1a2138; border-radius: 6px; overflow: hidden; margin: 12px 0; }
+  #fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4ade80, #f3d9a0); }
+  #log { white-space: pre-wrap; background: #10141f; border: 1px solid #2a3350;
+    border-radius: 10px; padding: 12px; min-height: 90px; font-size: 13px; }
+  #log .err { color: #ff8a8a; }
+  #log .ok { color: #4ade80; }
+  video { width: 100%; max-width: 360px; border-radius: 10px; margin-top: 12px; display: none; }
+  details { margin-top: 14px; border: 1px solid #2a3350; border-radius: 10px; padding: 10px 14px; }
+  summary { cursor: pointer; color: #f3d9a0; font-weight: 700; }
+  code { font-size: 12px; color: #a8d8f0; }
+  a.dl { display: none; margin-top: 10px; color: #4ade80; font-weight: 700; }
+</style>
+</head>
+<body>
+<main>
+  <h1>X80 Studio</h1>
+  <p class="sub">Paste one ReelSpec JSON → Validate → Render → download MP4. No agent in the middle.</p>
+  <textarea id="spec" spellcheck="false" placeholder='{"id": "my-reel-15s", ...}'></textarea>
+  <div class="row">
+    <button id="bValidate">Validate</button>
+    <button id="bRender">Render MP4</button>
+    <button id="bExample" class="ghost">Load vrindavan2 example</button>
+  </div>
+  <div id="bar"><div id="fill"></div></div>
+  <div id="log">Waiting for JSON…</div>
+  <video id="vid" controls playsinline></video>
+  <a id="dl" class="dl" href="#">Download MP4</a>
+  <details open>
+    <summary>Upload sprite sheet (conforming template only)</summary>
+    <p style="color:#9aa3b5">5-column sheet, flat magenta bg, guides hidden on export.
+    Non-conforming sheets are rejected loudly — fix the sheet, not the engine.</p>
+    <div class="row">
+      <input id="upName" placeholder="sheet-name (letters, digits, - _)" style="flex:1;background:#10141f;color:#e8ecf4;border:1px solid #2a3350;border-radius:8px;padding:10px">
+      <input id="upFile" type="file" accept="image/png">
+    </div>
+    <textarea id="upRows" spellcheck="false" style="min-height:90px" placeholder="one per row: name:kind — JSON arrays accepted too"></textarea>
+    <div class="row"><button id="bUpload" class="ghost">Upload + ingest</button></div>
+    <div id="upLog"></div>
+  </details>
+  <details>
+    <summary>Asset library (ids your JSON may reference)</summary>
+    <div id="assets">loading…</div>
+  </details>
+  <details>
+    <summary>How to write the JSON</summary>
+    <p>Full contract: <code>HOW-TO-USE.md</code> in the repo. Minimum viable spec: id, canvas
+    <code>{w:540,h:960,fps:30}</code>, system <code>cinematic|stack</code>, concept palette +
+    faces, durations[], transitions[] (acts−1), acts[] with role/duration/layout/kicker/title/subjects.
+    Casts: <code>india-festival/DandiyaWoman|DholMan|DiyaWoman|TempleDancer|FestivalWoman</code>,
+    <code>spr3|spr2/wizard|girl|bird|pirate|robot</code>, <code>k2/march|charge|leap|road|oath</code>.
+    Props: <code>india-festival/diya|dandiya|dhol|flowers|lantern</code>, <code>ic-*</code> icons.
+    Clips: <code>clip-sign|clip-buffet|clip-tables|clip-entry|clip-gods</code>.</p>
+  </details>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const log = (msg, cls) => {
+  const el = $('log');
+  const div = document.createElement('div');
+  if (cls) div.className = cls;
+  div.textContent = msg;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+};
+const parseSpec = () => {
+  try { return { spec: JSON.parse($('spec').value) }; }
+  catch (e) { return { error: 'Invalid JSON: ' + e.message }; }
+};
+$('bValidate').onclick = async () => {
+  $('log').innerHTML = '';
+  const { spec, error } = parseSpec();
+  if (error) { log(error, 'err'); return; }
+  const r = await fetch('/api/validate', { method: 'POST', body: JSON.stringify(spec) });
+  const j = await r.json();
+  if (!j.ok) { (j.errors || ['failed']).forEach((e) => log('✗ ' + e, 'err')); return; }
+  log('✓ spec valid — ' + j.decisions.length + ' decisions logged', 'ok');
+  j.decisions.slice(0, 12).forEach((d) => log('· ' + d.path + ': ' + d.choice));
+};
+let timer = null;
+$('bRender').onclick = async () => {
+  $('log').innerHTML = '';
+  $('vid').style.display = 'none';
+  $('dl').style.display = 'none';
+  const { spec, error } = parseSpec();
+  if (error) { log(error, 'err'); return; }
+  const btns = [$('bValidate'), $('bRender')];
+  btns.forEach((b) => (b.disabled = true));
+  const t0 = Date.now();
+  const r = await fetch('/api/render', { method: 'POST', body: JSON.stringify(spec) });
+  const j = await r.json();
+  if (!j.job) { log('render not accepted', 'err'); btns.forEach((b) => (b.disabled = false)); return; }
+  log('job ' + j.job + ' started…');
+  clearInterval(timer);
+  timer = setInterval(async () => {
+    const s = await (await fetch('/api/jobs/' + j.job)).json();
+    if (s.total > 0) {
+      $('fill').style.width = Math.round((100 * s.frame) / s.total) + '%';
+      $('log').lastChild.textContent = `job ${j.job}: ${s.state} — frame ${s.frame}/${s.total}`;
+    }
+    if (s.state === 'done') {
+      clearInterval(timer);
+      const secs = ((Date.now() - t0) / 1000).toFixed(1);
+      $('fill').style.width = '100%';
+      log(`✓ done in ${secs}s → ${s.mp4}`, 'ok');
+      $('vid').src = s.mp4;
+      $('vid').style.display = 'block';
+      const dl = $('dl');
+      dl.href = s.mp4;
+      dl.download = '';
+      dl.style.display = 'inline-block';
+      btns.forEach((b) => (b.disabled = false));
+    } else if (s.state === 'failed') {
+      clearInterval(timer);
+      log('✗ ' + (s.error || 'failed'), 'err');
+      btns.forEach((b) => (b.disabled = false));
+    }
+  }, 800);
+};
+$('bExample').onclick = async () => {
+  $('spec').value = '{\n  "id": "vrindavan2-15s",\n  "canvas": {"w":540,"h":960,"fps":30},\n  "system": "cinematic",\n  "concept": {\n    "palette": {"bg":"#0b1026","ink":"#ffffff","accent":"#e8b34b","accent2":"#e8b34b","pillBg":"#f2fbf4","pillFg":"#0b1020"},\n    "faces": {"display":"Poppins","hero":"Inter","kicker":"Poppins"},\n    "signature": "full-veil CTA takeover",\n    "signatureWhy": "the ask lands harder when the system breaks for it"\n  },\n  "durations": [60,100,90,80,120],\n  "transitions": [{"type":"slide","params":{"direction":"left"}},{"type":"dissolve"},{"type":"slide","params":{"direction":"left"}},{"type":"zoom-blur"}],\n  "acts": [\n    {"role":"hook","duration":60,"layout":"giant",\n     "kicker":{"text":"WEDDINGS • EVENTS • FEASTS","style":"overline"},\n     "title":{"lines":[{"text":"VRINDAVAN","fill":"ink"},{"text":"LAWNS","fill":"#e8b34b","glow":"rgba(232,179,75,0.45)"}],"sub":"grand lawns, grand feasts"},\n     "titleSize":76,"titleY":200,\n     "subjects":[{"kind":"footage","clip":"clip-sign","tint":{"color":"#3a5a9a","opacity":0.12}}]}\n  ],\n  "audio":{"stingers":"cuts"}\n}';
+  log('One-act example loaded — full 5-act spec: examples/reelspec/specs/vrindavan2.json');
+};
+$('bUpload').onclick = async () => {
+  const logEl = $('upLog');
+  logEl.innerHTML = '';
+  const say = (m) => { logEl.innerHTML += '<div>' + m + '</div>'; };
+  const file = $('upFile').files[0];
+  const name = $('upName').value.trim();
+  if (!file) { say('Pick a PNG file first.'); return; }
+  if (!name) { say('Give the sheet a name first.'); return; }
+  const rowsRaw = $('upRows').value.trim();
+  let rows;
+  try {
+    const parsed = JSON.parse(rowsRaw);
+    const arr = Array.isArray(parsed) ? parsed : parsed.rows;
+    if (!Array.isArray(arr)) throw new Error('nope');
+    rows = arr.map((e) => {
+      if (typeof e === 'string') {
+        const [n, k] = e.split(':').map((s) => s.trim());
+        return { name: n, kind: k === 'props' ? 'props' : 'cycle', cells: undefined };
+      }
+      return {
+        name: String(e.name || '').trim(),
+        kind: e.kind === 'props' ? 'props' : 'cycle',
+        cells: Array.isArray(e.cells) ? e.cells.map(String) : undefined,
+      };
+    });
+  } catch {
+    rows = rowsRaw.split('\n').map((l) => l.trim()).filter(Boolean).map((l) => {
+      const [n, k] = l.split(':').map((s) => s.trim());
+      return { name: n, kind: k === 'props' ? 'props' : 'cycle', cells: undefined };
+    });
+  }
+  if (!rows.length) { say('List rows as name:cycle or name:props, one per line.'); return; }
+  say('Reading file…');
+  const b64 = await new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => res(String(fr.result).split(',')[1]);
+    fr.onerror = rej;
+    fr.readAsDataURL(file);
+  });
+  say('Uploading + ingesting…');
+  const r = await fetch('/api/sheets', {
+    method: 'POST',
+    body: JSON.stringify({ name, rows, pngBase64: b64 }),
+  });
+  const j = await r.json();
+  if (!j.ok) { say('✗ ' + (j.errors || ['failed']).join('; ')); return; }
+  say('✓ casts: ' + (j.casts.join(', ') || '(none)'));
+  say('✓ props: ' + (j.props.join(', ') || '(none)'));
+  say('Reference frames as <code>NAME/cast-0..4</code>, props as their ids.');
+  fetch('/api/assets').then((a) => a.json()).then((jj) => {
+    $('assets').innerHTML =
+      '<p><code>casts:</code> ' + jj.casts.join(', ') + '</p>' +
+      '<p><code>props:</code> ' + jj.props.join(', ') + '</p>' +
+      '<p><code>clips:</code> ' + jj.clips.join(', ') + '</p>' +
+      '<p><code>fonts:</code> ' + jj.fonts.join(', ') + '</p>';
+  });
+};
+fetch('/api/assets').then((r) => r.json()).then((j) => {
+  const el = $('assets');
+  el.innerHTML =
+    '<p><code>casts:</code> ' + j.casts.join(', ') + '</p>' +
+    '<p><code>props:</code> ' + j.props.join(', ') + '</p>' +
+    '<p><code>clips:</code> ' + j.clips.join(', ') + '</p>' +
+    '<p><code>fonts:</code> ' + j.fonts.join(', ') + '</p>';
+}).catch(() => { $('assets').textContent = 'server offline?'; });
+</script>
+</body>
+</html>

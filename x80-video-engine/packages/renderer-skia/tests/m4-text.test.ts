@@ -250,15 +250,17 @@ describe('M4 layout rendering', () => {
     }
   });
 
-  it('letterSpacing support is probed, spacing widens when honored', () => {
+  it('measurer reports base advances; layout adds letterSpacing once', () => {
     const supported = probeLetterSpacingSupport();
     const base = measure.measure('hello', { fontFamily: SANS, fontSize: 40 }).width;
     const spaced = measure.measure('hello', { fontFamily: SANS, fontSize: 40, letterSpacing: 10 }).width;
-    if (supported) {
-      expect(spaced - base).toBeGreaterThan(40);
-    } else {
-      expect(spaced).toBe(base);
-    }
+    // Contract with layout.ts advanceOf: measure excludes spacing so the
+    // layout's additive model matches the single canvas application at draw.
+    expect(spaced).toBe(base);
+    const laid = layoutText('hello', {
+      fontFamily: SANS, fontSize: 40, letterSpacing: 10,
+    }, measure);
+    expect(laid.lines[0]!.width).toBeCloseTo(base + 10 * 5, 6);
     console.log(`letterSpacing honored by backend: ${supported}`);
   });
 

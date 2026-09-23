@@ -1,0 +1,271 @@
+{
+  "id": "vrindavan2-15s",
+  "canvas": {
+    "w": 540,
+    "h": 960,
+    "fps": 30
+  },
+  "system": "cinematic",
+  "concept": {
+    "palette": {
+      "bg": "#0b1026",
+      "ink": "#ffffff",
+      "accent": "#e8b34b",
+      "accent2": "#e8b34b",
+      "pillBg": "#f2fbf4",
+      "pillFg": "#0b1020"
+    },
+    "faces": {
+      "display": "Inter",
+      "hero": "Inter",
+      "kicker": "Poppins"
+    },
+    "signature": "full-veil CTA takeover after four kinetic acts",
+    "signatureWhy": "the ask lands harder when the system breaks for it"
+  },
+  "durations": [
+    60,
+    100,
+    90,
+    80,
+    120
+  ],
+  "transitions": [
+    {
+      "type": "slide",
+      "params": {
+        "direction": "left"
+      }
+    },
+    {
+      "type": "dissolve"
+    },
+    {
+      "type": "slide",
+      "params": {
+        "direction": "left"
+      }
+    },
+    {
+      "type": "zoom-blur"
+    }
+  ],
+  "acts": [
+    {
+      "role": "hook",
+      "duration": 60,
+      "layout": "giant",
+      "kicker": {
+        "text": "WEDDINGS \u2022 EVENTS \u2022 FEASTS",
+        "style": "overline"
+      },
+      "title": {
+        "lines": [
+          {
+            "text": "VRINDAVAN",
+            "fill": "ink"
+          },
+          {
+            "text": "LAWNS",
+            "fill": "#e8b34b",
+            "glow": "rgba(232,179,75,0.45)"
+          }
+        ],
+        "sub": "grand lawns, grand feasts"
+      },
+      "titleSize": 76,
+      "titleY": 200,
+      "subjects": [
+        {
+          "kind": "footage",
+          "clip": "clip-sign",
+          "tint": {
+            "color": "#3a5a9a",
+            "opacity": 0.12
+          }
+        }
+      ],
+      "badge": false
+    },
+    {
+      "role": "proof",
+      "duration": 100,
+      "layout": "lower3rd",
+      "kicker": {
+        "text": "THE GRAND HALL",
+        "style": "overline",
+        "y": 470
+      },
+      "title": {
+        "lines": [
+          {
+            "text": "A feast, staged",
+            "fill": "ink"
+          }
+        ],
+        "sub": "live counters & long spreads"
+      },
+      "titleSize": 60,
+      "titleY": 520,
+      "subY": 610,
+      "subjects": [
+        {
+          "kind": "footage",
+          "clip": "clip-buffet",
+          "zoom": [
+            1.07,
+            1
+          ]
+        },
+        {
+          "kind": "icons",
+          "mode": "strip",
+          "icons": [
+            "cloche",
+            "chef",
+            "cocktail"
+          ],
+          "srcPrefix": "ic",
+          "at": [
+            300,
+            800
+          ],
+          "entranceAt": 30
+        }
+      ],
+      "design": {
+        "numeral": "02"
+      },
+      "badge": false
+    },
+    {
+      "role": "proof2",
+      "duration": 90,
+      "layout": "poster",
+      "title": {
+        "lines": [
+          {
+            "text": "Your table",
+            "fill": "ink"
+          },
+          {
+            "text": "waits",
+            "fill": "#4ade80",
+            "glow": "rgba(74,222,128,0.4)"
+          }
+        ],
+        "sub": "crisp linen & soft light"
+      },
+      "titleSize": 58,
+      "center": true,
+      "subY": 500,
+      "subAt": 22,
+      "subjects": [
+        {
+          "kind": "footage",
+          "clip": "clip-tables",
+          "tint": {
+            "color": "#0a2540",
+            "opacity": 0.18
+          }
+        }
+      ],
+      "design": {
+        "frame": true
+      },
+      "badge": false
+    },
+    {
+      "role": "scale",
+      "duration": 80,
+      "layout": "ticket",
+      "kicker": {
+        "text": "ACT FOUR",
+        "style": "overline",
+        "y": 120
+      },
+      "title": {
+        "lines": [],
+        "sub": ""
+      },
+      "subjects": [
+        {
+          "kind": "footage",
+          "clip": "clip-entry",
+          "zoom": [
+            1.07,
+            1
+          ]
+        }
+      ],
+      "design": {
+        "ticket": {
+          "title": "ARRIVE GRAND",
+          "sub": "drapes, flowers & fanfare",
+          "x": 55,
+          "y": 590,
+          "w": 430,
+          "h": 230,
+          "rotation": -4,
+          "rule": [
+            "#e8b34b",
+            "#4ade80"
+          ]
+        }
+      },
+      "badge": false
+    },
+    {
+      "role": "cta",
+      "duration": 120,
+      "layout": "takeover",
+      "kicker": {
+        "text": "VRINDAVAN LAWNS",
+        "style": "overline",
+        "y": 220,
+        "at": 30
+      },
+      "title": {
+        "lines": [
+          {
+            "text": "Book your",
+            "fill": "ink"
+          },
+          {
+            "text": "date",
+            "fill": "#e8b34b",
+            "glow": "rgba(232,179,75,0.45)"
+          }
+        ],
+        "sub": "the lawns are waiting"
+      },
+      "subY": 660,
+      "subAt": 60,
+      "center": true,
+      "cta": "BOOK YOUR DATE",
+      "ctaAt": {
+        "y": 560,
+        "at": [
+          52,
+          64
+        ],
+        "size": 26,
+        "h": 72,
+        "spring": true
+      },
+      "subjects": [
+        {
+          "kind": "footage",
+          "clip": "clip-gods"
+        }
+      ],
+      "design": {
+        "veil": true
+      },
+      "badge": false
+    }
+  ],
+  "audio": {
+    "stingers": "cuts"
+  }
+}

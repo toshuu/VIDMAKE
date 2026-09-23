@@ -538,3 +538,10 @@ entire gap was three items — now closed:
 Suite: 276/276. Still honestly missing: GPU (irrelevant — headless
 Chrome is CPU raster too), streaming media, flex/grid authoring,
 variable fonts, ecosystem libs, animated paint beyond color.
+
+## 10. Apple-to-apple human verdict (2026-09-22)
+Same Google plan in Remotion and X80 renders visually identical
+bit-to-bit (diffs 3.0–9.5, rasterization only; springs bit-identical).
+Author disliked both versions: objection is to visual elements/taste,
+not rendering quality or engine. Engine parity closed; remaining work
+is art direction (reference/style tests/new topic) — next session.

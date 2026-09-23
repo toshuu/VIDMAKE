@@ -1,0 +1,171 @@
+{
+  "whoosh": "/kaggle/working/my-video/public/assets/whoosh.wav",
+  "fonts": [
+    [
+      "Inter-400.ttf",
+      "Inter"
+    ],
+    [
+      "Inter-500.ttf",
+      "Inter"
+    ],
+    [
+      "Inter-600.ttf",
+      "Inter"
+    ],
+    [
+      "Inter-700.ttf",
+      "Inter"
+    ],
+    [
+      "Inter-800.ttf",
+      "Inter"
+    ],
+    [
+      "Poppins-600.ttf",
+      "Poppins"
+    ],
+    [
+      "Poppins-700.ttf",
+      "Poppins"
+    ],
+    [
+      "NotoDev-700.ttf",
+      "Hindi"
+    ],
+    [
+      "RozhaOne-Regular.ttf",
+      "Rozha"
+    ]
+  ],
+  "fontDir": "/kaggle/working/x80-video-engine/examples/india-reel/fonts",
+  "casts": {
+    "india-festival/DandiyaWoman": {
+      "dir": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/2x",
+      "row": "lehenga",
+      "frames": 5
+    },
+    "india-festival/DholMan": {
+      "dir": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/2x",
+      "row": "kurta",
+      "frames": 5
+    },
+    "india-festival/DiyaWoman": {
+      "dir": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/2x",
+      "row": "sari",
+      "frames": 5
+    },
+    "india-festival/TempleDancer": {
+      "dir": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/2x",
+      "row": "mundu",
+      "frames": 5
+    },
+    "india-festival/FestivalWoman": {
+      "dir": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/2x",
+      "row": "lehenga",
+      "frames": 5
+    },
+    "spr3/wizard": {
+      "dir": "/kaggle/working/x80-video-engine/examples/sprite-reel/sprites/3x",
+      "row": "wizard",
+      "frames": 5
+    },
+    "spr3/girl": {
+      "dir": "/kaggle/working/x80-video-engine/examples/sprite-reel/sprites/3x",
+      "row": "girl",
+      "frames": 5
+    },
+    "spr3/bird": {
+      "dir": "/kaggle/working/x80-video-engine/examples/sprite-reel/sprites/3x",
+      "row": "bird",
+      "frames": 5
+    },
+    "spr3/pirate": {
+      "dir": "/kaggle/working/x80-video-engine/examples/sprite-reel/sprites/3x",
+      "row": "pirate",
+      "frames": 5
+    },
+    "spr3/robot": {
+      "dir": "/kaggle/working/x80-video-engine/examples/sprite-reel/sprites/3x",
+      "row": "robot",
+      "frames": 5
+    },
+    "spr2/wizard": {
+      "dir": "/kaggle/working/x80-video-engine/examples/sprite-reel/sprites/2x",
+      "row": "wizard",
+      "frames": 5
+    },
+    "spr2/girl": {
+      "dir": "/kaggle/working/x80-video-engine/examples/sprite-reel/sprites/2x",
+      "row": "girl",
+      "frames": 5
+    },
+    "spr2/bird": {
+      "dir": "/kaggle/working/x80-video-engine/examples/sprite-reel/sprites/2x",
+      "row": "bird",
+      "frames": 5
+    },
+    "spr2/pirate": {
+      "dir": "/kaggle/working/x80-video-engine/examples/sprite-reel/sprites/2x",
+      "row": "pirate",
+      "frames": 5
+    },
+    "spr2/robot": {
+      "dir": "/kaggle/working/x80-video-engine/examples/sprite-reel/sprites/2x",
+      "row": "robot",
+      "frames": 5
+    },
+    "k2/march": {
+      "dir": "/kaggle/working/x80-video-engine/examples/knight-reel/sprites/2x",
+      "row": "march",
+      "frames": 5
+    },
+    "k2/charge": {
+      "dir": "/kaggle/working/x80-video-engine/examples/knight-reel/sprites/2x",
+      "row": "charge",
+      "frames": 5
+    },
+    "k2/leap": {
+      "dir": "/kaggle/working/x80-video-engine/examples/knight-reel/sprites/2x",
+      "row": "leap",
+      "frames": 5
+    },
+    "k2/road": {
+      "dir": "/kaggle/working/x80-video-engine/examples/knight-reel/sprites/2x",
+      "row": "road",
+      "frames": 5
+    },
+    "k2/oath": {
+      "dir": "/kaggle/working/x80-video-engine/examples/knight-reel/sprites/2x",
+      "row": "oath",
+      "frames": 5
+    }
+  },
+  "props": {
+    "india-festival/diya": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/diya.png",
+    "india-festival/dandiya": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/dandiya.png",
+    "india-festival/dhol": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/dhol.png",
+    "india-festival/flowers": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/flowers.png",
+    "india-festival/lantern": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/lantern.png",
+    "prop-diya": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/diya.png",
+    "prop-lantern": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/lantern.png",
+    "ic-diya": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/diya.png",
+    "ic-dandiya": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/dandiya.png",
+    "ic-dhol": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/dhol.png",
+    "ic-flowers": "/kaggle/working/x80-video-engine/examples/india-fest/sprites/props2x/flowers.png",
+    "ic-cloche": "/kaggle/working/x80-video-engine/examples/resto-reel/icons/1x/cloche.png",
+    "ic-chef": "/kaggle/working/x80-video-engine/examples/resto-reel/icons/1x/chef.png",
+    "ic-cocktail": "/kaggle/working/x80-video-engine/examples/resto-reel/icons/1x/cocktail.png",
+    "ic-menu": "/kaggle/working/x80-video-engine/examples/resto-reel/icons/1x/menu.png",
+    "ic-hotel": "/kaggle/working/x80-video-engine/examples/resto-reel/icons/1x/hotel.png",
+    "ic-booking": "/kaggle/working/x80-video-engine/examples/resto-reel/icons/1x/booking.png",
+    "ic-stars": "/kaggle/working/x80-video-engine/examples/resto-reel/icons/1x/stars.png"
+  },
+  "clips": {
+    "clip-sign": "/kaggle/working/resto-assets/prox/v5.mp4",
+    "clip-buffet": "/kaggle/working/resto-assets/prox/v1.mp4",
+    "clip-tables": "/kaggle/working/resto-assets/prox/v3.mp4",
+    "clip-entry": "/kaggle/working/resto-assets/prox/v2.mp4",
+    "clip-gods": "/kaggle/working/resto-assets/prox/v4.mp4"
+  }
+}

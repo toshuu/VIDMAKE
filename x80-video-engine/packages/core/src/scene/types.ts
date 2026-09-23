@@ -94,6 +94,15 @@ export interface BaseNode {
   clip?: ClipRect;
   /** Declarative GPU-style filter (blur/grades), static per node. */
   filter?: NodeFilter;
+  /**
+   * CSS `backdrop-filter: blur()` equivalent: blurs already-painted pixels
+   * inside the node's own axis-aligned bbox BEFORE the node paints.
+   * Radius in px (surface units), static per node. Supported on
+   * rect/rrect/circle with static geometry; every other type throws.
+   * Ancestors must be translation-only (opacity is fine) — scale/rotation
+   * above would misplace the blurred region.
+   */
+  backdropBlur?: number;
   /** Reference to a mask node id. */
   mask?: string;
   effects?: Effect[];
@@ -145,6 +154,11 @@ export interface PathNode extends BaseNode {
   type: 'path';
   /** SVG path data. */
   d: string;
+  /**
+   * Baked morph frames (see `bakeMorph`): per-local-frame `d` values,
+   * indexed by clamped local frame. Overrides `d` when non-empty.
+   */
+  frames?: string[];
   fill?: Fill;
   stroke?: string;
   strokeWidth?: number;
@@ -254,7 +268,8 @@ export interface VideoNode extends BaseNode {
   trimAfter?: number;
   volume?: number;
   playbackRate?: number;
-  loop?: boolean;
+  /** true = wrap; 'pingpong' = forward-backward (short clips stay alive). */
+  loop?: boolean | 'pingpong';
   fit?: 'cover' | 'contain' | 'fill' | 'none';
   width?: number;
   height?: number;

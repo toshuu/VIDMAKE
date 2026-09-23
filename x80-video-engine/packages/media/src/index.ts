@@ -10,3 +10,12 @@ export {
 export type { DecodedAudio, MixTrack, MixOptions } from './audio.js';
 export { probeImage, loadImageHandle } from './image.js';
 export type { ImageInfo } from './image.js';
+export {
+  DEFAULT_SHEET,
+  keyCell,
+  normalizeRow,
+  parseSheet,
+  sliceSheet,
+  trimAlpha,
+} from './sprites.js';
+export type { BBox, NormalizedFrame, RgbaCell, SheetSpec } from './sprites.js';

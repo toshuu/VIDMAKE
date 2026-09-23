@@ -24,6 +24,7 @@ import type { CaptionNode } from '../scene/types.js';
 import { layoutText, layoutWords } from '../text/layout.js';
 import type { TextMeasurer } from '../text/types.js';
 import { collectLeaves, resolveTimeline } from '../timeline/resolve.js';
+import { validateTimeline } from '../timeline/validate.js';
 import type { Renderer, Surface, TextShadowSpec } from '../renderer/types.js';
 import type { Effect, Fill, SceneNode, TextShadow, VideoPlan } from '../scene/types.js';
 import { computeFit, mediaFrameIndexAt } from './fit.js';
@@ -398,6 +399,34 @@ const drawNode = (
       }
       renderer.setFilter(surface, toFilterString(node.id, node.filter));
     }
+    if (node.backdropBlur !== undefined) {
+      const radius = node.backdropBlur;
+      if (!Number.isFinite(radius) || radius < 0) {
+        throw new Error(`backdropBlur must be a finite number >= 0 (node "${node.id}")`);
+      }
+      if (radius > 0) {
+        if (typeof renderer.blurRegion !== 'function') {
+          throw new Error(`backdropBlur needs Renderer.blurRegion (node "${node.id}")`);
+        }
+        const bx = resolveAnimNumber(node.x ?? 0, frame, fps);
+        const by = resolveAnimNumber(node.y ?? 0, frame, fps);
+        if (node.type === 'rect' || node.type === 'rrect') {
+          renderer.blurRegion(
+            surface,
+            { x: bx, y: by, width: node.width, height: node.height },
+            radius,
+            node.type === 'rrect' ? node.radius : undefined,
+          );
+        } else if (node.type === 'circle') {
+          const d = node.radius * 2;
+          renderer.blurRegion(surface, { x: bx, y: by, width: d, height: d }, radius, node.radius);
+        } else {
+          throw new Error(
+            `backdropBlur is staged for rect/rrect/circle only (node "${node.id}" is ${node.type})`,
+          );
+        }
+      }
+    }
     renderer.setTransform(surface, {
       translateX: resolveAnimNumber(node.x ?? 0, frame, fps),
       translateY: resolveAnimNumber(node.y ?? 0, frame, fps),
@@ -555,7 +584,13 @@ const paintNode = (
         break;
       }
       case 'path': {
-        renderer.drawPath(surface, node.d, {
+        const baked = node.frames;
+        let d = node.d;
+        if (baked !== undefined && baked.length > 0) {
+          const idx = Math.min(baked.length - 1, Math.max(0, Math.floor(frame)));
+          d = baked[idx]!;
+        }
+        renderer.drawPath(surface, d, {
           fill: resolveFill(node.fill, frame),
           stroke: node.stroke,
           strokeWidth: node.strokeWidth,
@@ -803,6 +838,9 @@ export const renderFrame = (
 ): FrameStats => {
   const comp = plan.composition;
   const t0 = performance.now();
+  // Authoring guardrails: overlapping leaves and bad freeze pins throw
+  // loudly instead of rendering double-drawn or blank frames.
+  validateTimeline(plan.timeline, comp.root);
   const root =
     plan.timeline ??
     ({

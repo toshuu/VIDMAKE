@@ -196,6 +196,19 @@ export interface Renderer {
     effect: { type: string; params?: Record<string, unknown>; disabled?: boolean },
     region?: { x: number; y: number; width: number; height: number },
   ): void;
+  /**
+   * Optional; compositor uses it only when a node sets `backdropBlur`.
+   * Blurs already-painted pixels inside `region` (clamped to the surface),
+   * optionally clipped to a rounded rect. Coordinates are in the caller's
+   * current transform space — pass surface-space values under a
+   * translation-only (or identity) transform.
+   */
+  blurRegion?(
+    surface: Surface,
+    region: { x: number; y: number; width: number; height: number },
+    radius: number,
+    cornerRadius?: number | [number, number, number, number],
+  ): void;
   composite(
     target: Surface,
     source: Surface,

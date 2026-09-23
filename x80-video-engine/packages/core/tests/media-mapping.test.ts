@@ -73,6 +73,21 @@ describe('mediaFrameIndexAt', () => {
     })).toBe(0);
   });
 
+  it('pingpong runs forward then backward without jumps', () => {
+    const at = (local: number): number => mediaFrameIndexAt(local, 30, 30, 10, {
+      trimBefore: 0, trimAfter: 2, loop: 'pingpong',
+    });
+    // window [0,2)s, period 4s: 0→0, 30f→1s, 60f→2s, 90f→1s, 120f→0
+    expect(at(0)).toBe(0);
+    expect(at(30)).toBe(30);
+    expect(at(60)).toBe(60);
+    expect(at(90)).toBe(30);
+    expect(at(120)).toBe(0);
+    // continuity: no jump at the turn (59→60→61 rises through 60)
+    expect(at(59)).toBe(59);
+    expect(at(61)).toBe(59);
+  });
+
   it('different source fps', () => {
     expect(mediaFrameIndexAt(30, 30, 24, 5)).toBe(24);
   });

@@ -3,7 +3,12 @@
  * - explicit \n always breaks; other breaks are greedy word wraps
  * - overlong words hard-break by grapheme
  * - letterSpacing widens every grapheme advance (BEFORE shaping-neutral split:
- *   measurement of whole runs stays backend-shaped; spacing is additive)
+ *   measurement of whole runs stays backend-shaped; spacing is additive).
+ *   CONTRACT: backend measurers must report the BASE advance with letterSpacing
+ *   excluded (see Skia measurer). Layout adds `letterSpacing` per grapheme;
+ *   drawing applies the backend spacing once. If a backend measured WITH
+ *   spacing, every spaced run would count it twice (early wraps, shifted
+ *   centering).
  * - align offsets are relative to maxWidth (or longest line when unbounded)
  */
 

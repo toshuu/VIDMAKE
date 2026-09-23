@@ -1,7 +1,7 @@
 # X80 Video Engine — Outcomes
 
-**Date:** 2026-09-22 · **Repo:** `/kaggle/working/x80-video-engine/` · **Reference (tests only):** Remotion 4.0.526 in `/kaggle/working/my-video/`
-**Suite:** 276/276 across 25 files · `tsc` clean · builds clean
+**Date:** 2026-09-23 · **Repo:** `/kaggle/working/x80-video-engine/` · **Reference (tests only):** Remotion 4.0.526 in `/kaggle/working/my-video/`
+**Suite:** 281/281 across 26 files · `tsc` clean · builds clean
 
 This document is the complete record: what was built, what is good, what is
 bad, what is lacking, why — and the evidence behind each claim.
@@ -245,3 +245,94 @@ third-party ecosystem — all declared, none silent.
 Conventions every file follows: determinism (render twice → equal
 bytes), golden PNGs for visual locks, loud errors over silent guesses,
 live parity against the installed reference where semantics are cloned.
+
+## 11. Apple-to-apple: same plan in Remotion (2026-09-22)
+
+The exact Google-journey shot plan was ported 1:1 to
+`my-video/src/GoogleJourney.tsx` (same acts/coords/timings/palette;
+Remotion idioms only: Google Fonts, conic-gradient Chrome mark, SVG
+turbulence grain, backgroundClip text) and rendered headless
+(`output/google-journey/remotion-google-10s.mp4`, 300f, silent).
+
+| Frame | Mean abs diff (/255) | Reading |
+|---|---|---|
+| 35 (logo + search bar) | 4.6 | Identical layout; edges only |
+| 110 (product cards) | 6.3 | Same cards; arc-cap + raster edges |
+| 130 (cards + foot) | 6.9 | Same |
+| 190 (8.5B stat) | 9.5 | Bboxes identical [48,365]; pure glyph AA |
+| 265 (Gemini end card) | 3.0 | Near-identical |
+
+Motion is bit-identical (`spring` f0–f40 equal to 5 decimals both
+engines). Diffs reduce to rasterization: text anti-aliasing/hinting
+(Chrome vs Skia canvas) and blur kernels — the same tolerance class as
+§8 conformance. Encode: X80 11.4 s / 1.91 MB vs Remotion minutes-long
+bundle+browser render / 0.35 MB (bitrate defaults differ, not quality).
+
+### Human verdict (same session)
+- Eyeball check: the two renders look **identical bit-to-bit**.
+- The author disliked **both** — i.e. the objection is to the visual
+  elements (concept, art direction, taste), not to rendering quality
+  (resolution, fidelity) and not to either engine.
+- Conclusion this forces: same plan → same pixels in both engines, so
+  the engine variable is isolated and closed. What remains is plan
+  authorship. NEXT (tomorrow): art-direction exploration — reference
+  video, style tests, or new topic.
+
+---
+
+## 12. Day 23 — Planning Department + engine hardening + 3 new reels (2026-09-23)
+
+**Question asked:** is the engine on track to "do everything perfectly without
+needing fixes in production"? Answer given: halfway — render correctness yes,
+authoring safety no. This section records what closed that gap today.
+
+### 12.1 Planning Department stood up (`planning-dept.md`)
+
+Remotion's "planning" surveyed across all my-video comps: it is CSS
+(absolute stage, flex rows, dot kickers, 900 heroes, glass cards with
+`backdrop-filter`, scrims, grain, whoosh cuts). Copied as data: tokens,
+type scale, 10 iron rules (optical centering per family, trailing-space
+fix, auto-sized pills, safe zones + lift, glass = 3 layers, full layout
+by f40), builders in `kit.mjs` (`dotKicker`, `glassCard`, `centerY`,
+`trailingFix`), per-reel checklist. Proof it works: two new reels below.
+
+### 12.2 Engine fixes (suite 276 → 281, zero regressions)
+
+- **Letterspacing double-count (real bug).** Skia measured WITH spacing,
+  layout added it again → early wraps + left-shifted centers. Measurer now
+  reports base advances (contract documented in `layout.ts`); `m4-text`
+  asserts the new contract; Chrome conformance still passes (kicker moved
+  *toward* Chrome). Evidence: 223px string wrapped in a 256px box before,
+  fits after.
+- **`backdropBlur` radius (was missing).** Scene prop → compositor hook →
+  Skia native-`ctx.filter` blur with bleed + rounded clip. Static per node,
+  rect/rrect/circle, radius 0 = no-op, negatives/wrong types throw loudly.
+  5 new tests in `backdrop-blur.test.ts`.
+- **Stroke on shapes** verified already working (glass borders need no fix).
+- **Per-family centering table** (Inter capK 0.32, Poppins 0.57) — canvas
+  `top` maps to font tables differently; probed, not assumed.
+
+### 12.3 Reels shipped
+
+| Reel | Path | Verdict |
+|---|---|---|
+| India Remotion (reference) | `my-video/out/IndiaReel.mp4` | ✅ 15s, 1080×1920, 8 Unsplash stills |
+| India X80 | `output/india-x80/india-x80-15s.mp4` | ✅ Same plan, 540×960, pills symmetric ±0px |
+| Voice-calling X80 | `output/voice-x80/voice-x80-15s.mp4` | ✅ Dept-built, blue→violet, 6/6 kickers single-line |
+| Feather Audio AI X80 | `output/feather-x80/feather-x80-15s.mp4` | ⚠️ Ships, but reviewed weak — see §12.4 |
+
+Feather craft notes: keyed gold logo (PIL luminance key, halo-free),
+Noto Sans Devanagari subset hunt (v1 API returned latin-only files twice;
+css2 `devanagari` block is the real one), feather-icon SVGs retinted,
+first real `TransitionNode` chain (slide/dissolve/zoom-blur) with
+`trimBefore` continuity, keyframed orbit (group-rotation pivot semantics
+untrusted — baked positions instead), waveform/marquee motion graphics.
+
+### 12.4 Feather review verdict (user) → live doc
+
+Font game weak, shadows/outlines thin, no animated highlights, no morphs,
+transitions are blends not element-driven, ticker oversized, too few
+quality icons. None of these is a render-fidelity failure — all are
+authorship/capability gaps. Tracked in `improvements-needed.md` (live),
+with Agent-Skills + GSAP research and an action plan. That doc, not this
+one, is the working surface from here on.

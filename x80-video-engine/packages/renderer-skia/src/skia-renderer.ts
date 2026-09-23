@@ -616,6 +616,75 @@ export class SkiaRenderer implements Renderer {
     return { width: surface.width, height: surface.height, data };
   }
 
+  /**
+   * CSS `backdrop-filter: blur()` equivalent: blurs already-painted pixels
+   * inside `region` (surface units, clamped). Gaussian bleed is sampled
+   * from outside the region so edges don't darken; the write-back is
+   * clipped to the (optionally rounded) region. Runs on the native
+   * `ctx.filter` fast path. Radius 0 is a no-op; negative/non-finite
+   * radii throw.
+   */
+  blurRegion(
+    surface: Surface,
+    region: { x: number; y: number; width: number; height: number },
+    radius: number,
+    cornerRadius?: number | [number, number, number, number],
+  ): void {
+    if (!Number.isFinite(radius) || radius < 0) {
+      throw new Error(`blurRegion radius must be a finite number >= 0 (got ${String(radius)})`);
+    }
+    if (radius === 0) {
+      return;
+    }
+    for (const [k, v] of Object.entries(region) as Array<[string, number]>) {
+      if (!Number.isFinite(v)) {
+        throw new Error(`blurRegion region.${k} must be finite (got ${String(v)})`);
+      }
+    }
+    const r = Math.min(100, radius);
+    const state = this.stateOf(surface);
+    const x0 = Math.max(0, Math.floor(region.x));
+    const y0 = Math.max(0, Math.floor(region.y));
+    const x1 = Math.min(surface.width, Math.ceil(region.x + region.width));
+    const y1 = Math.min(surface.height, Math.ceil(region.y + region.height));
+    if (x1 <= x0 || y1 <= y0) {
+      return;
+    }
+    const bleed = Math.ceil(r * 3);
+    const sx = Math.max(0, x0 - bleed);
+    const sy = Math.max(0, y0 - bleed);
+    const sx1 = Math.min(surface.width, x1 + bleed);
+    const sy1 = Math.min(surface.height, y1 + bleed);
+    const snap = createCanvas(sx1 - sx, sy1 - sy);
+    const snapCtx = snap.getContext('2d');
+    snapCtx.drawImage(state.canvas, sx, sy, sx1 - sx, sy1 - sy, 0, 0, sx1 - sx, sy1 - sy);
+    const { ctx } = state;
+    ctx.save();
+    try {
+      ctx.beginPath();
+      if (cornerRadius === undefined || cornerRadius === 0) {
+        ctx.rect(region.x, region.y, region.width, region.height);
+      } else {
+        roundedRectPath(ctx, region.x, region.y, region.width, region.height, cornerRadius);
+      }
+      ctx.clip();
+      try {
+        ctx.filter = `blur(${r}px)`;
+      } catch {
+        // No native filter: fall back to an unblurred write-back rather
+        // than failing the frame (still deterministic).
+      }
+      ctx.drawImage(snap, sx, sy);
+      try {
+        ctx.filter = 'none';
+      } catch {
+        // ignore
+      }
+    } finally {
+      ctx.restore();
+    }
+  }
+
   /** M3 helper: PNG-encode a surface (test/CLI use, not part of the interface). */
   async encodePng(surface: Surface): Promise<Buffer> {
     const state = this.stateOf(surface);

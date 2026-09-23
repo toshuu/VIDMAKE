@@ -70,9 +70,12 @@ const scratchCtx = scratch.getContext('2d');
 
 const applyMeasurerState = (ctx: SKRSContext2D, style: TextStyle): void => {
   ctx.font = fontStringFor(style);
+  // Measure the BASE advance (letterSpacing excluded): layout adds
+  // `letterSpacing` per grapheme itself (advanceOf), and drawing applies
+  // canvas letterSpacing once. Measuring with spacing set would count it
+  // twice (wrap too early, centered lines shifted left).
   try {
-    (ctx as SKRSContext2D & { letterSpacing?: string }).letterSpacing =
-      `${style.letterSpacing ?? 0}px`;
+    (ctx as SKRSContext2D & { letterSpacing?: string }).letterSpacing = '0px';
   } catch {
     // Unsupported — measurement stays consistent with drawing (both ignore it).
   }

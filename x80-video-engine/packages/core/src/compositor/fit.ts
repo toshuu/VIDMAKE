@@ -73,7 +73,8 @@ export interface MediaSample {
   trimBefore?: number;
   trimAfter?: number;
   playbackRate?: number;
-  loop?: boolean;
+  /** true = wrap; 'pingpong' = forward-backward (no jump cuts on short clips). */
+  loop?: boolean | 'pingpong';
 }
 
 export const mediaFrameIndexAt = (
@@ -96,6 +97,18 @@ export const mediaFrameIndexAt = (
     if (loopLen > 0) {
       const elapsed = (localFrame / fps) * rate;
       t = start + trimBefore + (((elapsed % loopLen) + loopLen) % loopLen);
+    }
+  } else if (opts?.loop === 'pingpong') {
+    // Triangle wave over 2*loopLen: forward then backward. Short clips
+    // (e.g. a 27f entrance inside a 90f act) stay alive without the visible
+    // jump of a wrap loop or the dead freeze of a clamp.
+    const loopLen = trimAfter - trimBefore;
+    if (loopLen > 0) {
+      const elapsed = (localFrame / fps) * rate;
+      const period = loopLen * 2;
+      const cyc = (((elapsed % period) + period) % period);
+      const tri = cyc <= loopLen ? cyc : period - cyc;
+      t = start + trimBefore + tri;
     }
   }
   const frameCount = Math.max(1, Math.floor(sourceDurationSec * sourceFps));
