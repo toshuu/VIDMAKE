@@ -16,7 +16,7 @@
 import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { fileUrlFor, lookupFamily, slugFor } from './google-fonts.js';
+import { fileUrlFor, lookupFamily, slugFor, variantKeyFor } from './google-fonts.js';
 
 export interface ManifestEntry {
   sourceUrl: string;
@@ -57,8 +57,88 @@ const parseWeights = (raw: string | undefined): number[] => {
   });
 };
 
-export const runFetch = async (argv: string[], env: NodeJS.ProcessEnv): Promise<void> => {
-  const get = (flag: string): string | undefined => {
+/**
+ * Lenient ensure for the server auto-install path: fetch whichever of the
+ * requested (weight, style) combos the family actually ships. Throws only when
+ * the family is unknown or ships NONE of the requested combos. Draw/measure
+ * stay consistent (identical strings), Skia nearest-matches the weight —
+ * same as browsers. The exact-combo gap is reported as a decisions warning
+ * by the caller, never silent.
+ */
+export const ensureFamily = async (
+  family: string,
+  weights: number[],
+  styles: string[],
+  opts: { root: string; apiKey: string; update: boolean },
+): Promise<{ fetched: string[]; available: string[]; entryVersion: string }> => {
+  if (opts.apiKey.length === 0) {
+    throw new Error('font-fetch: missing Google Fonts API key (set GOOGLE_FONTS_API_KEY)');
+  }
+  const entry = await lookupFamily(family, opts.apiKey);
+  const wanted = new Map<string, { weight: number; style: string }>();
+  for (const weight of weights) {
+    for (const style of styles) {
+      wanted.set(`${weight}-${style}`, { weight, style });
+    }
+  }
+  const available = [...wanted.keys()].filter((combo) => {
+    const { weight, style } = wanted.get(combo) as { weight: number; style: string };
+    return entry.variants.includes(variantKeyFor(weight, style));
+  });
+  if (available.length === 0) {
+    throw new Error(
+      `font-fetch: "${family}" ships none of the requested combos (${[...wanted.keys()].join(', ')}); ` +
+        `family offers: ${entry.variants.join(', ')}`,
+    );
+  }
+  const manifestPath = join(opts.root, 'fonts', 'manifest.json');
+  const manifest = readManifest(manifestPath);
+  manifest[family] ??= {};
+  const fetched: string[] = [];
+  for (const combo of available) {
+    const { weight, style } = wanted.get(combo) as { weight: number; style: string };
+    const fileUrl = fileUrlFor(entry, weight, style);
+    const cached = manifest[family]?.[combo];
+    const destDir = join(opts.root, 'fonts', 'cache', slugFor(family));
+    const dest = join(destDir, `${combo}.ttf`);
+    if (cached !== undefined && cached.sourceUrl === fileUrl && existsSync(dest)) {
+      const digest = sha256Hex(readFileSync(dest));
+      if (digest !== cached.sha256) {
+        throw new Error(`font-fetch: hash mismatch for cached ${family} ${combo}`);
+      }
+      continue;
+    }
+    if (cached !== undefined && cached.sourceUrl !== fileUrl && !opts.update) {
+      throw new Error(
+        `font-fetch: upstream URL changed for ${family} ${combo} — re-run with --update to adopt deliberately`,
+      );
+    }
+    const res = await fetch(fileUrl);
+    if (!res.ok) {
+      throw new Error(`font-fetch: download ${res.status} for ${family} ${combo} (${fileUrl})`);
+    }
+    const buf = Buffer.from(await res.arrayBuffer());
+    if (buf.length < 1024) {
+      throw new Error(`font-fetch: suspiciously small file (${buf.length}B) for ${family} ${combo}`);
+    }
+    mkdirSync(destDir, { recursive: true });
+    writeFileSync(dest, buf);
+    manifest[family][combo] = {
+      sourceUrl: fileUrl,
+      sha256: sha256Hex(buf),
+      apiVersion: entry.version ?? 'unknown',
+      fetchedAt: new Date().toISOString(),
+    };
+    fetched.push(combo);
+  }
+  if (fetched.length > 0) {
+    mkdirSync(join(opts.root, 'fonts'), { recursive: true });
+    writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+  }
+  return { fetched, available, entryVersion: entry.version ?? 'unknown' };
+};
+
+export const runFetch = async (argv: string[], env: NodeJS.ProcessEnv): Promise<void> => {  const get = (flag: string): string | undefined => {
     const i = argv.indexOf(flag);
     return i >= 0 && i + 1 < argv.length ? argv[i + 1] : undefined;
   };

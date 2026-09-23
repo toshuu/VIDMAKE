@@ -70,5 +70,13 @@
       "apiVersion": "v24",
       "fetchedAt": "2026-09-23T17:57:48.994Z"
     }
+  },
+  "Bebas Neue": {
+    "400-normal": {
+      "sourceUrl": "https://fonts.gstatic.com/s/bebasneue/v16/JTUSjIg69CK48gW7PXooxW5rygbi49c.ttf",
+      "sha256": "830ea186acffc2316ed1a4e42319246ba3b46b04e33a211079249bf901193f04",
+      "apiVersion": "v16",
+      "fetchedAt": "2026-09-23T18:21:45.393Z"
+    }
   }
 }

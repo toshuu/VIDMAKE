@@ -45,9 +45,12 @@ export const validateSpec = (spec: ReelSpec): string[] => {
   const faces = spec.concept?.faces;
   for (const k of ['display', 'hero', 'kicker'] as const) {
     if (!faces || typeof faces[k] !== 'string' || faces[k].length === 0) {
-      errs.push(`concept.faces.${k}: family name required (must be vendored + registered)`);
+      errs.push(`concept.faces.${k}: family name required (verbatim Google Fonts name; auto-fetched if missing)`);
     }
   }
+  const faceOk = (v: unknown): boolean => v === undefined || (typeof v === 'string' && v.length > 0);
+  const weightOk = (v: unknown): boolean =>
+    v === undefined || (typeof v === 'number' && Number.isInteger(v) && v >= 1 && v <= 1000);
   acts.forEach((a, i) => {
     const tag = `acts[${i}]`;
     if (!LAYOUTS.has(a.layout)) errs.push(`${tag}.layout: '${String(a.layout)}' unknown`);
@@ -61,7 +64,11 @@ export const validateSpec = (spec: ReelSpec): string[] => {
       if (typeof ln.text !== 'string' || ln.text.length === 0) errs.push(`${tag}.title: empty hero line`);
       if (ln.text.includes('…') || /\.\.\./.test(ln.text)) errs.push(`${tag}.title: truncation marks forbidden ("${ln.text}")`);
       if (!isColor(ln.fill)) errs.push(`${tag}.title: fill must be ink|accent|color ("${ln.text}")`);
+      if (!faceOk(ln.face)) errs.push(`${tag}.title: face must be a Google Fonts family name ("${ln.text}")`);
+      if (!weightOk(ln.weight)) errs.push(`${tag}.title: weight must be an integer 1..1000 ("${ln.text}")`);
     }
+    if (!faceOk(a.title?.face)) errs.push(`${tag}.title.face: must be a Google Fonts family name`);
+    if (!faceOk(a.kicker?.face)) errs.push(`${tag}.kicker.face: must be a Google Fonts family name`);
     if (typeof a.title?.sub !== 'string') errs.push(`${tag}.title.sub: string required (may be '')`);
     for (const s of a.subjects ?? []) {
       if (s.kind === 'footage') {

@@ -78,12 +78,13 @@ const inkOf = (fill: string, pal: ReelConcept['palette']): string =>
 /* ---------- shared atoms ---------- */
 
 export const kickerPill = (
-  ctx: Ctx, actId: string, label: string, accent: string, y = 84, x = 32,
+  ctx: Ctx, actId: string, label: string, accent: string, y = 84, x = 32, face?: string,
 ): Node => {
   const size = 14;
   const ls = 2;
+  const fam = face ?? ctx.faces.kicker;
   const tw = ctx.measure !== undefined
-    ? ctx.measure(label, size, 700, ls, ctx.faces.kicker)
+    ? ctx.measure(label, size, 700, ls, fam)
     : label.length * (size * 0.66 + ls);
   const w = Math.ceil(16 + 8 + 6 + tw - ls + 16);
   ctx.decisions.push({
@@ -97,7 +98,7 @@ export const kickerPill = (
     children: [
       { id: `${actId}-kick-dot`, type: 'circle', radius: 4, x: 16, y: 13, fill: accent },
       {
-        id: `${actId}-kick-t`, type: 'text', text: label, fontFamily: ctx.faces.kicker,
+        id: `${actId}-kick-t`, type: 'text', text: label, fontFamily: fam,
         fontSize: size, fontWeight: 700, letterSpacing: ls, fill: '#f3d9a0',
         x: 30, y: 9,
       },
@@ -105,18 +106,19 @@ export const kickerPill = (
   };
 };
 
-export const overline = (ctx: Ctx, id: string, text: string, y = 96, at = 4): Node => ({
-  id, type: 'text', text, fontFamily: ctx.faces.kicker,
+export const overline = (ctx: Ctx, id: string, text: string, y = 96, at = 4, face?: string): Node => ({
+  id, type: 'text', text, fontFamily: face ?? ctx.faces.kicker,
   fontSize: 24, fontWeight: 700, letterSpacing: 6, fill: ctx.pal.accent2,
   x: 32, y: anim([at, at + 16], [y + 18, y]), opacity: fade(at, at + 12),
   shadow: { color: 'rgba(0,0,0,0.7)', blur: 12, offsetY: 2 },
 });
 
 export const heroTitle = (
-  ctx: Ctx, id: string, title: ActTitle, o: { x?: number; y?: number; size?: number; maxW?: number; center?: boolean } = {},
+  ctx: Ctx, id: string, title: ActTitle, o: { x?: number; y?: number; size?: number; maxW?: number; center?: boolean; face?: string } = {},
 ): Node[] => {
   const maxW = o.maxW ?? 420;
-  const size = autoFit(ctx, id, title.lines.map((ln) => ln.text), o.size ?? 46, maxW, ctx.faces.hero, 800);
+  const heroFace = o.face ?? ctx.faces.hero;
+  const size = autoFit(ctx, id, title.lines.map((ln) => ln.text), o.size ?? 46, maxW, heroFace, 800);
   const step = Math.round(size * 1.08);
   const y0 = o.y ?? 132;
   const align = o.center === true
@@ -127,8 +129,8 @@ export const heroTitle = (
     const at = 6 + i * 9;
     const gc = ln.glow ?? (ln.fill === 'accent' ? ctx.pal.accent : null);
     out.push({
-      id: `${id}-t${i + 1}`, type: 'text', text: ln.text, fontFamily: ctx.faces.hero,
-      fontSize: size, fontWeight: 800, fill: inkOf(ln.fill, ctx.pal), lineHeight: 1.05,
+      id: `${id}-t${i + 1}`, type: 'text', text: ln.text, fontFamily: ln.face ?? heroFace,
+      fontSize: size, fontWeight: ln.weight ?? 800, fill: inkOf(ln.fill, ctx.pal), lineHeight: 1.05,
       ...align, y: anim([at, at + 18], [y0 + i * step + 26, y0 + i * step]), opacity: fade(at, at + 16),
       shadow: gc !== null
         ? { color: gc, blur: 40, offsetY: 5 }
@@ -155,8 +157,8 @@ export const kineticTitle = (
     const at = (o.at ?? 6) + i * 9;
     const gc = ln.glow ?? (ln.fill === 'accent' ? ctx.pal.accent : null);
     return [{
-      id: `${id}-l${i}`, type: 'text', text: ln.text, fontFamily: face,
-      fontSize: size, fontWeight: 800, fill: inkOf(ln.fill, ctx.pal), lineHeight: 1.04,
+      id: `${id}-l${i}`, type: 'text', text: ln.text, fontFamily: ln.face ?? face,
+      fontSize: size, fontWeight: ln.weight ?? 800, fill: inkOf(ln.fill, ctx.pal), lineHeight: 1.04,
       ...align,
       y: anim([at, at + 20], [y0 + i * step + 34, y0 + i * step]),
       opacity: fade(at, at + 14),

@@ -19,6 +19,7 @@ import {
   skiaTransitionApplier, preloadImages, framesToCanvases, clipResolver,
 } from '../packages/renderer-skia/dist/index.js';
 import { parseSheet } from '../packages/media/dist/sprites.js';
+import { runFetch, ensureFamily } from '../packages/font-fetch/dist/index.js';
 import { createCanvas, loadImage } from '@napi-rs/canvas';
 
 const DIR = dirname(fileURLToPath(import.meta.url));
@@ -36,8 +37,9 @@ console.log(`[studio] fonts registered: ${LIB.fonts.length}`);
 // API families. Fetching lives in packages/font-fetch (network); here we only
 // verify sha256 and register. Any mismatch/miss throws — never fallback.
 const ROOT = dirname(DIR);
-const FONT_MANIFEST = JSON.parse(readFileSync(join(ROOT, 'fonts', 'manifest.json'), 'utf8'));
-{
+const manifestPath = join(ROOT, 'fonts', 'manifest.json');
+let FONT_MANIFEST = JSON.parse(readFileSync(manifestPath, 'utf8'));
+const registerManifestFonts = () => {
   let n = 0;
   for (const [family, combos] of Object.entries(FONT_MANIFEST)) {
     for (const [combo, meta] of Object.entries(combos)) {
@@ -54,8 +56,9 @@ const FONT_MANIFEST = JSON.parse(readFileSync(join(ROOT, 'fonts', 'manifest.json
       n += 1;
     }
   }
-  console.log(`[studio] manifest fonts registered: ${n}`);
-}
+  return n;
+};
+console.log(`[studio] manifest fonts registered: ${registerManifestFonts()}`);
 const renderer = new SkiaRenderer();
 const measure = createSkiaMeasurer();
 const measureFn = (text, size, weight, ls = 0, family = 'Inter') =>
@@ -128,13 +131,55 @@ const resolveFile = (id) => {
 
 const LEGACY_FONT_FAMILIES = new Set(LIB.fonts.map(([, fam]) => fam));
 
+/** Weights ensured per newly-seen family (covers every weight layouts emit). */
+const ENSURE_WEIGHTS = [400, 500, 600, 700, 800];
+
 /**
- * Spec-validate-time font check (Q4): every text node's (family, weight, style)
- * must resolve against fonts/manifest.json. Legacy hand-shipped families
- * (LIB.fonts, e.g. Hindi) are family-allowed; anything else throws before a
- * single frame renders — never silent fallback.
+ * Auto-install step: collect every Google Fonts family a spec needs
+ * (concept.faces + per-text title/kicker faces), fetch whatever is missing
+ * from the manifest via the API, then reload + register. Pinned entries are
+ * never re-fetched or updated here — determinism holds for everything cached.
+ * Throws when a family/variant doesn't exist upstream, or when a fetch is
+ * needed but GOOGLE_FONTS_API_KEY is unset.
  */
-const assertPlanFontsPinned = (plan) => {
+const ensureSpecFonts = async (spec) => {
+  const needed = new Set();
+  for (const f of Object.values(spec.concept?.faces ?? {})) {
+    if (typeof f === 'string' && f.length > 0) needed.add(f);
+  }
+  for (const a of spec.acts ?? []) {
+    if (typeof a?.title?.face === 'string' && a.title.face.length > 0) needed.add(a.title.face);
+    if (typeof a?.kicker?.face === 'string' && a.kicker.face.length > 0) needed.add(a.kicker.face);
+    for (const ln of a?.title?.lines ?? []) {
+      if (typeof ln?.face === 'string' && ln.face.length > 0) needed.add(ln.face);
+    }
+  }
+  const missing = [...needed].filter((fam) => {
+    if (LEGACY_FONT_FAMILIES.has(fam)) return false;
+    const combos = FONT_MANIFEST[fam];
+    return combos === undefined || Object.keys(combos).length === 0;
+  });
+  if (missing.length === 0) {
+    return { fetched: [] };
+  }
+  for (const fam of missing) {
+    const r = await ensureFamily(fam, ENSURE_WEIGHTS, ['normal'], { root: ROOT, apiKey: process.env.GOOGLE_FONTS_API_KEY ?? '', update: false });
+    console.log(`[studio] ensure ${fam}: available [${r.available.join(', ')}]${r.fetched.length > 0 ? ` (fetched ${r.fetched.join(', ')})` : ' (already cached)'}`);
+  }
+  FONT_MANIFEST = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const n = registerManifestFonts();
+  console.log(`[studio] auto-fetched fonts for this spec: ${missing.join(', ')} (manifest now registers ${n})`);
+  return { fetched: missing };
+};
+
+/**
+ * Spec-validate-time font check (Q4): every text node's family must be pinned
+ * in fonts/manifest.json (or a legacy LIB.fonts family). An inexact
+ * weight/style combo is a visible decisions warning — Skia nearest-matches
+ * the weight with the same string for measure and draw, like browsers — never
+ * silent. Unknown families throw before a single frame renders.
+ */
+const assertPlanFontsPinned = (plan, decisions = []) => {
   const seen = new Map(); // "family|weight|style" -> node id
   const walk = (n) => {
     if (n === null || typeof n !== 'object') {
@@ -160,7 +205,11 @@ const assertPlanFontsPinned = (plan) => {
     const combos = FONT_MANIFEST[family];
     if (combos !== undefined) {
       if (combos[`${weight}-${style}`] === undefined) {
-        bad.push(`node "${id}": "${family}" ${weight}-${style} not pinned (pinned: ${Object.keys(combos).join(', ')})`);
+        decisions.push({
+          path: `font.${family}`,
+          choice: `nearest-weight render (${weight}-${style} → pinned ${Object.keys(combos).join(', ')})`,
+          why: `node "${id}" asks for an unshipped combo; measure+draw use the same string so layout stays consistent`,
+        });
       }
       continue;
     }
@@ -187,11 +236,13 @@ const runJob = async (job) => {
   try {
     const errs = validateSpec(job.spec);
     if (errs.length > 0) throw new Error(`invalid spec:\n- ${errs.join('\n- ')}`);
+    job.state = 'fonts';
+    await ensureSpecFonts(job.spec);
     job.state = 'compile';
     const { plan, decisions } = compileReel(job.spec, { measure: measureFn });
     job.decisions = decisions;
     validateTimeline(plan.timeline, plan.composition.root);
-    assertPlanFontsPinned(plan);
+    assertPlanFontsPinned(plan, decisions);
 
     job.state = 'assets';
     const ids = collectIds(job.spec);

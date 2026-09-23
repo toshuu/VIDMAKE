@@ -140,6 +140,10 @@ export interface TitleLine {
   fill: string;
   /** Colored glow shadow; defaults to accent for accent fills. */
   glow?: string;
+  /** Per-line Google Fonts family (verbatim API name); defaults to title/face slot. */
+  face?: string;
+  /** Per-line weight; defaults to the layout's weight (usually 800). */
+  weight?: number;
 }
 
 export interface ActTitle {
@@ -147,6 +151,8 @@ export interface ActTitle {
   size?: number;
   sub: string;
   subY?: number;
+  /** Title-level family override for all lines (line.face wins). */
+  face?: string;
 }
 
 /**
@@ -169,6 +175,8 @@ export interface KickerSpec {
   y?: number;
   at?: number;
   x?: number;
+  /** Kicker-level family override (verbatim Google Fonts name). */
+  face?: string;
 }
 
 export interface ActSpec {

@@ -93,9 +93,9 @@ const buildSubjects = (ctx: Ctx, actId: string, act: ActSpec, dur: number): Node
 const kickerNodes = (ctx: Ctx, actId: string, act: ActSpec): Node[] => {
   if (act.kicker === undefined || act.kicker === null) return [];
   if (act.kicker.style === 'overline') {
-    return [overline(ctx, `${actId}-ol`, act.kicker.text, act.kicker.y ?? 96, act.kicker.at ?? 4)];
+    return [overline(ctx, `${actId}-ol`, act.kicker.text, act.kicker.y ?? 96, act.kicker.at ?? 4, act.kicker.face)];
   }
-  return [kickerPill(ctx, `${actId}-kick`, act.kicker.text, ctx.pal.accent)];
+  return [kickerPill(ctx, `${actId}-kick`, act.kicker.text, ctx.pal.accent, act.kicker.y ?? 84, act.kicker.x ?? 32, act.kicker.face)];
 };
 
 const buildAct = (ctx: Ctx, act: ActSpec, n: number, dur: number): Node => {
@@ -110,6 +110,7 @@ const buildAct = (ctx: Ctx, act: ActSpec, n: number, dur: number): Node => {
       size: act.titleSize ?? (big ? 68 : 46),
       y: act.titleY ?? (big ? 588 : 132),
       center: act.center,
+      face: act.title.face,
     }));
     kids.push(subLine(ctx, `${actId}-sub`, act.title.sub,
       act.subY ?? (big ? 716 : 252), act.center));
@@ -119,6 +120,7 @@ const buildAct = (ctx: Ctx, act: ActSpec, n: number, dur: number): Node => {
       size: act.titleSize ?? 64,
       center: act.center,
       y: act.titleY ?? (act.layout === 'giant' ? 200 : 560),
+      face: act.title.face,
     }));
     kids.push(subLine(ctx, `${actId}-sub`, act.title.sub,
       act.subY ?? (act.layout === 'giant' ? 372 : 610), act.center, 26, act.subAt ?? 16));
@@ -130,6 +132,7 @@ const buildAct = (ctx: Ctx, act: ActSpec, n: number, dur: number): Node => {
     kids.push(...kickerNodes(ctx, actId, act));
     kids.push(...kineticTitle(ctx, actId, act.title, {
       size: act.titleSize ?? 58, center: true, y: 340,
+      face: act.title.face,
     }));
     kids.push(subLine(ctx, `${actId}-sub`, act.title.sub, act.subY ?? 500, true, 26, act.subAt ?? 22));
   } else if (act.layout === 'ticket') {
@@ -140,6 +143,7 @@ const buildAct = (ctx: Ctx, act: ActSpec, n: number, dur: number): Node => {
     kids.push(...kickerNodes(ctx, actId, act));
     kids.push(...kineticTitle(ctx, actId, act.title, {
       size: act.titleSize ?? 72, center: true, y: 300, at: 30,
+      face: act.title.face,
     }));
     if (act.cta !== undefined && act.cta !== null) {
       kids.push(pillCta(ctx, `${actId}-pill`, act.cta,

@@ -123,6 +123,16 @@ Claude's answers (Q1–Q6) were implemented verbatim with one addition
 - **Proof (Q6):** manifest-only registration renders Inter 700 (488px/6199 ink),
   Poppins 700 (562px/7764), Rozha One 400 (559px/5046) — all distinct.
   Server boot log: `fonts registered: 9` + `manifest fonts registered: 11`.
+- **Follow-up, also implemented:** per-text `face`/`weight` in spec JSON
+  (`title.face`, `title.lines[].face/weight`, `kicker.face`; `concept.faces`
+  unchanged) + server auto-install: `runJob` collects every family the spec
+  needs and `ensureFamily` fetches missing ones from the API before compile
+  (pinned entries never re-fetched). Single-weight families (Bebas Neue,
+  Anton, Rozha One) fetch their shipped variants; unshipped weight combos
+  render nearest-weight with a visible `font.*` entry in job decisions
+  (measure+draw share the string, so layout stays consistent); unknown
+  families throw. Verified: `Bebas Neue` kicker + `Rozha One` title spec
+  auto-fetched and rendered done/90 in 2.3s with the warnings in decisions.
 
 ## 7. Files to read first
 
