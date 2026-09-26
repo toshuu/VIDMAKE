@@ -1,0 +1,69 @@
+{
+  "id": "v2-plinth-court",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "court",
+  "concept": {
+    "palette": { "bg": "#0b1026", "ink": "#f2fbf4", "accent": "#4ade80", "accent2": "#e8b34b", "pillBg": "#10141f", "pillFg": "#f3d9a0" },
+    "faces": { "display": "Inter", "hero": "Inter", "kicker": "Poppins" },
+    "signature": "trophy court in tilted 3D: plinths rise, the board leans in",
+    "signatureWhy": "scene3d v2 depth-sort + fog + disc + wire, no preset knows 3D"
+  },
+  "durations": [60, 60],
+  "transitions": [{ "type": "fade", "duration": 16 }],
+  "acts": [
+    {
+      "role": "court-wide",
+      "duration": 60,
+      "layout": "plinth-court",
+      "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        {
+          "id": "stage", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 750, "tiltX": 18, "tiltY": -16 },
+          "light": { "top": 1.25, "side": 0.55 },
+          "fog": { "color": "bg", "near": -400, "far": 600 },
+          "objects": [
+            { "kind": "plane", "x": 0, "y": 220, "z": -80, "w": 520, "h": 160, "color": "#141c33" },
+            { "kind": "box", "x": -140, "y": 60, "z": 60, "w": 110, "h": 200, "d": 110, "color": "accent2" },
+            { "kind": "box", "x": 0, "y": 20, "z": 40, "w": 130, "h": 280, "d": 130, "color": "#4ade80" },
+            { "kind": "box", "x": 140, "y": 80, "z": 60, "w": 110, "h": 160, "d": 110, "color": "accent2" },
+            { "kind": "disc", "x": 0, "y": -190, "z": 0, "r": 46, "color": "accent2" },
+            { "kind": "wire", "x": 0, "y": -190, "z": 0, "w": 150, "h": 150, "d": 150, "color": "ink" },
+            { "kind": "points", "x": 0, "y": -260, "z": -100, "w": 480, "h": 180, "d": 240, "count": 90, "seed": 21, "color": "#f2fbf4" }
+          ]
+        },
+        {
+          "id": "sat", "type": "circle", "radius": 16, "fill": "accent2",
+          "x": { "binding": "path", "axis": "x", "points": [[70, 0], [270, 0], [470, 0]], "duration": 59 },
+          "y": { "binding": "path", "axis": "y", "points": [[700, 700], [420, 560], [700, 700]], "duration": 59 }
+        },
+        { "id": "k", "type": "text", "text": "SEASON FINALS", "fontFamily": "Poppins", "fontSize": 24, "fontWeight": 700, "letterSpacing": 8, "fill": "accent2", "x": 32, "y": 72 }
+      ]
+    },
+    {
+      "role": "court-close",
+      "duration": 60,
+      "layout": "plinth-court",
+      "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        {
+          "id": "stage", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 480, "tiltX": 8, "tiltY": -8 },
+          "light": { "top": 1.3, "side": 0.5 },
+          "fog": { "color": "bg", "near": -300, "far": 500 },
+          "objects": [
+            { "kind": "box", "x": 0, "y": 40, "z": 60, "w": 220, "h": 340, "d": 220, "color": "#4ade80" },
+            { "kind": "disc", "x": 0, "y": -230, "z": 60, "r": 60, "color": "accent2" },
+            { "kind": "points", "x": 0, "y": 100, "z": -200, "w": 480, "h": 400, "d": 200, "count": 70, "seed": 7, "color": "ink" }
+          ]
+        },
+        { "id": "hero", "type": "text", "text": "ONE CUP", "fontFamily": "Inter", "fontSize": 84, "fontWeight": 800, "fill": "ink", "x": 32, "y": 640, "opacity": { "binding": "interpolate", "inputRange": [8, 22], "outputRange": [0, 1] } },
+        { "id": "sub", "type": "text", "text": "SUNDAY • HARBOUR ARENA", "fontFamily": "Inter", "fontSize": 24, "fontWeight": 500, "fill": "accent2", "x": 32, "y": 740 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

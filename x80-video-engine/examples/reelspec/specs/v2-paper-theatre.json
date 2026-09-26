@@ -1,0 +1,69 @@
+{
+  "id": "v2-paper-theatre",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "theatre",
+  "concept": {
+    "palette": { "bg": "#1a0f0a", "ink": "#fdf3e3", "accent": "#e2725b", "accent2": "#f2c14e", "pillBg": "#2b1a12", "pillFg": "#fdf3e3" },
+    "faces": { "display": "Inter", "hero": "Inter", "kicker": "Poppins" },
+    "signature": "paper cutout parade behind a proscenium mask, one chip flies the cut",
+    "signatureWhy": "mask containers + shape troupe + overlay shared-fly; presets have no theatre"
+  },
+  "durations": [60, 60],
+  "transitions": [{ "type": "fade", "duration": 16 }],
+  "acts": [
+    {
+      "role": "curtain",
+      "duration": 60,
+      "layout": "proscenium",
+      "badge": false,
+      "nodes": [
+        { "id": "wall", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        {
+          "id": "frame", "type": "mask", "width": 476, "height": 560, "x": 32, "y": 180,
+          "children": [
+            { "id": "sky", "type": "rect", "width": 476, "height": 560, "x": 0, "y": 0, "fill": "#2b1a12" },
+            { "id": "sun", "type": "shape", "shape": "ellipse", "width": 160, "height": 160, "x": 150, "y": 60, "fill": "accent2" },
+            { "id": "p0", "type": "shape", "shape": "star", "width": 90, "height": 90, "points": 5, "x": 20, "y": 400, "fill": "accent", "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 40], "outputRange": [-30, 20] }, "index": 0, "step": 5 } },
+            { "id": "p1", "type": "shape", "shape": "polygon", "width": 90, "height": 90, "points": 6, "x": 140, "y": 420, "fill": "accent2", "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 40], "outputRange": [-30, 20] }, "index": 1, "step": 5 } },
+            { "id": "p2", "type": "shape", "shape": "arrow", "width": 120, "height": 70, "x": 260, "y": 430, "fill": "ink", "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 40], "outputRange": [-30, 20] }, "index": 2, "step": 5 } }
+          ]
+        },
+        { "id": "k", "type": "text", "text": "PAPER PARADE", "fontFamily": "Poppins", "fontSize": 24, "fontWeight": 700, "letterSpacing": 8, "fill": "accent2", "x": 32, "y": 72 },
+        { "id": "chip", "type": "rrect", "width": 150, "height": 64, "radius": 32, "x": 60, "y": 800, "fill": "accent", "opacity": { "binding": "interpolate", "inputRange": [0, 52], "outputRange": [1, 1] } }
+      ]
+    },
+    {
+      "role": "finale",
+      "duration": 60,
+      "layout": "proscenium",
+      "badge": false,
+      "nodes": [
+        { "id": "wall", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        {
+          "id": "frame", "type": "mask", "width": 476, "height": 560, "x": 32, "y": 180,
+          "children": [
+            { "id": "sky", "type": "rect", "width": 476, "height": 560, "x": 0, "y": 0, "fill": "accent" },
+            { "id": "moon", "type": "shape", "shape": "ellipse", "width": 120, "height": 120, "x": 300, "y": 60, "fill": "ink" },
+            { "id": "q0", "type": "shape", "shape": "star", "width": 70, "height": 70, "points": 5, "x": 60, "y": 380, "fill": "bg" },
+            { "id": "q1", "type": "shape", "shape": "polygon", "width": 70, "height": 70, "points": 6, "x": 220, "y": 400, "fill": "bg" },
+            { "id": "q2", "type": "shape", "shape": "arrow", "width": 110, "height": 60, "x": 330, "y": 410, "fill": "bg" }
+          ]
+        },
+        { "id": "hero", "type": "text", "text": "TONIGHT", "fontFamily": "Inter", "fontSize": 76, "fontWeight": 800, "fill": "ink", "x": 32, "y": 780 },
+        { "id": "chip", "type": "rrect", "width": 150, "height": 64, "radius": 32, "x": 330, "y": 800, "fill": "accent", "opacity": { "binding": "interpolate", "inputRange": [8, 60], "outputRange": [1, 1] } }
+      ]
+    }
+  ],
+  "overlays": [
+    {
+      "id": "fly", "type": "container",
+      "x": { "binding": "interpolate", "inputRange": [54, 66], "outputRange": [60, 330] },
+      "y": { "binding": "interpolate", "inputRange": [54, 66], "outputRange": [800, 800] },
+      "children": [
+        { "id": "flychip", "type": "rrect", "width": 150, "height": 64, "radius": 32, "x": 0, "y": 0, "fill": "accent2" }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

@@ -1,0 +1,54 @@
+{
+  "id": "r05-sleep",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "first-half",
+  "concept": {
+    "palette": { "bg": "#0b1026", "ink": "#e6ecf7", "accent": "#8f7bff", "accent2": "#4d5f7a", "pillBg": "#161d33", "pillFg": "#8f7bff" },
+    "faces": { "display": "Manrope", "hero": "Manrope", "kicker": "IBM Plex Mono" },
+    "signature": "a moon crossing while a real hypnogram draws beneath it",
+    "signatureWhy": "diagram-as-beauty strategy — the sleep chart is the art, the moon is the clock"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "nightfall", "duration": 60, "layout": "moonrise", "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#1b2440" }, { "offset": 1, "color": "bg" }] } },
+        { "id": "stars", "type": "particles", "count": 60, "seed": 61, "colors": ["ink"], "size": [1, 2], "area": { "w": 540, "h": 600 }, "at": [0, 0], "twinkle": true },
+        { "id": "moon", "type": "circle", "radius": 54, "fill": "#e6ecf7",
+          "x": { "binding": "path", "axis": "x", "points": [[60, 0], [270, 0], [430, 0]], "duration": 59 },
+          "y": { "binding": "path", "axis": "y", "points": [[0, 700], [0, 380], [0, 640]], "duration": 59 } },
+        { "id": "k", "type": "text", "text": "23:00 · LIGHTS OUT", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "accent", "x": 32, "y": 790 }
+      ]
+    },
+    {
+      "role": "chart", "duration": 60, "layout": "hypnogram", "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "lab0", "type": "text", "text": "AWAKE", "fontFamily": "IBM Plex Mono", "fontSize": 17, "fontWeight": 400, "letterSpacing": 2, "fill": "accent2", "x": 32, "y": 240 },
+        { "id": "lab1", "type": "text", "text": "DREAM", "fontFamily": "IBM Plex Mono", "fontSize": 17, "fontWeight": 400, "letterSpacing": 2, "fill": "accent2", "x": 32, "y": 340 },
+        { "id": "lab2", "type": "text", "text": "LIGHT", "fontFamily": "IBM Plex Mono", "fontSize": 17, "fontWeight": 400, "letterSpacing": 2, "fill": "accent2", "x": 32, "y": 440 },
+        { "id": "lab3", "type": "text", "text": "DEEP", "fontFamily": "IBM Plex Mono", "fontSize": 17, "fontWeight": 700, "letterSpacing": 2, "fill": "accent", "x": 32, "y": 540 },
+        { "id": "trace", "type": "path", "d": "M 150 248 L 210 248 L 210 348 L 280 348 L 280 448 L 360 448 L 360 548 L 470 548", "stroke": "accent", "strokeWidth": 5, "opacity": { "binding": "interpolate", "inputRange": [6, 40], "outputRange": [0.25, 1] } },
+        { "id": "deepband", "type": "rect", "width": 476, "height": 120, "x": 32, "y": 500, "fill": "accent", "opacity": 0.12 },
+        { "id": "cap", "type": "text", "text": "DESCEND IN 90 MINUTES", "fontFamily": "Manrope", "fontSize": 30, "fontWeight": 800, "fill": "ink", "x": 32, "y": 700 }
+      ]
+    },
+    {
+      "role": "cycles", "duration": 60, "layout": "first-half", "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "c0", "type": "circle", "radius": 70, "x": 80, "y": 330, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "accent" }, { "offset": 1, "color": "rgba(143,123,255,0)" }] }, "opacity": 0.9 },
+        { "id": "c1", "type": "circle", "radius": 52, "x": 250, "y": 330, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "accent" }, { "offset": 1, "color": "rgba(143,123,255,0)" }] }, "opacity": 0.55 },
+        { "id": "c2", "type": "circle", "radius": 36, "x": 380, "y": 330, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "accent" }, { "offset": 1, "color": "rgba(143,123,255,0)" }] }, "opacity": 0.3 },
+        { "id": "l0", "type": "text", "text": "CYCLE 1 · DEEPEST", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 700, "letterSpacing": 3, "fill": "ink", "x": 60, "y": 480 },
+        { "id": "l1", "type": "text", "text": "CYCLE 2 · DEEP", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "letterSpacing": 3, "fill": "accent2", "x": 240, "y": 480 },
+        { "id": "l2", "type": "text", "text": "CYCLE 3 · LIGHT", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "letterSpacing": 3, "fill": "accent2", "x": 370, "y": 480 },
+        { "id": "take", "type": "text", "text": "GUARD THE FIRST HALF", "fontFamily": "Manrope", "fontSize": 44, "fontWeight": 800, "fill": "ink", "x": 32, "y": 640 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

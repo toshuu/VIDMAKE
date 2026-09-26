@@ -1,0 +1,59 @@
+{
+  "id": "r10-capsule",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "five",
+  "concept": {
+    "palette": { "bg": "#f2efe9", "ink": "#131210", "accent": "#c8102e", "accent2": "#8b8680", "pillBg": "#131210", "pillFg": "#f2efe9" },
+    "faces": { "display": "Space Grotesk", "hero": "Space Grotesk", "kicker": "Manrope" },
+    "signature": "a gallery wall: five numbered garments, then the math of thirty",
+    "signatureWhy": "lookbook strategy — single-line garment sketches, spotlight numerals, combo-grid finale"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "slide", "params": { "direction": "left" } }, { "type": "slide", "params": { "direction": "left" } }],
+  "acts": [
+    {
+      "role": "five", "duration": 60, "layout": "rail", "badge": false,
+      "nodes": [
+        { "id": "wall", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "dots", "type": "container", "children": [
+          { "id": "p0", "type": "circle", "radius": 16, "x": 90, "y": 200, "fill": "ink", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 0, "step": 6 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 0, "step": 6 }, "anchorX": 16, "anchorY": 16 },
+          { "id": "p1", "type": "circle", "radius": 16, "x": 180, "y": 200, "fill": "ink", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 1, "step": 6 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 1, "step": 6 }, "anchorX": 16, "anchorY": 16 },
+          { "id": "p2", "type": "circle", "radius": 16, "x": 270, "y": 200, "fill": "accent", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 2, "step": 6 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 2, "step": 6 }, "anchorX": 16, "anchorY": 16 },
+          { "id": "p3", "type": "circle", "radius": 16, "x": 360, "y": 200, "fill": "ink", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 3, "step": 6 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 3, "step": 6 }, "anchorX": 16, "anchorY": 16 },
+          { "id": "p4", "type": "circle", "radius": 16, "x": 450, "y": 200, "fill": "ink", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 4, "step": 6 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 4, "step": 6 }, "anchorX": 16, "anchorY": 16 }
+        ] },
+        { "id": "n", "type": "text", "text": "5", "fontFamily": "Space Grotesk", "fontSize": 300, "fontWeight": 700, "fill": "ink", "x": 0, "y": 300, "textAlign": "center", "maxWidth": 540, "opacity": 0.94 },
+        { "id": "cap", "type": "text", "text": "PIECES. NOTHING ELSE.", "fontFamily": "Manrope", "fontSize": 24, "fontWeight": 600, "letterSpacing": 5, "fill": "accent2", "x": 0, "y": 660, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "spotlight", "duration": 60, "layout": "garments", "badge": false,
+      "nodes": [
+        { "id": "wall", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "coat", "type": "path", "d": "M 120 300 L 120 620 M 120 340 L 70 420 M 120 340 L 170 420 M 120 620 L 90 700 M 120 620 L 150 700", "stroke": "ink", "strokeWidth": 7, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [0, 1, 1, 0.25] } },
+        { "id": "n0", "type": "text", "text": "01", "fontFamily": "Space Grotesk", "fontSize": 44, "fontWeight": 700, "fill": "accent", "x": 90, "y": 230, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [0, 1, 1, 0.25] } },
+        { "id": "shoe", "type": "path", "d": "M 330 640 L 330 560 Q 330 540 350 544 L 420 560 Q 440 564 436 584 L 430 600 Z", "stroke": "ink", "strokeWidth": 7, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [0.25, 0.25, 1, 1] } },
+        { "id": "n1", "type": "text", "text": "02", "fontFamily": "Space Grotesk", "fontSize": 44, "fontWeight": 700, "fill": "accent", "x": 340, "y": 470, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [0.25, 0.25, 1, 1] } },
+        { "id": "cap", "type": "text", "text": "THE COAT · THE SHOE", "fontFamily": "Manrope", "fontSize": 22, "fontWeight": 600, "letterSpacing": 4, "fill": "accent2", "x": 0, "y": 780, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "math", "duration": 60, "layout": "thirty", "badge": false,
+      "nodes": [
+        { "id": "wall", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "ink" },
+        { "id": "grid", "type": "container", "children": [
+          { "id": "g00", "type": "circle", "radius": 14, "x": 120, "y": 330, "fill": "bg" }, { "id": "g01", "type": "circle", "radius": 14, "x": 190, "y": 330, "fill": "bg" }, { "id": "g02", "type": "circle", "radius": 14, "x": 260, "y": 330, "fill": "accent" }, { "id": "g03", "type": "circle", "radius": 14, "x": 330, "y": 330, "fill": "bg" }, { "id": "g04", "type": "circle", "radius": 14, "x": 400, "y": 330, "fill": "bg" },
+          { "id": "g10", "type": "circle", "radius": 14, "x": 120, "y": 400, "fill": "bg" }, { "id": "g11", "type": "circle", "radius": 14, "x": 190, "y": 400, "fill": "accent" }, { "id": "g12", "type": "circle", "radius": 14, "x": 260, "y": 400, "fill": "bg" }, { "id": "g13", "type": "circle", "radius": 14, "x": 330, "y": 400, "fill": "bg" }, { "id": "g14", "type": "circle", "radius": 14, "x": 400, "y": 400, "fill": "bg" },
+          { "id": "g20", "type": "circle", "radius": 14, "x": 120, "y": 470, "fill": "accent" }, { "id": "g21", "type": "circle", "radius": 14, "x": 190, "y": 470, "fill": "bg" }, { "id": "g22", "type": "circle", "radius": 14, "x": 260, "y": 470, "fill": "bg" }, { "id": "g23", "type": "circle", "radius": 14, "x": 330, "y": 470, "fill": "bg" }, { "id": "g24", "type": "circle", "radius": 14, "x": 400, "y": 470, "fill": "accent" },
+          { "id": "g30", "type": "circle", "radius": 14, "x": 120, "y": 540, "fill": "bg" }, { "id": "g31", "type": "circle", "radius": 14, "x": 190, "y": 540, "fill": "bg" }, { "id": "g32", "type": "circle", "radius": 14, "x": 260, "y": 540, "fill": "bg" }, { "id": "g33", "type": "circle", "radius": 14, "x": 330, "y": 540, "fill": "accent" }, { "id": "g34", "type": "circle", "radius": 14, "x": 400, "y": 540, "fill": "bg" },
+          { "id": "g40", "type": "circle", "radius": 14, "x": 120, "y": 610, "fill": "bg" }, { "id": "g41", "type": "circle", "radius": 14, "x": 190, "y": 610, "fill": "bg" }, { "id": "g42", "type": "circle", "radius": 14, "x": 260, "y": 610, "fill": "accent" }, { "id": "g43", "type": "circle", "radius": 14, "x": 330, "y": 610, "fill": "bg" }, { "id": "g44", "type": "circle", "radius": 14, "x": 400, "y": 610, "fill": "bg" },
+          { "id": "g50", "type": "circle", "radius": 14, "x": 120, "y": 680, "fill": "accent" }, { "id": "g51", "type": "circle", "radius": 14, "x": 190, "y": 680, "fill": "bg" }, { "id": "g52", "type": "circle", "radius": 14, "x": 260, "y": 680, "fill": "bg" }, { "id": "g53", "type": "circle", "radius": 14, "x": 330, "y": 680, "fill": "bg" }, { "id": "g54", "type": "circle", "radius": 14, "x": 400, "y": 680, "fill": "bg" }
+        ], "opacity": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [0, 1] } },
+        { "id": "n", "type": "text", "text": "30", "fontFamily": "Space Grotesk", "fontSize": 120, "fontWeight": 700, "fill": "bg", "x": 0, "y": 130, "textAlign": "center", "maxWidth": 540 },
+        { "id": "cap", "type": "text", "text": "OUTFITS. DO THE MATH.", "fontFamily": "Manrope", "fontSize": 24, "fontWeight": 600, "letterSpacing": 5, "fill": "accent", "x": 0, "y": 780, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

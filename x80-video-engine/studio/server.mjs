@@ -8,7 +8,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join, dirname, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { compileReel, validateSpec } from '../packages/reelspec/dist/index.js';
+import { checkSpec, compileReel, queryCapabilities, validateSpec } from '../packages/reelspec/dist/index.js';
 import { renderFrame, validateTimeline } from '../packages/core/dist/index.js';
 import { renderToMp4 } from '../packages/encoding/dist/index.js';
 import {
@@ -531,7 +531,17 @@ const server = http.createServer((req, res) => {
           const errors = validateSpec(spec);
           if (errors.length > 0) { send(200, { ok: false, errors }); return; }
           const { decisions } = compileReel(spec, { measure: measureFn });
-          send(200, { ok: true, decisions });
+          // Agent affordances: authoring warnings + capability discovery.
+          // Admission query via ?intent=… (e.g. /api/validate?intent=glowing+depth);
+          // without it, hints derive from the spec's own signature text.
+          let relating = [];
+          try {
+            const q = new URL(req.url, 'http://x').searchParams.get('intent')
+              ?? String(spec?.concept?.signature ?? '');
+            relating = queryCapabilities(q, 6).map((c) => ({ kind: c.kind, name: c.name, when: c.when }));
+          } catch { relating = []; }
+          const warnings = checkSpec(spec);
+          send(200, { ok: true, decisions, warnings, relating });
         } catch (e) {
           send(200, { ok: false, errors: [String(e && e.message ? e.message : e)] });
         }

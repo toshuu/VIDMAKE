@@ -1,0 +1,50 @@
+{
+  "id": "r09-dreams",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "pillow",
+  "concept": {
+    "palette": { "bg": "#1b1035", "ink": "#fdf3ff", "accent": "#ffb3e2", "accent2": "#8e7cc3", "pillBg": "#2b1d4e", "pillFg": "#ffb3e2" },
+    "faces": { "display": "Manrope", "hero": "Manrope", "kicker": "Poppins" },
+    "signature": "Z's float up while the dream bubble shape-shifts",
+    "signatureWhy": "bedtime strategy — rising-letter cascade, crossfading dream shapes, sunrise payoff"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "bedtime", "duration": 60, "layout": "tuck-in", "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#120a24" }, { "offset": 1, "color": "bg" }] } },
+        { "id": "bed", "type": "rrect", "width": 400, "height": 120, "radius": 40, "x": 70, "y": 620, "fill": "#2b1d4e" },
+        { "id": "pillow", "type": "rrect", "width": 130, "height": 70, "radius": 30, "x": 100, "y": 580, "fill": "ink", "opacity": 0.9 },
+        { "id": "head", "type": "circle", "radius": 34, "x": 140, "y": 540, "fill": "accent", "opacity": 0.95 },
+        { "id": "z0", "type": "text", "text": "z", "fontFamily": "Manrope", "fontSize": 44, "fontWeight": 800, "fill": "accent2", "x": 220, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 50], "outputRange": [540, 300] }, "index": 0, "step": 8 }, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 50], "outputRange": [0, 1] }, "index": 0, "step": 8 } },
+        { "id": "z1", "type": "text", "text": "Z", "fontFamily": "Manrope", "fontSize": 64, "fontWeight": 800, "fill": "accent", "x": 280, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 50], "outputRange": [540, 220] }, "index": 1, "step": 8 }, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 50], "outputRange": [0, 1] }, "index": 1, "step": 8 } },
+        { "id": "z2", "type": "text", "text": "Z", "fontFamily": "Manrope", "fontSize": 88, "fontWeight": 800, "fill": "ink", "x": 350, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 50], "outputRange": [540, 140] }, "index": 2, "step": 8 }, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 50], "outputRange": [0, 1] }, "index": 2, "step": 8 } }
+      ]
+    },
+    {
+      "role": "dream", "duration": 60, "layout": "bubble", "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "ring", "type": "circle", "radius": 170, "x": 100, "y": 230, "fill": "rgba(0,0,0,0)", "stroke": "accent2", "strokeWidth": 4, "opacity": 0.9 },
+        { "id": "d-star", "type": "shape", "shape": "star", "width": 150, "height": 150, "points": 5, "x": 195, "y": 290, "fill": "accent", "opacity": { "binding": "keyframes", "frames": [0, 20, 30, 50, 59], "values": [0, 1, 1, 0, 0] } },
+        { "id": "d-fish", "type": "shape", "shape": "ellipse", "width": 170, "height": 100, "x": 185, "y": 315, "fill": "accent2", "opacity": { "binding": "keyframes", "frames": [0, 20, 30, 50, 59], "values": [0, 0, 0, 1, 1] } },
+        { "id": "d-fin", "type": "shape", "shape": "polygon", "width": 60, "height": 60, "points": 3, "x": 330, "y": 320, "fill": "accent2", "opacity": { "binding": "keyframes", "frames": [0, 20, 30, 50, 59], "values": [0, 0, 0, 1, 1] } },
+        { "id": "cap", "type": "text", "text": "FIRST A STAR…", "fontFamily": "Poppins", "fontSize": 26, "fontWeight": 700, "letterSpacing": 4, "fill": "ink", "x": 0, "y": 640, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "keyframes", "frames": [0, 20, 30, 50, 59], "values": [0, 1, 1, 0, 0] } },
+        { "id": "cap2", "type": "text", "text": "…THEN A FISH", "fontFamily": "Poppins", "fontSize": 26, "fontWeight": 700, "letterSpacing": 4, "fill": "ink", "x": 0, "y": 640, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "keyframes", "frames": [0, 20, 30, 50, 59], "values": [0, 0, 0, 1, 1] } }
+      ]
+    },
+    {
+      "role": "morning", "duration": 60, "layout": "alarm", "badge": false,
+      "nodes": [
+        { "id": "dawn", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#ffb3e2" }, { "offset": 0.6, "color": "#e8a0bf" }, { "offset": 1, "color": "#8e7cc3" }] } },
+        { "id": "sun", "type": "circle", "radius": 80, "x": 230, "y": 300, "fill": "#fdf3ff", "opacity": 0.95 },
+        { "id": "take", "type": "text", "text": "YOUR BRAIN", "fontFamily": "Manrope", "fontSize": 52, "fontWeight": 800, "fill": "bg", "x": 0, "y": 580, "textAlign": "center", "maxWidth": 540 },
+        { "id": "take2", "type": "text", "text": "WAS REHEARSING", "fontFamily": "Manrope", "fontSize": 52, "fontWeight": 800, "fill": "bg", "x": 0, "y": 648, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

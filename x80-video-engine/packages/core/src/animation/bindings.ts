@@ -33,9 +33,22 @@ export interface SpringBinding {
   reverse?: boolean;
 }
 
-export type AnimNumber = number | InterpolateBinding | SpringBinding;
+/**
+ * Keyframes binding: explicit frame->value stops, compiled to the same
+ * multi-stop interpolate the engine already proves. First-class so the AI
+ * authors motion systems (not single tweens): keys must be finite, frames
+ * strictly increasing (compiler helpers enforce this loudly).
+ */
+export interface KeyframesBinding {
+  binding: 'keyframes';
+  frames: number[];
+  values: number[];
+  options?: InterpolateOptions;
+}
 
-export const isAnimBinding = (value: AnimNumber): value is InterpolateBinding | SpringBinding =>
+export type AnimNumber = number | InterpolateBinding | SpringBinding | KeyframesBinding;
+
+export const isAnimBinding = (value: AnimNumber): value is InterpolateBinding | SpringBinding | KeyframesBinding =>
   typeof value !== 'number';
 
 /**
@@ -79,6 +92,17 @@ export const resolveAnimNumber = (value: AnimNumber, frame: number, fps: number)
   }
   if (value.binding === 'interpolate') {
     return interpolate(frame, value.inputRange, value.outputRange, value.options);
+  }
+  if (value.binding === 'keyframes') {
+    if (!Array.isArray(value.frames) || !Array.isArray(value.values) || value.frames.length !== value.values.length || value.frames.length === 0) {
+      throw new Error('keyframes binding needs non-empty frames[] and values[] of equal length');
+    }
+    return interpolate(frame, [...value.frames], [...value.values], value.options);
+  }
+  if ((value as { binding: string }).binding === 'path' || (value as { binding: string }).binding === 'stagger') {
+    throw new Error(
+      `motion '${(value as { binding: string }).binding}' bindings compile away in @x80/reelspec (compileFreeNode) — the core only resolves interpolate/keyframes/spring/color`,
+    );
   }
   return spring({
     frame,

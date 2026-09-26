@@ -1,0 +1,64 @@
+{
+  "id": "w01-shearline",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "shearline",
+  "concept": {
+    "palette": { "bg": "#101318", "ink": "#e8e4da", "accent": "#c8321e", "accent2": "#c9a227", "pillBg": "#1c2027", "pillFg": "#c9a227" },
+    "faces": { "display": "IBM Plex Mono", "hero": "IBM Plex Mono", "kicker": "IBM Plex Mono" },
+    "signature": "a lock picking itself: five pin stacks surrender one by one, then the shackle pops",
+    "signatureWhy": "plan: live-process show-ladder #1; sequential pins declared; hook = key already sliding in second one"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "slide", "params": { "direction": "left" } }, { "type": "none" }],
+  "acts": [
+    {
+      "role": "key-in", "duration": 60, "layout": "sectioned-lock", "badge": false,
+      "nodes": [
+        { "id": "bench", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "body", "type": "rrect", "width": 420, "height": 300, "radius": 18, "x": 60, "y": 300, "fill": "#1c2027", "stroke": "accent2", "strokeWidth": 3 },
+        { "id": "shear", "type": "rect", "width": 420, "height": 4, "x": 60, "y": 448, "fill": "accent2", "opacity": 0.8 },
+        { "id": "key", "type": "container", "x": { "binding": "interpolate", "inputRange": [0, 40], "outputRange": [-260, 60], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "children": [
+          { "id": "blade", "type": "rect", "width": 340, "height": 34, "x": 0, "y": 560, "fill": "accent2" },
+          { "id": "t0", "type": "rect", "width": 26, "height": 26, "x": 60, "y": 534, "fill": "accent2" },
+          { "id": "t1", "type": "rect", "width": 26, "height": 40, "x": 130, "y": 520, "fill": "accent2" },
+          { "id": "t2", "type": "rect", "width": 26, "height": 20, "x": 200, "y": 540, "fill": "accent2" }
+        ] },
+        { "id": "k", "type": "text", "text": "INSIDE A LOCK", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 5, "fill": "accent2", "x": 60, "y": 200 }
+      ]
+    },
+    {
+      "role": "surrender", "duration": 60, "layout": "five-pins", "badge": false,
+      "nodes": [
+        { "id": "bench", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "body", "type": "rrect", "width": 420, "height": 300, "radius": 18, "x": 60, "y": 300, "fill": "#1c2027", "stroke": "accent2", "strokeWidth": 3 },
+        { "id": "shear", "type": "rect", "width": 420, "height": 4, "x": 60, "y": 448, "fill": "accent2", "opacity": 0.8 },
+        { "id": "pins", "type": "container", "children": [
+          { "id": "k0", "type": "rect", "width": 22, "height": 90, "x": 110, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [470, 358], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 0, "step": 6 }, "fill": "ink" },
+          { "id": "d0", "type": "rect", "width": 22, "height": 60, "x": 110, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [410, 388], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 0, "step": 6 }, "fill": "accent" },
+          { "id": "k1", "type": "rect", "width": 22, "height": 76, "x": 190, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [484, 372], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 1, "step": 6 }, "fill": "ink" },
+          { "id": "d1", "type": "rect", "width": 22, "height": 60, "x": 190, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [424, 388], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 1, "step": 6 }, "fill": "accent" },
+          { "id": "k2", "type": "rect", "width": 22, "height": 96, "x": 270, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [464, 352], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 2, "step": 6 }, "fill": "ink" },
+          { "id": "d2", "type": "rect", "width": 22, "height": 60, "x": 270, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [404, 388], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 2, "step": 6 }, "fill": "accent" },
+          { "id": "k3", "type": "rect", "width": 22, "height": 70, "x": 350, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [490, 378], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 3, "step": 6 }, "fill": "ink" },
+          { "id": "d3", "type": "rect", "width": 22, "height": 60, "x": 350, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [430, 388], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 3, "step": 6 }, "fill": "accent" },
+          { "id": "k4", "type": "rect", "width": 22, "height": 84, "x": 430, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [476, 364], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 4, "step": 6 }, "fill": "ink" },
+          { "id": "d4", "type": "rect", "width": 22, "height": 60, "x": 430, "y": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 26], "outputRange": [416, 388], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 4, "step": 6 }, "fill": "accent" }
+        ] },
+        { "id": "cap", "type": "text", "text": "FIVE PINS. ONE LINE.", "fontFamily": "IBM Plex Mono", "fontSize": 22, "fontWeight": 700, "letterSpacing": 3, "fill": "ink", "x": 60, "y": 700 }
+      ]
+    },
+    {
+      "role": "click", "duration": 60, "layout": "open", "badge": false,
+      "nodes": [
+        { "id": "bench", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "flash", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "#ffffff", "opacity": { "binding": "keyframes", "frames": [0, 20, 23, 30, 59], "values": [0, 0, 0.85, 0, 0] } },
+        { "id": "body", "type": "rrect", "width": 420, "height": 300, "radius": 18, "x": 60, "y": 300, "fill": "#1c2027", "stroke": "accent2", "strokeWidth": 3 },
+        { "id": "bow", "type": "circle", "radius": 70, "x": 200, "y": 380, "fill": "rgba(0,0,0,0)", "stroke": "accent2", "strokeWidth": 10 },
+        { "id": "shackle", "type": "rrect", "width": 120, "height": 130, "radius": 55, "x": 210, "y": { "binding": "interpolate", "inputRange": [22, 44], "outputRange": [300, 170], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "fill": "rgba(0,0,0,0)", "stroke": "ink", "strokeWidth": 16 },
+        { "id": "word", "type": "text", "text": "CLICK", "fontFamily": "IBM Plex Mono", "fontSize": 84, "fontWeight": 700, "letterSpacing": 12, "fill": "accent2", "x": 0, "y": 640, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [24, 38], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

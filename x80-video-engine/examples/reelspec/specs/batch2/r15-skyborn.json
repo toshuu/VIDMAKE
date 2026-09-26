@@ -1,0 +1,58 @@
+{
+  "id": "r15-skyborn",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "birth-sky",
+  "concept": {
+    "palette": { "bg": "#04060f", "ink": "#e8eefc", "accent": "#9db8ff", "accent2": "#ff8fb3", "pillBg": "#0d1428", "pillFg": "#9db8ff" },
+    "faces": { "display": "Space Grotesk", "hero": "Space Grotesk", "kicker": "IBM Plex Mono" },
+    "signature": "the whole sky wheels around one still star while a date burns in",
+    "signatureWhy": "celestial-rotation strategy — anchored starfield spin, constellation draw, blinking invite"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "wheel", "duration": 60, "layout": "polaris", "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "sky", "type": "container", "rotation": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0, 24] }, "anchorX": 270, "anchorY": 430, "children": [
+          { "id": "pole", "type": "circle", "radius": 9, "x": 261, "y": 421, "fill": "ink" },
+          { "id": "s0", "type": "circle", "radius": 5, "x": 140, "y": 300, "fill": "accent" },
+          { "id": "s1", "type": "circle", "radius": 4, "x": 380, "y": 260, "fill": "accent" },
+          { "id": "s2", "type": "circle", "radius": 6, "x": 420, "y": 520, "fill": "ink" },
+          { "id": "s3", "type": "circle", "radius": 4, "x": 120, "y": 560, "fill": "ink" },
+          { "id": "s4", "type": "circle", "radius": 5, "x": 300, "y": 620, "fill": "accent" },
+          { "id": "s5", "type": "circle", "radius": 3, "x": 200, "y": 180, "fill": "ink" }
+        ] },
+        { "id": "k", "type": "text", "text": "THE SKY TURNS", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 5, "fill": "accent", "x": 0, "y": 760, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "date", "duration": 60, "layout": "that-night", "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "c0", "type": "circle", "radius": 7, "x": 120, "y": 350, "fill": "ink", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 0, "step": 5 } },
+        { "id": "c1", "type": "circle", "radius": 7, "x": 220, "y": 300, "fill": "ink", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 1, "step": 5 } },
+        { "id": "c2", "type": "circle", "radius": 7, "x": 320, "y": 360, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 2, "step": 5 }, "shadow": { "color": "rgba(157,184,255,0.9)", "blur": 20 } },
+        { "id": "c3", "type": "circle", "radius": 7, "x": 400, "y": 300, "fill": "ink", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 3, "step": 5 } },
+        { "id": "lines", "type": "path", "d": "M 120 350 L 220 300 L 320 360 L 400 300", "stroke": "accent", "strokeWidth": 3, "opacity": { "binding": "interpolate", "inputRange": [26, 46], "outputRange": [0, 0.9] } },
+        { "id": "when", "type": "text", "text": "14 · 02 · 1991", "fontFamily": "Space Grotesk", "fontSize": 62, "fontWeight": 700, "fill": "ink", "x": 0, "y": 620, "textAlign": "center", "maxWidth": 540 },
+        { "id": "where", "type": "text", "text": "LISBON", "fontFamily": "IBM Plex Mono", "fontSize": 22, "fontWeight": 500, "letterSpacing": 10, "fill": "accent", "x": 0, "y": 700, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "invite", "duration": 60, "layout": "find-yours", "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "field", "type": "rrect", "width": 420, "height": 92, "radius": 46, "x": 60, "y": 400, "fill": "rgba(0,0,0,0)", "stroke": "accent", "strokeWidth": 3 },
+        { "id": "hint", "type": "text", "text": "YOUR BIRTHDAY", "fontFamily": "IBM Plex Mono", "fontSize": 22, "fontWeight": 400, "letterSpacing": 5, "fill": "accent2", "x": 100, "y": 434 },
+        { "id": "caret", "type": "rect", "width": 5, "height": 40, "x": 400, "y": 426, "fill": "accent", "opacity": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [1, 0, 1, 0, 1] } },
+        { "id": "ask", "type": "text", "text": "FIND", "fontFamily": "Space Grotesk", "fontSize": 84, "fontWeight": 700, "fill": "ink", "x": 0, "y": 560, "textAlign": "center", "maxWidth": 540 },
+        { "id": "ask2", "type": "text", "text": "YOUR SKY", "fontFamily": "Space Grotesk", "fontSize": 84, "fontWeight": 700, "fill": "accent", "x": 0, "y": 652, "textAlign": "center", "maxWidth": 540 },
+        { "id": "heart", "type": "circle", "radius": 8, "x": 262, "y": 260, "fill": "accent2", "opacity": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.4, 1, 0.4] } }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

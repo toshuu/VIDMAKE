@@ -1,0 +1,48 @@
+{
+  "id": "t08-vaccine",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "body",
+  "concept": {
+    "palette": { "bg": "#f3ece1", "ink": "#33302b", "accent": "#2a9d8f", "accent2": "#e76f51", "pillBg": "#33302b", "pillFg": "#f3ece1" },
+    "faces": { "display": "Manrope", "hero": "Manrope", "kicker": "Poppins" },
+    "signature": "a friendly cellular chase: Y-shaped heroes hunt purple blobs",
+    "signatureWhy": "animated-diagram strategy — motionPath pursuit, staged pops, pastel lab clarity"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "peace", "duration": 60, "layout": "petri", "badge": false,
+      "nodes": [
+        { "id": "dish", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "cell", "type": "circle", "radius": 190, "x": 75, "y": 250, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#fbf7ee" }, { "offset": 1, "color": "#e4d7bf" }] }, "stroke": "accent2", "strokeWidth": 3, "opacity": 0.95 },
+        { "id": "nuc", "type": "circle", "radius": 60, "x": 210, "y": 400, "fill": "accent2", "opacity": 0.55 },
+        { "id": "k", "type": "text", "text": "A QUIET CELL", "fontFamily": "Poppins", "fontSize": 24, "fontWeight": 700, "letterSpacing": 6, "fill": "accent", "x": 0, "y": 760, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "attack", "duration": 60, "layout": "invasion", "badge": false,
+      "nodes": [
+        { "id": "dish", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "cell", "type": "circle", "radius": 190, "x": 75, "y": 250, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#fbf7ee" }, { "offset": 1, "color": "#e4d7bf" }] }, "stroke": "accent2", "strokeWidth": 3, "opacity": 0.95 },
+        { "id": "v0", "type": "circle", "radius": 34, "x": 120, "y": 330, "fill": "#5d4a7a", "scaleX": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.4, 1, 0.9] }, "scaleY": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.4, 1, 0.9] }, "anchorX": 34, "anchorY": 34 },
+        { "id": "v1", "type": "circle", "radius": 30, "x": 330, "y": 420, "fill": "#5d4a7a", "scaleX": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.4, 1, 0.9] }, "scaleY": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.4, 1, 0.9] }, "anchorX": 30, "anchorY": 30 },
+        { "id": "a0", "type": "path", "d": "M 0 60 L 26 30 L 26 0 M 26 30 L 52 0 M 26 30 L 26 60", "stroke": "accent", "strokeWidth": 11, "x": { "binding": "path", "axis": "x", "points": [[60, 700], [100, 500], [130, 360]], "duration": 59 }, "y": { "binding": "path", "axis": "y", "points": [[700, 700], [500, 500], [360, 360]], "duration": 59 } },
+        { "id": "a1", "type": "path", "d": "M 0 60 L 26 30 L 26 0 M 26 30 L 52 0 M 26 30 L 26 60", "stroke": "accent", "strokeWidth": 11, "x": { "binding": "path", "axis": "x", "points": [[470, 700], [400, 560], [340, 450]], "duration": 59 }, "y": { "binding": "path", "axis": "y", "points": [[700, 700], [560, 560], [450, 450]], "duration": 59 } },
+        { "id": "k", "type": "text", "text": "INVADERS · DEFENDERS OUT", "fontFamily": "Poppins", "fontSize": 22, "fontWeight": 700, "letterSpacing": 4, "fill": "accent2", "x": 0, "y": 760, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "memory", "duration": 60, "layout": "aftermath", "badge": false,
+      "nodes": [
+        { "id": "dish", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "cell", "type": "circle", "radius": 190, "x": 75, "y": 250, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#fbf7ee" }, { "offset": 1, "color": "#e4d7bf" }] }, "stroke": "accent", "strokeWidth": 4, "opacity": 0.95 },
+        { "id": "shield", "type": "shape", "shape": "polygon", "width": 120, "height": 140, "points": 5, "x": 210, "y": 380, "fill": "accent", "scaleX": { "binding": "spring", "from": 0, "to": 1 }, "scaleY": { "binding": "spring", "from": 0, "to": 1 }, "anchorX": 60, "anchorY": 70 },
+        { "id": "hero", "type": "text", "text": "MEMORY", "fontFamily": "Manrope", "fontSize": 64, "fontWeight": 800, "fill": "ink", "x": 0, "y": 680, "textAlign": "center", "maxWidth": 540 },
+        { "id": "sub", "type": "text", "text": "CELLS REMAIN ON GUARD", "fontFamily": "Poppins", "fontSize": 22, "fontWeight": 700, "letterSpacing": 5, "fill": "accent", "x": 0, "y": 762, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

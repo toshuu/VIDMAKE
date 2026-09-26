@@ -1,0 +1,57 @@
+{
+  "id": "t01-silicon",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "schematic",
+  "concept": {
+    "palette": { "bg": "#060b18", "ink": "#dcecff", "accent": "#4dd4ff", "accent2": "#7dffcb", "pillBg": "#0d1626", "pillFg": "#4dd4ff" },
+    "faces": { "display": "Space Grotesk", "hero": "Space Grotesk", "kicker": "IBM Plex Mono" },
+    "signature": "blueprint chip floating over a perspective grid",
+    "signatureWhy": "engineering-schematic strategy: wireframe + grid + mono callouts, depth via fov"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "wipe", "params": { "direction": "left" } }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "reveal", "duration": 60, "layout": "blueprint", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "grid", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 700, "tiltX": 32, "tiltY": 0, "fov": 60 },
+          "objects": [
+            { "kind": "plane", "x": 0, "y": 260, "z": 0, "w": 560, "h": 420, "color": "#0d1626" },
+            { "kind": "wire", "x": 0, "y": 0, "z": 0, "w": 200, "h": 60, "d": 200, "color": "accent" },
+            { "kind": "points", "x": 0, "y": 260, "z": 0, "w": 560, "h": 60, "d": 420, "count": 70, "seed": 5, "color": "accent" }
+          ] },
+        { "id": "kick", "type": "text", "text": "NANO // 02", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "accent2", "x": 32, "y": 84, "opacity": { "binding": "interpolate", "inputRange": [4, 16], "outputRange": [0, 1] } },
+        { "id": "hero", "type": "text", "text": "MIRA-1", "fontFamily": "Space Grotesk", "fontSize": 110, "fontWeight": 700, "fill": "ink", "x": 28, "y": 640, "opacity": { "binding": "interpolate", "inputRange": [10, 26], "outputRange": [0, 1] }, "shadow": { "color": "rgba(77,212,255,0.5)", "blur": 30 } },
+        { "id": "sub", "type": "text", "text": "A CHIP DRAWN LIKE A MAP", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "letterSpacing": 2, "fill": "accent", "x": 32, "y": 780 }
+      ]
+    },
+    {
+      "role": "specs", "duration": 60, "layout": "callouts", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "rule", "type": "rect", "width": 4, "height": 560, "x": 60, "y": 180, "fill": "accent", "opacity": 0.6 },
+        { "id": "s0", "type": "text", "text": "3NM", "fontFamily": "Space Grotesk", "fontSize": 64, "fontWeight": 700, "fill": "ink", "x": 96, "y": 200, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 0, "step": 8 } },
+        { "id": "s0l", "type": "text", "text": "PROCESS NODE", "fontFamily": "IBM Plex Mono", "fontSize": 18, "fontWeight": 400, "letterSpacing": 3, "fill": "accent", "x": 96, "y": 280, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 0, "step": 8 } },
+        { "id": "s1", "type": "text", "text": "40B", "fontFamily": "Space Grotesk", "fontSize": 64, "fontWeight": 700, "fill": "ink", "x": 96, "y": 380, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 1, "step": 8 } },
+        { "id": "s1l", "type": "text", "text": "TRANSISTORS", "fontFamily": "IBM Plex Mono", "fontSize": 18, "fontWeight": 400, "letterSpacing": 3, "fill": "accent", "x": 96, "y": 460, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 1, "step": 8 } },
+        { "id": "s2", "type": "text", "text": "0.4W", "fontFamily": "Space Grotesk", "fontSize": 64, "fontWeight": 700, "fill": "ink", "x": 96, "y": 560, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 2, "step": 8 } },
+        { "id": "s2l", "type": "text", "text": "IDLE POWER", "fontFamily": "IBM Plex Mono", "fontSize": 18, "fontWeight": 400, "letterSpacing": 3, "fill": "accent", "x": 96, "y": 640, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 2, "step": 8 } }
+      ]
+    },
+    {
+      "role": "seal", "duration": 60, "layout": "seal", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "ring", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 700, "tiltX": 20, "tiltY": 0, "fov": 50 },
+          "objects": [{ "kind": "torus", "x": 0, "y": -40, "z": 0, "w": 300, "d": 44, "seg": 16, "tub": 8, "color": "accent" }] },
+        { "id": "core", "type": "rrect", "width": 170, "height": 170, "radius": 18, "x": 185, "y": 300, "fill": "#0d1626", "stroke": "accent", "strokeWidth": 3 },
+        { "id": "cta", "type": "text", "text": "SHIPS Q3", "fontFamily": "Space Grotesk", "fontSize": 58, "fontWeight": 700, "fill": "ink", "x": 0, "y": 640, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [14, 28], "outputRange": [0, 1] } }
+      ]
+    }
+  ],
+  "chrome": true,
+  "grain": false
+}

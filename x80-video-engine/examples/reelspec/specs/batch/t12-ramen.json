@@ -1,0 +1,54 @@
+{
+  "id": "t12-ramen",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "broth",
+  "concept": {
+    "palette": { "bg": "#17100b", "ink": "#f7ecd9", "accent": "#e09b3d", "accent2": "#7fb069", "pillBg": "#2a1c11", "pillFg": "#e09b3d" },
+    "faces": { "display": "Rozha One", "hero": "Manrope", "kicker": "Poppins" },
+    "signature": "a bowl assembled from above: rings, waves, jewels",
+    "signatureWhy": "assembly top-down strategy — concentric construction, spring-set toppings, steam"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "vessel", "duration": 60, "layout": "empty-bowl", "badge": false,
+      "nodes": [
+        { "id": "table", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "bowl", "type": "circle", "radius": 190, "x": 80, "y": 270, "fill": "#241a10", "stroke": "accent", "strokeWidth": 6 },
+        { "id": "inner", "type": "circle", "radius": 150, "x": 120, "y": 310, "fill": "#120c07" },
+        { "id": "n", "type": "text", "text": "01", "fontFamily": "Poppins", "fontSize": 30, "fontWeight": 700, "fill": "accent", "x": 44, "y": 120 },
+        { "id": "cap", "type": "text", "text": "THE VESSEL", "fontFamily": "Poppins", "fontSize": 24, "fontWeight": 700, "letterSpacing": 6, "fill": "ink", "x": 44, "y": 160 }
+      ]
+    },
+    {
+      "role": "broth", "duration": 60, "layout": "the-pour", "badge": false,
+      "nodes": [
+        { "id": "table", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "bowl", "type": "circle", "radius": 190, "x": 80, "y": 270, "fill": "#241a10", "stroke": "accent", "strokeWidth": 6 },
+        { "id": "soup", "type": "circle", "radius": 150, "x": 120, "y": 310, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#e09b3d" }, { "offset": 1, "color": "#8a5a1e" }] }, "opacity": { "binding": "interpolate", "inputRange": [6, 30], "outputRange": [0, 1] } },
+        { "id": "noodles", "type": "path", "d": "M 150 420 q 25 -22 50 0 t 50 0 t 50 0 t 50 0 t 50 0 M 160 470 q 25 -22 50 0 t 50 0 t 50 0 t 50 0 M 170 520 q 25 -22 50 0 t 50 0 t 50 0", "stroke": "#f7ecd9", "strokeWidth": 9, "opacity": { "binding": "interpolate", "inputRange": [22, 44], "outputRange": [0, 1] } },
+        { "id": "steam", "type": "particles", "count": 26, "seed": 11, "colors": ["#f7ecd9"], "size": [2, 5], "area": { "w": 260, "h": 180 }, "at": [140, 120], "twinkle": false },
+        { "id": "n", "type": "text", "text": "02", "fontFamily": "Poppins", "fontSize": 30, "fontWeight": 700, "fill": "accent", "x": 44, "y": 120 },
+        { "id": "cap", "type": "text", "text": "BROTH · NOODLES", "fontFamily": "Poppins", "fontSize": 24, "fontWeight": 700, "letterSpacing": 6, "fill": "ink", "x": 44, "y": 160 }
+      ]
+    },
+    {
+      "role": "crown", "duration": 60, "layout": "toppings", "badge": false,
+      "nodes": [
+        { "id": "table", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "bowl", "type": "circle", "radius": 190, "x": 80, "y": 270, "fill": "#241a10", "stroke": "accent", "strokeWidth": 6 },
+        { "id": "soup", "type": "circle", "radius": 150, "x": 120, "y": 310, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#e09b3d" }, { "offset": 1, "color": "#8a5a1e" }] } },
+        { "id": "eggw", "type": "shape", "shape": "ellipse", "width": 92, "height": 110, "x": 160, "y": 360, "fill": "#f7ecd9", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 0, "step": 7 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 0, "step": 7 }, "anchorX": 46, "anchorY": 55 },
+        { "id": "eggy", "type": "circle", "radius": 24, "x": 182, "y": 388, "fill": "accent", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 0, "step": 7 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 0, "step": 7 }, "anchorX": 24, "anchorY": 24 },
+        { "id": "green0", "type": "rect", "width": 44, "height": 14, "x": 300, "y": 400, "fill": "accent2", "rotation": 24, "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 1, "step": 7 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 1, "step": 7 }, "anchorX": 22, "anchorY": 7 },
+        { "id": "green1", "type": "rect", "width": 44, "height": 14, "x": 310, "y": 460, "fill": "accent2", "rotation": -18, "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 2, "step": 7 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 2, "step": 7 }, "anchorX": 22, "anchorY": 7 },
+        { "id": "nori", "type": "rect", "width": 70, "height": 96, "x": 235, "y": 300, "fill": "#0e2417", "stroke": "accent2", "strokeWidth": 2, "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 3, "step": 7 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 3, "step": 7 }, "anchorX": 35, "anchorY": 48 },
+        { "id": "n", "type": "text", "text": "03", "fontFamily": "Poppins", "fontSize": 30, "fontWeight": 700, "fill": "accent", "x": 44, "y": 120 },
+        { "id": "cap", "type": "text", "text": "ITADAKIMASU", "fontFamily": "Rozha One", "fontSize": 54, "fontWeight": 400, "fill": "ink", "x": 44, "y": 700 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

@@ -1,0 +1,49 @@
+{
+  "id": "v2-tide-ledger",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "ledger",
+  "concept": {
+    "palette": { "bg": "#06222b", "ink": "#eefbf7", "accent": "#4dd4ff", "accent2": "#ffd166", "pillBg": "#0b3540", "pillFg": "#eefbf7" },
+    "faces": { "display": "Inter", "hero": "Inter", "kicker": "Poppins" },
+    "signature": "ledger-as-tide: account rows swell and recede like water",
+    "signatureWhy": "no preset stacks tables as tide bands with keyframed widths"
+  },
+  "vars": { "tide": "#4dd4ff", "sand": "#ffd166" },
+  "durations": [60, 60],
+  "transitions": [{ "type": "fade", "duration": 16 }],
+  "subcomps": {
+    "band": { "id": "band", "type": "rrect", "width": 476, "height": 64, "radius": 12, "fill": "{{tide}}", "opacity": 0.85 }
+  },
+  "acts": [
+    {
+      "role": "highwater",
+      "duration": 60,
+      "layout": "tidetable",
+      "badge": false,
+      "nodes": [
+        { "id": "sea", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "k", "type": "text", "text": "HARBOUR LEDGER", "fontFamily": "Poppins", "fontSize": 22, "fontWeight": 700, "letterSpacing": 6, "fill": "{{sand}}", "x": 32, "y": 64 },
+        { "id": "b0", "use": "band", "x": 32, "y": 150, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 16], "outputRange": [0, 0.85] }, "index": 0, "step": 4 } },
+        { "id": "b1", "use": "band", "x": 32, "y": 226, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 16], "outputRange": [0, 0.85] }, "index": 1, "step": 4 } },
+        { "id": "b2", "use": "band", "x": 32, "y": 302, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 16], "outputRange": [0, 0.85] }, "index": 2, "step": 4 } },
+        { "id": "swell", "type": "rect", "width": { "binding": "keyframes", "frames": [0, 30, 59], "values": [60, 476, 300] }, "height": 20, "x": 32, "y": 420, "fill": "{{sand}}" },
+        { "id": "stat", "type": "text", "text": "214 SHIPS", "fontFamily": "Poppins", "fontSize": 64, "fontWeight": 700, "fill": "ink", "x": 32, "y": 480, "opacity": { "binding": "interpolate", "inputRange": [20, 34], "outputRange": [0, 1] } }
+      ]
+    },
+    {
+      "role": "lowwater",
+      "duration": 60,
+      "layout": "tidetable",
+      "badge": false,
+      "nodes": [
+        { "id": "sea", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "ebb", "type": "rect", "width": { "binding": "keyframes", "frames": [0, 30, 59], "values": [476, 120, 40] }, "height": 20, "x": 32, "y": 200, "fill": "{{tide}}" },
+        { "id": "line", "type": "text", "text": "THE TIDE KEEPS", "fontFamily": "Inter", "fontSize": { "binding": "keyframes", "frames": [0, 20, 40], "values": [30, 54, 54] }, "fontWeight": 800, "fill": "ink", "x": 32, "y": 300 },
+        { "id": "line2", "type": "text", "text": "EVERY RECEIPT", "fontFamily": "Inter", "fontSize": 54, "fontWeight": 800, "fill": "{{sand}}", "x": 32, "y": 366 },
+        { "id": "seal", "type": "shape", "shape": "polygon", "width": 120, "height": 120, "points": 6, "x": 210, "y": 560, "fill": "{{sand}}", "rotation": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0, 120] } }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

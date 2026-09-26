@@ -1,0 +1,54 @@
+{
+  "id": "r02-blue-hour",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "blue-hour",
+  "concept": {
+    "palette": { "bg": "#070a14", "ink": "#f2e9d8", "accent": "#d9a441", "accent2": "#3d5a80", "pillBg": "#101828", "pillFg": "#d9a441" },
+    "faces": { "display": "Rozha One", "hero": "Manrope", "kicker": "IBM Plex Mono" },
+    "signature": "a record that never stops turning while the setlist writes itself",
+    "signatureWhy": "vinyl-loop strategy: perpetual rotation bed, staggered setlist, bouncing EQ trio"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "side-a", "duration": 60, "layout": "turntable", "badge": false,
+      "nodes": [
+        { "id": "room", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "platter", "type": "circle", "radius": 190, "x": 80, "y": 200, "fill": "#0d1322", "stroke": "accent2", "strokeWidth": 2, "rotation": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0, 40] }, "anchorX": 190, "anchorY": 190 },
+        { "id": "groove0", "type": "circle", "radius": 150, "x": 120, "y": 240, "fill": "rgba(0,0,0,0)", "stroke": "#233252", "strokeWidth": 2 },
+        { "id": "groove1", "type": "circle", "radius": 110, "x": 160, "y": 280, "fill": "rgba(0,0,0,0)", "stroke": "#233252", "strokeWidth": 2 },
+        { "id": "label", "type": "circle", "radius": 62, "x": 208, "y": 328, "fill": "accent" },
+        { "id": "hole", "type": "circle", "radius": 10, "x": 260, "y": 380, "fill": "bg" },
+        { "id": "arm", "type": "rect", "width": 200, "height": 10, "x": 330, "y": 240, "fill": "accent2", "rotation": -32, "anchorX": 190, "anchorY": 5 },
+        { "id": "title", "type": "text", "text": "Blue Hour", "fontFamily": "Rozha One", "fontSize": 76, "fontWeight": 400, "fill": "ink", "x": 32, "y": 660 },
+        { "id": "sub", "type": "text", "text": "A TRIO AFTER MIDNIGHT", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "letterSpacing": 4, "fill": "accent", "x": 34, "y": 758 }
+      ]
+    },
+    {
+      "role": "setlist", "duration": 60, "layout": "setlist", "badge": false,
+      "nodes": [
+        { "id": "room", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "t0", "type": "text", "text": "01 · Last Train", "fontFamily": "Manrope", "fontSize": 34, "fontWeight": 600, "fill": "ink", "x": 48, "y": 300, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 20], "outputRange": [0, 1] }, "index": 0, "step": 10 } },
+        { "id": "t1", "type": "text", "text": "02 · Neon Confessional", "fontFamily": "Manrope", "fontSize": 34, "fontWeight": 600, "fill": "ink", "x": 48, "y": 380, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 20], "outputRange": [0, 1] }, "index": 1, "step": 10 } },
+        { "id": "t2", "type": "text", "text": "03 · Blue Hour", "fontFamily": "Manrope", "fontSize": 34, "fontWeight": 800, "fill": "accent", "x": 48, "y": 460, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 20], "outputRange": [0, 1] }, "index": 2, "step": 10 } },
+        { "id": "rule", "type": "rect", "width": 120, "height": 4, "x": 48, "y": 540, "fill": "accent", "opacity": { "binding": "interpolate", "inputRange": [36, 48], "outputRange": [0, 1] } },
+        { "id": "note", "type": "text", "text": "RECORDED LIVE · ONE TAKE", "fontFamily": "IBM Plex Mono", "fontSize": 18, "fontWeight": 400, "letterSpacing": 3, "fill": "accent2", "x": 48, "y": 590 }
+      ]
+    },
+    {
+      "role": "trio", "duration": 60, "layout": "three-chairs", "badge": false,
+      "nodes": [
+        { "id": "room", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "e0", "type": "rect", "width": 34, "height": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [120, 260, 150, 300, 180] }, "x": 110, "y": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [440, 300, 410, 260, 380] }, "fill": "accent" },
+        { "id": "e1", "type": "rect", "width": 34, "height": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [280, 140, 260, 120, 240] }, "x": 200, "y": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [280, 420, 300, 440, 320] }, "fill": "ink" },
+        { "id": "e2", "type": "rect", "width": 34, "height": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [160, 300, 130, 260, 150] }, "x": 290, "y": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [400, 260, 430, 300, 410] }, "fill": "accent2" },
+        { "id": "base", "type": "rect", "width": 300, "height": 4, "x": 90, "y": 560, "fill": "ink", "opacity": 0.5 },
+        { "id": "names", "type": "text", "text": "PIANO · BASS · BRUSHES", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "accent", "x": 0, "y": 640, "textAlign": "center", "maxWidth": 540 },
+        { "id": "out", "type": "text", "text": "OUT FRIDAY", "fontFamily": "Rozha One", "fontSize": 60, "fontWeight": 400, "fill": "ink", "x": 0, "y": 730, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

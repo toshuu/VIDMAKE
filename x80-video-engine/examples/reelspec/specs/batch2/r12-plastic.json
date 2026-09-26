@@ -1,0 +1,61 @@
+{
+  "id": "r12-plastic",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "eight-million",
+  "concept": {
+    "palette": { "bg": "#06222e", "ink": "#eaf6f4", "accent": "#ffd23f", "accent2": "#2a9d8f", "pillBg": "#0b3540", "pillFg": "#ffd23f" },
+    "faces": { "display": "Inter", "hero": "Inter", "kicker": "IBM Plex Mono" },
+    "signature": "count it, drown in it, then save exactly one",
+    "signatureWhy": "multiply-then-isolate strategy — stagger grid flood, single-bottle rescue, ripple vow"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "iris", "params": { "shape": "circle" } }],
+  "acts": [
+    {
+      "role": "count", "duration": 60, "layout": "tonnage", "badge": false,
+      "nodes": [
+        { "id": "sea", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "n0", "type": "text", "text": "1M", "fontFamily": "Inter", "fontSize": 110, "fontWeight": 800, "fill": "ink", "x": 40, "y": 330, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [0, 1, 0, 0] } },
+        { "id": "n1", "type": "text", "text": "4M", "fontFamily": "Inter", "fontSize": 110, "fontWeight": 800, "fill": "ink", "x": 40, "y": 330, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [0, 0, 1, 0] } },
+        { "id": "n2", "type": "text", "text": "8M", "fontFamily": "Inter", "fontSize": 150, "fontWeight": 800, "fill": "accent", "x": 40, "y": 300, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [0, 0, 0, 1] } },
+        { "id": "cap", "type": "text", "text": "TONS. EVERY YEAR.", "fontFamily": "IBM Plex Mono", "fontSize": 21, "fontWeight": 500, "letterSpacing": 4, "fill": "ink", "x": 42, "y": 520, "opacity": 0.85 }
+      ]
+    },
+    {
+      "role": "flood", "duration": 60, "layout": "everywhere", "badge": false,
+      "nodes": [
+        { "id": "sea", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "pack", "type": "container", "children": [
+          { "id": "b00", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 60, "y": 200, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 0, "step": 4 } },
+          { "id": "b01", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 150, "y": 200, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 1, "step": 4 } },
+          { "id": "b02", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 240, "y": 200, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 2, "step": 4 } },
+          { "id": "b03", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 330, "y": 200, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 3, "step": 4 } },
+          { "id": "b04", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 420, "y": 200, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 4, "step": 4 } },
+          { "id": "b10", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 60, "y": 340, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 5, "step": 4 } },
+          { "id": "b11", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 150, "y": 340, "fill": "accent2", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 6, "step": 4 } },
+          { "id": "b12", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 240, "y": 340, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 7, "step": 4 } },
+          { "id": "b13", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 330, "y": 340, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 8, "step": 4 } },
+          { "id": "b14", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 420, "y": 340, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 9, "step": 4 } },
+          { "id": "b20", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 60, "y": 480, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 10, "step": 4 } },
+          { "id": "b21", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 150, "y": 480, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 11, "step": 4 } },
+          { "id": "b22", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 240, "y": 480, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 12, "step": 4 } },
+          { "id": "b23", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 330, "y": 480, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 13, "step": 4 } },
+          { "id": "b24", "type": "rrect", "width": 64, "height": 110, "radius": 12, "x": 420, "y": 480, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 18], "outputRange": [0, 0.95] }, "index": 14, "step": 4 } }
+        ] },
+        { "id": "cap", "type": "text", "text": "THIS IS ONE BEACH", "fontFamily": "IBM Plex Mono", "fontSize": 21, "fontWeight": 700, "letterSpacing": 4, "fill": "ink", "x": 0, "y": 660, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "one", "duration": 60, "layout": "refill", "badge": false,
+      "nodes": [
+        { "id": "sea", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "drop", "type": "circle", "radius": 46, "x": 224, "y": 330, "fill": "accent2", "opacity": { "binding": "interpolate", "inputRange": [8, 26], "outputRange": [0, 1] } },
+        { "id": "ring0", "type": "circle", "radius": { "binding": "interpolate", "inputRange": [20, 55], "outputRange": [46, 150], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "x": { "binding": "interpolate", "inputRange": [20, 55], "outputRange": [224, 120] }, "y": { "binding": "interpolate", "inputRange": [20, 55], "outputRange": [330, 226] }, "fill": "rgba(0,0,0,0)", "stroke": "accent2", "strokeWidth": 4, "opacity": { "binding": "interpolate", "inputRange": [20, 55], "outputRange": [0.9, 0] } },
+        { "id": "vow", "type": "text", "text": "REFILL", "fontFamily": "Inter", "fontSize": 92, "fontWeight": 800, "fill": "ink", "x": 0, "y": 620, "textAlign": "center", "maxWidth": 540 },
+        { "id": "vow2", "type": "text", "text": "ONE BOTTLE. EVERY DAY.", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "accent", "x": 0, "y": 730, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

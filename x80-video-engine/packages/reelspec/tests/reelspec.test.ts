@@ -45,7 +45,7 @@ describe('validateSpec', () => {
 
   it('rejects wrong canvas, bad durations, bad transitions', () => {
     const s = mini();
-    s.canvas = { w: 1080, h: 1920, fps: 30 };
+    s.canvas = { w: 100, h: 100, fps: 12 };
     expect(validateSpec(s).join()).toMatch(/canvas/);
     const s2 = mini();
     s2.durations = [60];
@@ -67,10 +67,10 @@ describe('validateSpec', () => {
     expect(validateSpec(s3).join()).toMatch(/subject kind/);
   });
 
-  it('caps icons at a trio and demands boxes for flipbooks', () => {
+  it('caps icons at eight and demands boxes for flipbooks', () => {
     const s = mini();
-    s.acts[0]!.subjects = [{ kind: 'icons', mode: 'trio', icons: ['a', 'b', 'c', 'd'], at: [0, 0] }];
-    expect(validateSpec(s).join()).toMatch(/trio/);
+    s.acts[0]!.subjects = [{ kind: 'icons', mode: 'trio', icons: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'], at: [0, 0] }];
+    expect(validateSpec(s).join()).toMatch(/1-8/);
     const s2 = mini();
     (s2.acts[0] as { subjects: unknown }).subjects = [{ kind: 'flipbook', cast: 'x' }];
     expect(validateSpec(s2).join()).toMatch(/box/);
@@ -100,7 +100,8 @@ describe('assembleTimeline', () => {
 describe('compileReel', () => {
   it('throws loudly on invalid specs', () => {
     const s = mini();
-    s.system = 'operatic' as ReelSpec['system'];
+    // Open-ended: custom systems ('operatic') are valid; empty is not.
+    s.system = '' as ReelSpec['system'];
     expect(() => compileReel(s)).toThrow(/invalid ReelSpec/);
   });
 

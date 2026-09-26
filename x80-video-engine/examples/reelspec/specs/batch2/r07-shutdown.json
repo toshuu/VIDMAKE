@@ -1,0 +1,48 @@
+{
+  "id": "r07-shutdown",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "postmortem",
+  "concept": {
+    "palette": { "bg": "#0e0f0c", "ink": "#ece9e0", "accent": "#ff5a5a", "accent2": "#7fb069", "pillBg": "#1a1c16", "pillFg": "#ff5a5a" },
+    "faces": { "display": "IBM Plex Mono", "hero": "Inter", "kicker": "IBM Plex Mono" },
+    "signature": "three sentences get crossed out; one green shoot survives",
+    "signatureWhy": "honest-type strategy — strike, drain, sprout; almost no shapes at all"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "plan", "duration": 60, "layout": "the-deck", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "s0", "type": "text", "text": "WE'LL RAISE IN Q3", "fontFamily": "IBM Plex Mono", "fontSize": 38, "fontWeight": 700, "fill": "ink", "x": 40, "y": 380 },
+        { "id": "x0", "type": "rect", "width": { "binding": "interpolate", "inputRange": [24, 44], "outputRange": [0, 430], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "height": 10, "x": 40, "y": 428, "fill": "accent" },
+        { "id": "s1", "type": "text", "text": "GROWTH FIXES ALL", "fontFamily": "IBM Plex Mono", "fontSize": 38, "fontWeight": 700, "fill": "ink", "x": 40, "y": 480, "opacity": { "binding": "interpolate", "inputRange": [8, 20], "outputRange": [0, 1] } },
+        { "id": "k", "type": "text", "text": "$ cat pitch-deck.txt", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "fill": "accent2", "x": 40, "y": 300, "opacity": 0.8 }
+      ]
+    },
+    {
+      "role": "burn", "duration": 60, "layout": "runway", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "bar", "type": "rect", "width": { "binding": "keyframes", "frames": [0, 59], "values": [460, 40] }, "height": 34, "x": 40, "y": 420, "fill": "accent" },
+        { "id": "lab", "type": "text", "text": "RUNWAY", "fontFamily": "IBM Plex Mono", "fontSize": 22, "fontWeight": 700, "letterSpacing": 6, "fill": "ink", "x": 40, "y": 370 },
+        { "id": "n", "type": "text", "text": "18 MO → 0", "fontFamily": "IBM Plex Mono", "fontSize": 52, "fontWeight": 700, "fill": "ink", "x": 40, "y": 480 },
+        { "id": "k", "type": "text", "text": "$ tail -f bank.csv", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "fill": "accent2", "x": 40, "y": 300, "opacity": 0.8 }
+      ]
+    },
+    {
+      "role": "lesson", "duration": 60, "layout": "sprout", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "stem", "type": "rect", "width": 10, "height": { "binding": "interpolate", "inputRange": [6, 36], "outputRange": [0, 170], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "x": 265, "y": { "binding": "interpolate", "inputRange": [6, 36], "outputRange": [620, 450] }, "fill": "accent2" },
+        { "id": "leaf0", "type": "shape", "shape": "ellipse", "width": 90, "height": 44, "x": 200, "y": 470, "fill": "accent2", "rotation": -24, "scaleX": { "binding": "interpolate", "inputRange": [24, 44], "outputRange": [0, 1] }, "scaleY": { "binding": "interpolate", "inputRange": [24, 44], "outputRange": [0, 1] }, "anchorX": 90, "anchorY": 22 },
+        { "id": "leaf1", "type": "shape", "shape": "ellipse", "width": 90, "height": 44, "x": 260, "y": 430, "fill": "accent2", "rotation": 24, "scaleX": { "binding": "interpolate", "inputRange": [30, 50], "outputRange": [0, 1] }, "scaleY": { "binding": "interpolate", "inputRange": [30, 50], "outputRange": [0, 1] }, "anchorX": 0, "anchorY": 22 },
+        { "id": "take", "type": "text", "text": "TALK TO USERS", "fontFamily": "IBM Plex Mono", "fontSize": 34, "fontWeight": 700, "fill": "ink", "x": 0, "y": 700, "textAlign": "center", "maxWidth": 540 },
+        { "id": "take2", "type": "text", "text": "BEFORE THE DECK", "fontFamily": "IBM Plex Mono", "fontSize": 34, "fontWeight": 700, "fill": "accent2", "x": 0, "y": 748, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

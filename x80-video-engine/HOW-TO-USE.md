@@ -8,10 +8,12 @@ same JSON → same bytes, no agentic loop, no missing pieces.
 Proven: `examples/reelspec/specs/vrindavan2.json` compiles to
 byte-identical frames of the shipped reel (5/5 stills, see §8).
 
-**Repo:** `/kaggle/working/x80-video-engine/` · **Canvas:** 540×960, 30fps ·
+**Repo:** `/kaggle/working/x80-video-engine/` · **Canvas:** any `w` 270–1080,
+`h` 480–1920, `fps` 24|25|30|60 (default reel canvas 540×960@30) ·
 **Default reel:** 15s = 450 frames, 5 acts · **Measured cost:** ~20s
 end-to-end (decode + 5 stills + 450f H264+AAC). Compiler package:
-`@x80/reelspec` (`packages/reelspec/src/`).
+`@x80/reelspec` (`packages/reelspec/src/`). Law: GENERATION-GUIDE-V2.md;
+this file is the workflow intro.
 
 ---
 
@@ -37,8 +39,15 @@ end-to-end (decode + 5 stills + 450f H264+AAC). Compiler package:
      tilted cards, takeover finales. For footage-led promos.
    - `stack` — equal beats, hard cuts + whooshes, pill kickers,
      hero/sub stacks, icon chips, badges. For sprite/character reels.
-   Mixing systems inside one reel is forbidden.
-4. **REEL TYPE → ACTS.** One layout per act from §3. Never the same
+   - `free` (or any custom name) — OPEN system: no kicker-style rules,
+     no mixing bans, custom roles/kickers/layouts. For anything no
+     preset describes. Presets are shortcuts; `free` + §1.9 of the
+     GENERATION-GUIDE is the escape hatch. Invent arrangements — including
+     invented layout names, which compose as free — never engine keywords.
+     Mixing `cinematic`/`stack` systems inside one reel is forbidden
+     (free reels may mix anything).
+4. **REEL TYPE → ACTS.** One layout per act (§3: preset, `free`/`custom`,
+   or an invented name under a free/custom system) with `nodes` — see below. Never the same
    stack twice running. Full layout (incl. CTA) complete by frame ~40
    of every act.
 5. **ACTS → ASSETS.** Name every clip/frame/prop id used. Clips shorter
@@ -90,28 +99,48 @@ end-to-end (decode + 5 stills + 450f H264+AAC). Compiler package:
 
 Field rules (the validator enforces all of this — read it as law):
 
-- `canvas` must be exactly 540×960@30 (the locked reel canvas).
-- `durations.length === acts.length`, each ≥ 30 frames.
+- `canvas`: `w` 270–1080, `h` 480–1920, `fps` 24|25|30|60 (default 540×960@30).
+- `durations.length === acts.length`: preset systems each ≥ 30 frames;
+  free/custom systems each ≥ 1 (micro-acts allowed).
 - `transitions.length === acts.length - 1` (`[]` = hard cuts + whooshes).
 - `title.lines`: 1–2 complete lines (0 allowed ONLY for `ticket`,
   whose copy lives in `design.ticket`). No `…`, no mid-word cuts.
-  `fill`: `ink` | `accent` | explicit hex; `glow` optional shadow color.
-- `kicker`: `{text, style: 'pill'|'overline', y?, at?}` or null.
+  `fill`: any palette alias (`ink/accent/accent2/bg/…`) or explicit
+  color (`#rgb/#rrggbb/#rrggbbaa/rgba()/hsl()/hsla()`); `glow` optional shadow color.
+- `kicker`: `{text, style: 'pill'|'overline'|'custom'|…, y?, at?, x?, face?, size?}` or null.
   Pills auto-size from measured ink (you never set widths).
 - Layouts: `giant` (kinetic shout) · `lower3rd` (+ optional
   `design.numeral`) · `poster` (`design.frame`) · `ticket`
   (`design.ticket: {title, sub, x, y, w, h, rotation, rule?}`) ·
   `takeover` (`design.veil`, `cta`, `ctaAt: {y, at, size?, h?, spring?}`,
-  `lockup`) · `stack` · `lowtitle`. Unknown layouts throw.
+  `lockup`) · `stack` · `lowtitle` · **`free`/`custom`/any invented name
+  under a free system (no preset builder; compose from `nodes` + `subjects`
+  + optional kicker/N-line title; any act may also carry additive `nodes`)**.
+  Unknown layouts throw ONLY under preset systems.
+- `role`: preset `hook|proof|proof2|scale|cta`, or any custom label.
+- `title.lines`: 1–2 on presets (0 for `ticket`); 0–8 or omitted on free.
+- Transitions accept optional `duration` (2–60, default 12) + `easing`.
 - Subjects: `footage {clip, zoom?, tint?}` · `flipbook {cast, box,
   srcPrefix, order?, rate?, hold?, at?, x, y}` (x accepts
   `{from, to, at}` motion; rests must be integers) ·
-  `icons {mode: chip|trio|strip, icons[1–3], at, r?, entranceAt?}` ·
+  `icons {mode: chip|trio|strip, icons[1–8], at, r?, entranceAt?}` ·
   `emblem {mark, at, r?}` · `ticker {items, y?, at?}` ·
-  `props {items: [{src, box, x, y, at?, float?}]}`.
+  `props {items: [{src, box, x, y, at?, float?}]}` ·
+  **`raw {nodes}` (arbitrary engine fragments, any layout)**.
+- FreeNode power (§1.9 of the guide): `skewX/skewY` 2.5D tilt (number or
+  binding) · `layout: {direction:'row'|'column', gap?, align?, padding?}`
+  flex stacking · `width/height/radius/filter/blur/backdropBlur` all
+  animatable (focus pulls, growing bars, breathing geometry) ·
+  generative `particles {count, seed, colors, size, area}` and
+  `scene3d {camera, objects:[box|plane|points]}` ·
+  `components` + `{use, slots}` reuse.
+- `overlays`: full-reel fragments (global-frame bindings) for persistent
+  chrome, shared-element flies across cuts, watermarks. Painted above acts.
 - `titleSize/titleY/subY/subAt`, `badge: false` to drop the badge,
+  `chrome: false` / `grain: false` to drop progress bar / grain,
   `audio.stingers: 'cuts'` (whooshes at boundaries) or explicit frames.
-- Palette/face values must be real (hex/rgba, vendored families §4).
+- Palette/face values must be real (hex/rgba/hsl or palette alias;
+  verbatim Google Fonts families — any family auto-installs, §4).
 
 ## 4. Faces doctrine (read twice)
 
@@ -120,12 +149,11 @@ Field rules (the validator enforces all of this — read it as law):
 - **kicker** = labels that TAG (kickers, overlines, numerals, tickers,
   lockups, ticket heads).
 - Shipped pairing: Poppins-700 tagging + Inter-800/500 talking.
-- Vendored today: Inter 400–800, Poppins 600–800, NotoDev-700 (Hindi),
-  Playfair Italic (quotes), **Rozha One (display serif, Latin +
-  Devanagari — downloaded, NOT yet wired into any layout: set
-  `faces.display: "Rozha"` only after confirming registration in the
-  render script, otherwise the engine falls back silently in metrics
-  but loudly in spirit — ask the implementer to confirm)**.
+- **Any Google Fonts family auto-installs** at job start when a spec names
+  it (verbatim API name: `"Rozha One"`, never `"RozhaOne"`; pinned by
+  sha256, offline after). If a render throws an unknown-family error, the
+  fetch failed — fix the spelling, never work around it with a fallback
+  family.
 - Never one family for everything. Record `pairingWhy` per reel.
 
 ## 5. Clipart doctrine (placement + purpose)
@@ -148,9 +176,10 @@ band, or takeover veil, it gets ZERO chips — restraint is a layout.
 ## 6. Sprites (your flow, unchanged)
 
 1. Cast list first (who, doing what, per act, at what scale).
-2. User supplies ONE sheet: `examples/sprite-reel/sprite-sheet-TEMPLATE.png`
-   (5×5, 256px cells, 6px grid, flat `#FF00FF`, feet y=232, guides
-   hidden on export, row = character, cols = cycle).
+2. User supplies ONE sheet (template geometry, PART 2 of the
+   GENERATION-GUIDE: 5 columns × 1–8 rows, 256px cells, 6px grid,
+   flat `#FF00FF`, feet y≈232, guides hidden on export, cast rows =
+   cycle frames, prop rows = single-frame art).
 3. Engine ingests to `Name-0…4.png` (slice → key → trim →
    feet-aligned normalize). Flipbooks reference
    `{cast, box, srcPrefix}`; single props go in `subjects` as `props`.
@@ -177,8 +206,11 @@ Same JSON (+ same measure) → same plan bytes, locked by 10 package
 tests. Invalid JSON throws loudly with the exact field at fault —
 a bad plan never renders broken, it doesn't render.
 
-Hard limits (plan around, never against): 540×960@30 only; manual x/y
-(no flex); static font instances; gradient stops don't animate; short
+Hard limits (plan around, never against): canvas within 270–1080 ×
+480–1920 @ 24|25|30|60; static font instances; gradient stops don't
+animate (animate whole fills via `color` bindings); short
 clips need `loop: "pingpong"`; decode-all media (~10s footage max);
-unknown layouts/subjects/colors throw. The engine guesses nothing —
-and neither do you.
+unknown engine primitives (node types, effect names, layout names under
+preset systems) throw. Arrangements are yours to invent —
+the engine guesses nothing — and neither do you. Templates are optional:
+prove novelty with `free` acts when no preset fits.

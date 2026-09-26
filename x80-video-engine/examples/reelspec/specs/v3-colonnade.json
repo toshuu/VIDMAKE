@@ -1,0 +1,69 @@
+{
+  "id": "v3-colonnade",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "colonnade",
+  "concept": {
+    "palette": { "bg": "#0d0a08", "ink": "#f7ead9", "accent": "#e2725b", "accent2": "#f2c14e", "pillBg": "#211410", "pillFg": "#f7ead9" },
+    "faces": { "display": "Inter", "hero": "Inter", "kicker": "Poppins" },
+    "signature": "a foggy colonnade receding to one lit arch",
+    "signatureWhy": "cylinders + cones + fog depth + wire survey — perspective etude, no preset"
+  },
+  "durations": [60, 60],
+  "transitions": [{ "type": "fade", "duration": 16 }],
+  "acts": [
+    {
+      "role": "avenue",
+      "duration": 60,
+      "layout": "avenue",
+      "badge": false,
+      "nodes": [
+        { "id": "ground", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        {
+          "id": "hall", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 700, "tiltX": 6, "tiltY": 0, "fov": 62 },
+          "light": { "dir": [0.35, -0.65, 0.68], "ambient": 0.48 },
+          "fog": { "color": "bg", "near": -350, "far": 520 },
+          "objects": [
+            { "kind": "plane", "x": 0, "y": 260, "z": 0, "w": 520, "h": 200, "color": "#241a10" },
+            { "kind": "cylinder", "x": -150, "y": 60, "z": 120, "w": 90, "h": 320, "seg": 12, "color": "#a0805e" },
+            { "kind": "cone", "x": -150, "y": -140, "z": 120, "w": 110, "h": 90, "seg": 12, "color": "accent2" },
+            { "kind": "cylinder", "x": 150, "y": 60, "z": 120, "w": 90, "h": 320, "seg": 12, "color": "#a0805e" },
+            { "kind": "cone", "x": 150, "y": -140, "z": 120, "w": 110, "h": 90, "seg": 12, "color": "accent2" },
+            { "kind": "cylinder", "x": -110, "y": 40, "z": -60, "w": 80, "h": 300, "seg": 12, "color": "#8a6f4e" },
+            { "kind": "cylinder", "x": 110, "y": 40, "z": -60, "w": 80, "h": 300, "seg": 12, "color": "#8a6f4e" },
+            { "kind": "cylinder", "x": -70, "y": 20, "z": -200, "w": 70, "h": 280, "seg": 10, "color": "#6f5940" },
+            { "kind": "cylinder", "x": 70, "y": 20, "z": -200, "w": 70, "h": 280, "seg": 10, "color": "#6f5940" },
+            { "kind": "torus", "x": 0, "y": -40, "z": -260, "w": 170, "d": 40, "seg": 14, "tub": 6, "color": "accent" },
+            { "kind": "wire", "x": 0, "y": 30, "z": 120, "w": 420, "h": 420, "d": 60, "color": "ink" }
+          ]
+        },
+        { "id": "k", "type": "text", "text": "THE LONG HALL", "fontFamily": "Poppins", "fontSize": 24, "fontWeight": 700, "letterSpacing": 8, "fill": "accent2", "x": 32, "y": 72 }
+      ]
+    },
+    {
+      "role": "arch",
+      "duration": 60,
+      "layout": "arch",
+      "badge": false,
+      "nodes": [
+        { "id": "ground", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        {
+          "id": "gate", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 520, "tiltX": 4, "tiltY": 0, "fov": 58 },
+          "light": { "dir": [0, -0.9, 0.4], "ambient": 0.35 },
+          "objects": [
+            { "kind": "cylinder", "x": -120, "y": 80, "z": 40, "w": 110, "h": 380, "seg": 12, "color": "#8a6a4f" },
+            { "kind": "cylinder", "x": 120, "y": 80, "z": 40, "w": 110, "h": 380, "seg": 12, "color": "#8a6a4f" },
+            { "kind": "torus", "x": 0, "y": -120, "z": 40, "w": 300, "d": 56, "seg": 16, "tub": 8, "color": "accent" },
+            { "kind": "sphere", "x": 0, "y": -120, "z": 40, "r": 46, "lat": 5, "lon": 10, "color": "accent2" },
+            { "kind": "points", "x": 0, "y": 200, "z": -100, "w": 480, "h": 200, "d": 200, "count": 60, "seed": 9, "color": "ink" }
+          ]
+        },
+        { "id": "hero", "type": "text", "text": "ENTER", "fontFamily": "Inter", "fontSize": { "binding": "keyframes", "frames": [0, 25, 59], "values": [40, 76, 76] }, "fontWeight": 800, "fill": "ink", "x": 32, "y": 660 },
+        { "id": "sub", "type": "text", "text": "THE ARCH REMEMBERS", "fontFamily": "Poppins", "fontSize": 20, "fontWeight": 700, "letterSpacing": 5, "fill": "accent2", "x": 32, "y": 760 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

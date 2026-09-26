@@ -1,0 +1,53 @@
+{
+  "id": "r04-hangul",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "sejong",
+  "concept": {
+    "palette": { "bg": "#f4efe4", "ink": "#191713", "accent": "#b3261e", "accent2": "#6b6455", "pillBg": "#191713", "pillFg": "#f4efe4" },
+    "faces": { "display": "Manrope", "hero": "Manrope", "kicker": "IBM Plex Mono" },
+    "signature": "geometry becomes language: strokes assemble a syllable, sealed in red",
+    "signatureWhy": "assembly strategy — jamo strokes fly together, then the royal seal stamps"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "strokes", "duration": 60, "layout": "scattered-jamo", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "j0", "type": "circle", "radius": 44, "x": 90, "y": 280, "fill": "rgba(0,0,0,0)", "stroke": "ink", "strokeWidth": 12 },
+        { "id": "j1", "type": "rect", "width": 110, "height": 16, "x": 300, "y": 300, "fill": "ink" },
+        { "id": "j2", "type": "rect", "width": 16, "height": 110, "x": 150, "y": 480, "fill": "ink" },
+        { "id": "j3", "type": "rect", "width": 110, "height": 16, "x": 320, "y": 520, "fill": "ink" },
+        { "id": "j4", "type": "circle", "radius": 30, "x": 250, "y": 640, "fill": "accent" },
+        { "id": "k", "type": "text", "text": "1443 · SCRIBES AT WORK", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "letterSpacing": 3, "fill": "accent2", "x": 32, "y": 96 }
+      ]
+    },
+    {
+      "role": "syllable", "duration": 60, "layout": "assembly", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "box", "type": "rect", "width": 340, "height": 340, "x": 100, "y": 250, "fill": "rgba(0,0,0,0)", "stroke": "accent2", "strokeWidth": 3, "opacity": 0.7 },
+        { "id": "a0", "type": "circle", "radius": 52, "x": 214, "y": 300, "fill": "rgba(0,0,0,0)", "stroke": "ink", "strokeWidth": 14, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 22], "outputRange": [0, 1] }, "index": 0, "step": 8 } },
+        { "id": "a1", "type": "rect", "width": 150, "height": 18, "x": 195, "y": 430, "fill": "ink", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 22], "outputRange": [0, 1] }, "index": 1, "step": 8 } },
+        { "id": "a2", "type": "rect", "width": 18, "height": 110, "x": 261, "y": 470, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 22], "outputRange": [0, 1] }, "index": 2, "step": 8 } },
+        { "id": "cap", "type": "text", "text": "CONSONANT + VOWEL", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "ink", "x": 0, "y": 660, "textAlign": "center", "maxWidth": 540 },
+        { "id": "cap2", "type": "text", "text": "ONE SYLLABLE, ONE BLOCK", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 400, "letterSpacing": 4, "fill": "accent2", "x": 0, "y": 700, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "decree", "duration": 60, "layout": "seal", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "line", "type": "text", "text": "READING", "fontFamily": "Manrope", "fontSize": 72, "fontWeight": 800, "fill": "ink", "x": 0, "y": 330, "textAlign": "center", "maxWidth": 540 },
+        { "id": "line2", "type": "text", "text": "FOR EVERYONE", "fontFamily": "Manrope", "fontSize": 44, "fontWeight": 600, "fill": "ink", "x": 0, "y": 420, "textAlign": "center", "maxWidth": 540 },
+        { "id": "seal", "type": "rrect", "width": 130, "height": 130, "radius": 10, "x": 205, "y": 560, "fill": "accent", "scaleX": { "binding": "spring", "from": 2.2, "to": 1, "delay": 20 }, "scaleY": { "binding": "spring", "from": 2.2, "to": 1, "delay": 20 }, "anchorX": 65, "anchorY": 65, "rotation": -8, "children": [
+          { "id": "sealin", "type": "rect", "width": 78, "height": 78, "x": 26, "y": 26, "fill": "rgba(0,0,0,0)", "stroke": "bg", "strokeWidth": 6 },
+          { "id": "sealdot", "type": "circle", "radius": 14, "x": 51, "y": 51, "fill": "bg" }
+        ] }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

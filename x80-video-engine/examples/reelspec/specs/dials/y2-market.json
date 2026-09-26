@@ -1,0 +1,63 @@
+{
+  "id": "y2-market",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "neon-crowd",
+  "concept": {
+    "palette": { "bg": "#0a0612", "ink": "#fff3e2", "accent": "#ff2e88", "accent2": "#00e5ff", "pillBg": "#1c0f24", "pillFg": "#ff2e88" },
+    "faces": { "display": "Space Grotesk", "hero": "Space Grotesk", "kicker": "IBM Plex Mono" },
+    "signature": "a neon grid bursts, then one steaming cart holds the center while the crowd keeps moving",
+    "signatureWhy": "plan: dials 9/9/7 with named cuts (bg detail sacrificed); anchor cart always largest; hard cuts only"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "none" }, { "type": "none" }],
+  "acts": [
+    {
+      "role": "slam", "duration": 60, "layout": "midnight-slam", "badge": false,
+      "nodes": [
+        { "id": "street", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "burst", "type": "container", "children": [
+          { "id": "s0", "type": "rect", "width": 200, "height": 130, "x": 40, "y": 220, "fill": "#1c0f24", "stroke": "accent", "strokeWidth": 3, "rotation": -4, "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 0, "step": 4 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 0, "step": 4 }, "anchorX": 100, "anchorY": 65 },
+          { "id": "s1", "type": "rect", "width": 150, "height": 170, "x": 270, "y": 200, "fill": "#1c0f24", "stroke": "accent2", "strokeWidth": 3, "rotation": 3, "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 1, "step": 4 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 1, "step": 4 }, "anchorX": 75, "anchorY": 85 },
+          { "id": "s2", "type": "rect", "width": 180, "height": 120, "x": 90, "y": 390, "fill": "#1c0f24", "stroke": "ink", "strokeWidth": 3, "rotation": 2, "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 2, "step": 4 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 2, "step": 4 }, "anchorX": 90, "anchorY": 60 },
+          { "id": "s3", "type": "rect", "width": 130, "height": 150, "x": 320, "y": 400, "fill": "#1c0f24", "stroke": "accent", "strokeWidth": 3, "rotation": -3, "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 3, "step": 4 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 3, "step": 4 }, "anchorX": 65, "anchorY": 75 }
+        ] },
+        { "id": "slam", "type": "text", "text": "MIDNIGHT", "fontFamily": "Space Grotesk", "fontSize": 84, "fontWeight": 700, "fill": "ink", "x": 30, "y": 620, "rotation": -2, "scaleX": { "binding": "spring", "from": 1.5, "to": 1 }, "scaleY": { "binding": "spring", "from": 1.5, "to": 1 }, "anchorX": 200, "anchorY": 40 },
+        { "id": "slam2", "type": "text", "text": "MARKET", "fontFamily": "Space Grotesk", "fontSize": 84, "fontWeight": 700, "fill": "accent", "x": 30, "y": 710, "rotation": -2 }
+      ]
+    },
+    {
+      "role": "crowd", "duration": 60, "layout": "thirty-stalls", "badge": false,
+      "nodes": [
+        { "id": "street", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "cards", "type": "container", "children": [
+          { "id": "q0", "type": "rrect", "width": 150, "height": 100, "radius": 12, "x": 30, "y": 180, "fill": "#1c0f24", "stroke": "accent2", "strokeWidth": 2, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 14], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 0, "step": 3 } },
+          { "id": "q1", "type": "rrect", "width": 150, "height": 100, "radius": 12, "x": 195, "y": 180, "fill": "#1c0f24", "stroke": "accent", "strokeWidth": 2, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 14], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 1, "step": 3 } },
+          { "id": "q2", "type": "rrect", "width": 150, "height": 100, "radius": 12, "x": 360, "y": 180, "fill": "#1c0f24", "stroke": "ink", "strokeWidth": 2, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 14], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 2, "step": 3 } },
+          { "id": "q3", "type": "rrect", "width": 150, "height": 100, "radius": 12, "x": 30, "y": 300, "fill": "#1c0f24", "stroke": "accent", "strokeWidth": 2, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 14], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 3, "step": 3 } },
+          { "id": "q4", "type": "rrect", "width": 150, "height": 100, "radius": 12, "x": 195, "y": 300, "fill": "#1c0f24", "stroke": "ink", "strokeWidth": 2, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 14], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 4, "step": 3 } },
+          { "id": "q5", "type": "rrect", "width": 150, "height": 100, "radius": 12, "x": 360, "y": 300, "fill": "#1c0f24", "stroke": "accent2", "strokeWidth": 2, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [4, 14], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 5, "step": 3 } }
+        ] },
+        { "id": "tick", "type": "text", "text": "SKEWER · BAO · TANGHULU · GRILL · NOODLE · TOFU", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 500, "letterSpacing": 1, "fill": "accent", "x": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [540, -560], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "y": 480 },
+        { "id": "cap", "type": "text", "text": "THIRTY STALLS. KEEP WALKING.", "fontFamily": "Space Grotesk", "fontSize": 30, "fontWeight": 700, "fill": "ink", "x": 30, "y": 620 }
+      ]
+    },
+    {
+      "role": "legend", "duration": 60, "layout": "dumpling-cart", "badge": false,
+      "nodes": [
+        { "id": "street", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "cart", "type": "container", "scaleX": { "binding": "interpolate", "inputRange": [0, 40], "outputRange": [0.8, 1.05], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "scaleY": { "binding": "interpolate", "inputRange": [0, 40], "outputRange": [0.8, 1.05], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "anchorX": 270, "anchorY": 450, "children": [
+          { "id": "body", "type": "rrect", "width": 300, "height": 200, "radius": 16, "x": 120, "y": 350, "fill": "#1c0f24", "stroke": "accent", "strokeWidth": 4 },
+          { "id": "awning", "type": "rect", "width": 340, "height": 40, "x": 100, "y": 310, "fill": "accent" },
+          { "id": "lamp0", "type": "circle", "radius": 14, "x": 150, "y": 290, "fill": "accent2" },
+          { "id": "lamp1", "type": "circle", "radius": 14, "x": 376, "y": 290, "fill": "accent2" },
+          { "id": "stack", "type": "shape", "shape": "ellipse", "width": 120, "height": 60, "x": 210, "y": 400, "fill": "ink", "opacity": 0.9 }
+        ] },
+        { "id": "steam", "type": "particles", "count": 30, "seed": 95, "colors": ["ink"], "size": [2, 5], "area": { "w": 220, "h": 200 }, "at": [160, 140], "twinkle": false },
+        { "id": "glow", "type": "circle", "radius": 130, "x": 140, "y": 320, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "accent" }, { "offset": 1, "color": "rgba(255,46,136,0)" }] }, "opacity": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.35, 0.6, 0.35] } },
+        { "id": "line", "type": "text", "text": "FOLLOW THE STEAM", "fontFamily": "Space Grotesk", "fontSize": 44, "fontWeight": 700, "fill": "ink", "x": 30, "y": 680 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

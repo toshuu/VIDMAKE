@@ -374,6 +374,8 @@ export class SkiaRenderer implements Renderer {
       scaleX?: number;
       scaleY?: number;
       rotation?: number;
+      skewX?: number;
+      skewY?: number;
       anchorX?: number;
       anchorY?: number;
     },
@@ -384,6 +386,8 @@ export class SkiaRenderer implements Renderer {
     const sx = transform.scaleX ?? 1;
     const sy = transform.scaleY ?? 1;
     const deg = transform.rotation ?? 0;
+    const kx = transform.skewX ?? 0;
+    const ky = transform.skewY ?? 0;
     const ax = transform.anchorX ?? 0;
     const ay = transform.anchorY ?? 0;
     ctx.translate(tx, ty);
@@ -392,6 +396,9 @@ export class SkiaRenderer implements Renderer {
     }
     if (deg !== 0) {
       ctx.rotate((deg * Math.PI) / 180);
+    }
+    if (kx !== 0 || ky !== 0) {
+      ctx.transform(1, Math.tan((ky * Math.PI) / 180), Math.tan((kx * Math.PI) / 180), 1, 0, 0);
     }
     if (sx !== 1 || sy !== 1) {
       ctx.scale(sx, sy);

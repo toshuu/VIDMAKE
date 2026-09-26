@@ -11,8 +11,10 @@ export interface ReelCanvas {
   fps: number;
 }
 
-/** Layout system. 'cinematic' and 'stack' are implemented; others throw. */
-export type ReelSystem = 'cinematic' | 'stack';
+/** Layout system. 'cinematic' and 'stack' are presets; 'free' (or any custom
+ *  system name) skips system rules — kicker-style matching, layout confinement
+ *  and mixing bans do not apply. Presets remain valid shortcuts. */
+export type ReelSystem = 'cinematic' | 'stack' | 'free' | (string & {});
 
 export interface ReelPalette {
   bg: string;
@@ -40,8 +42,9 @@ export interface ReelConcept {
   signatureWhy: string;
 }
 
-/** Built-in subject kinds. Unknown kinds throw (never guessed). */
-export type SubjectKind = 'footage' | 'flipbook' | 'icons' | 'emblem' | 'ticker' | 'props' | 'bg';
+/** Built-in subject kinds. 'raw' embeds arbitrary engine nodes (open-ended
+ *  escape hatch, usable inside ANY layout). Unknown kinds still throw. */
+export type SubjectKind = 'footage' | 'flipbook' | 'icons' | 'emblem' | 'ticker' | 'props' | 'bg' | 'raw';
 
 export interface BgSubject {
   kind: 'bg';
@@ -132,7 +135,149 @@ export type SubjectSpec =
   | EmblemSubject
   | TickerSubject
   | PropsSubject
-  | BgSubject;
+  | BgSubject
+  | RawSubject;
+
+/**
+ * OPEN-ENDED PRIMITIVES — the composition language.
+ *
+ * A FreeNode is a direct authoring handle on one engine SceneNode:
+ * any node type, arbitrary nesting via `children`, arbitrary x/y/sizing,
+ * arbitrary fills (flat | gradient | palette alias | color binding),
+ * arbitrary AnimNumber bindings on x/y/scale/rotation/opacity/fontSize/
+ * letterSpacing, plus filter/backdropBlur/blendMode/effects/clip.
+ *
+ * The planner invents layouts by composing these — presets are optional.
+ * Same JSON (+ same measure) → same plan bytes; unknown node types throw
+ * loudly instead of guessing.
+ */
+/**
+ * Motion systems (JSON forms, all frame-pure):
+ * - number: static value.
+ * - interpolate/keyframes/spring/color: core bindings (keyframes = named
+ *   multi-stop interpolate; see motion.keyframes).
+ * - path: baked Catmull-Rom (`axis`, `points`, `duration`, `samples?`) —
+ *   compiles to interpolate at plan time (motion.motionPath).
+ * - stagger: time-shifted cascade (`base`, `index`, `step`) — compiles away
+ *   (motion.stagger).
+ */
+export type AnimBinding =
+  | number
+  | {
+      binding: 'interpolate';
+      inputRange: number[];
+      outputRange: number[];
+      options?: {
+        extrapolateLeft?: 'clamp' | 'extend' | 'wrap' | 'identity';
+        extrapolateRight?: 'clamp' | 'extend' | 'wrap' | 'identity';
+        easing?: unknown;
+      };
+    }
+  | {
+      binding: 'keyframes';
+      frames: number[];
+      values: number[];
+      options?: {
+        extrapolateLeft?: 'clamp' | 'extend' | 'wrap' | 'identity';
+        extrapolateRight?: 'clamp' | 'extend' | 'wrap' | 'identity';
+        easing?: unknown;
+      };
+    }
+  | {
+      binding: 'path';
+      axis: 'x' | 'y';
+      points: Array<[number, number]>;
+      duration: number;
+      samples?: number;
+    }
+  | {
+      binding: 'stagger';
+      base: AnimBinding;
+      index: number;
+      step: number;
+    }
+  | {
+      binding: 'spring';
+      from?: number;
+      to?: number;
+      [k: string]: unknown;
+    }
+  | { binding: 'color'; inputRange: number[]; colorStops: string[] };
+
+export interface GradientStopSpec {
+  offset: number;
+  color: string;
+}
+
+export type FreeFill =
+  | string
+  | { kind: 'linear'; angle?: number; stops: GradientStopSpec[] }
+  | { kind: 'radial'; cx?: number; cy?: number; inner?: number; outer?: number; stops: GradientStopSpec[] }
+  | { kind: 'conic'; angle?: number; cx?: number; cy?: number; stops: GradientStopSpec[] }
+  | { binding: 'color'; inputRange: number[]; colorStops: string[] };
+
+export interface FreeNode {
+  id: string;
+  type:
+    | 'container'
+    | 'group'
+    | 'rect'
+    | 'rrect'
+    | 'circle'
+    | 'path'
+    | 'svg'
+    | 'text'
+    | 'caption'
+    | 'image'
+    | 'video'
+    | 'shape'
+    | 'mask'
+    | 'effectLayer'
+    | 'particles'
+    | 'scene3d';
+  x?: AnimBinding;
+  y?: AnimBinding;
+  scaleX?: AnimBinding;
+  scaleY?: AnimBinding;
+  rotation?: AnimBinding;
+  /** 2.5D tilt in degrees (shear). Frame-pure; unlocks cards/covers/depth without GL. */
+  skewX?: AnimBinding;
+  skewY?: AnimBinding;
+  /** Measure-free flex stacking for container/group: planner invents rows/cols without manual math. */
+  layout?: {
+    direction: 'row' | 'column';
+    gap?: number;
+    align?: 'start' | 'center' | 'end';
+    padding?: number;
+  };
+  /** Instantiate a spec-level component (see ReelSpec.components) with optional overrides. */
+  use?: string;
+  /** Kinetic geometry (rect/rrect/circle/image/video): plain number or binding. */
+  width?: AnimBinding;
+  height?: AnimBinding;
+  radius?: AnimBinding | [number, number, number, number];
+  anchorX?: number;
+  anchorY?: number;
+  opacity?: AnimBinding;
+  visible?: boolean;
+  blendMode?: string;
+  clip?: { x: number; y: number; width: number; height: number; radius?: number | [number, number, number, number] };
+  crop?: { x: number; y: number; width: number; height: number; radius?: number | [number, number, number, number] };
+  /** Every field animatable (number or binding): focus pulls, grade shifts, blur reveals. */
+  filter?: { blur?: AnimBinding; brightness?: AnimBinding; contrast?: AnimBinding; saturate?: AnimBinding; grayscale?: AnimBinding };
+  /** Blur radius in px; accepts a binding for blur reveals. */
+  backdropBlur?: AnimBinding;
+  effects?: Array<{ type: string; params?: Record<string, unknown>; disabled?: boolean }>;
+  children?: FreeNode[];
+  [k: string]: unknown;
+}
+
+/** Embed arbitrary scene fragments inside any act's subjects. */
+export interface RawSubject {
+  kind: 'raw';
+  /** One fragment or a list — compiled verbatim (ids namespaced per act). */
+  nodes: FreeNode | FreeNode[];
+}
 
 export interface TitleLine {
   text: string;
@@ -156,8 +301,11 @@ export interface ActTitle {
 }
 
 /**
- * Layout per act. Cinematic: giant | lower3rd | poster | ticket | takeover.
- * Stack: stack | lowtitle. Unknown layouts throw.
+ * Layout per act. The 7 named values are PRESETS (reusable shortcuts).
+ * 'free' (alias 'custom') means: no preset builder runs — the act is
+ * composed from `nodes` + `subjects` (+ optional kicker/title atoms).
+ * Any act (preset or free) may also carry `nodes` as additive extras.
+ * Unknown layout strings still throw.
  */
 export type LayoutKind =
   | 'giant'
@@ -166,27 +314,38 @@ export type LayoutKind =
   | 'ticket'
   | 'takeover'
   | 'stack'
-  | 'lowtitle';
+  | 'lowtitle'
+  | 'free'
+  | 'custom';
 
 export interface KickerSpec {
   text: string;
-  /** 'pill' (stack system) or 'overline' (cinematic, no pill). */
-  style: 'pill' | 'overline';
+  /** 'pill' | 'overline' are presets. 'custom' (or any name under a free
+   *  system) renders the same overline atom with free y/at/x/face —
+   *  positioning is the planner's, not the system's. */
+  style: 'pill' | 'overline' | 'custom' | (string & {});
   y?: number;
   at?: number;
   x?: number;
   /** Kicker-level family override (verbatim Google Fonts name). */
   face?: string;
+  size?: number;
+  letterSpacing?: number;
 }
 
 export interface ActSpec {
-  role: 'hook' | 'proof' | 'proof2' | 'scale' | 'cta';
+  /** Planning label. hook/proof/proof2/scale/cta are presets — any
+   *  non-empty string is valid (e.g. 'montage', 'bridge', 'reveal'). */
+  role: string;
   /** Frames; the sum is the reel duration. */
   duration: number;
   layout: LayoutKind;
   /** Null = none (poster/takeover carry their own tags). */
   kicker?: KickerSpec | null;
-  title: ActTitle;
+  /** Required for presets (1–2 lines; ticket: 0). Optional for free —
+   *  free acts may carry 0–8 lines or omit title entirely when `nodes`
+   *  carry the typography. */
+  title?: ActTitle;
   /** Centered quote/title treatment (poster/takeover/quote). */
   center?: boolean;
   /** Title block size/maxW override; sub Y/At override. */
@@ -204,6 +363,13 @@ export interface ActSpec {
   lockup?: string | null;
   /** n/5 badge. Default true. */
   badge?: boolean;
+  /**
+   * OPEN COMPOSITION — arbitrary scene fragments for this act.
+   * Allowed on ANY layout (additive extras on presets; the whole
+   * composition on 'free'/'custom'). planners invent nesting, positions,
+   * type arrangements, animation bindings, effects and blends here.
+   */
+  nodes?: FreeNode | FreeNode[];
   design?: {
     /** lower3rd: ghost numeral. */
     numeral?: string;
@@ -221,6 +387,11 @@ export interface ActSpec {
 export interface TransitionSpec {
   type: string;
   params?: Record<string, string | number | boolean>;
+  /** Blend length in frames (default 12, allowed 6–30). Variable lengths
+   *  give the planner arbitrary timing/sequencing without breaking the
+   *  deterministic montage pattern. */
+  duration?: number;
+  easing?: string;
 }
 
 export interface ReelSpec {
@@ -228,10 +399,39 @@ export interface ReelSpec {
   canvas: ReelCanvas;
   system: ReelSystem;
   concept: ReelConcept;
+  /**
+   * Variables for reuse without templates: `{{name}}` in any string field
+   * (titles, fills, src, text) resolves before compile. Pure substitution —
+   * same JSON -> same plan. Unknown `{{names}}` throw loudly.
+   */
+  vars?: Record<string, string | number>;
+  /**
+   * Nested sub-compositions: named VideoPlan fragments (acts as data) the AI
+   * composes once and references from multiple acts via components/use.
+   * Identical to inlining; no new renderer keywords.
+   */
+  subcomps?: Record<string, FreeNode | FreeNode[]>;
   /** Per-act frames; length === acts.length. */
   durations: number[];
   /** Length === acts.length - 1. Empty = hard cuts + whooshes. */
   transitions: TransitionSpec[];
   acts: ActSpec[];
   audio?: { stingers?: 'cuts' | number[] };
+  /** Progress-bar chrome (default true). Set false when the AI invents its own chrome. */
+  chrome?: boolean;
+  /** Film-grain overlay (default true). Set false for clean vector looks. */
+  grain?: boolean;
+  /**
+   * Reusable fragments the AI defines once and instantiates with `{use: name}`.
+   * Composition aid, never a capability boundary — identical to inlining.
+   */
+  components?: Record<string, FreeNode | FreeNode[]>;
+  /**
+   * Full-reel overlay fragments (persistent chrome, shared-element flies
+   * across cuts, watermarks). Compiled into one container spanning the
+   * whole reel: bindings address GLOBAL frames (not act-local), so an
+   * element can travel from act A's position to act B's across a cut.
+   * Painted above acts, below the progress chrome.
+   */
+  overlays?: FreeNode | FreeNode[];
 }

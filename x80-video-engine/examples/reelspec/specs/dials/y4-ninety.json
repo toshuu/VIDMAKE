@@ -1,0 +1,54 @@
+{
+  "id": "y4-ninety",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "held-breath",
+  "concept": {
+    "palette": { "bg": "#efe9dc", "ink": "#2a2620", "accent": "#b3761a", "accent2": "#7a7264", "pillBg": "#2a2620", "pillFg": "#efe9dc" },
+    "faces": { "display": "Manrope", "hero": "Manrope", "kicker": "IBM Plex Mono" },
+    "signature": "one window, three lights of day, almost nothing moves",
+    "signatureWhy": "plan: motion dial 2 honored — stillness IS the message; memorial symmetry chosen, not defaulted"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "dawn", "duration": 60, "layout": "chair", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "win", "type": "rect", "width": 300, "height": 380, "x": 120, "y": 220, "fill": "#e3d3ae" },
+        { "id": "pane0", "type": "rect", "width": 300, "height": 8, "x": 120, "y": 404, "fill": "ink", "opacity": 0.7 },
+        { "id": "pane1", "type": "rect", "width": 8, "height": 380, "x": 266, "y": 220, "fill": "ink", "opacity": 0.7 },
+        { "id": "seat", "type": "rect", "width": 150, "height": 26, "x": 195, "y": 660, "fill": "ink", "opacity": 0.85 },
+        { "id": "back", "type": "rect", "width": 26, "height": 130, "x": 195, "y": 536, "fill": "ink", "opacity": 0.85 },
+        { "id": "line", "type": "text", "text": "SHE WAS NINE", "fontFamily": "Manrope", "fontSize": 40, "fontWeight": 600, "fill": "ink", "x": 0, "y": 760, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [10, 30], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } }
+      ]
+    },
+    {
+      "role": "noon", "duration": 60, "layout": "table-set", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "win", "type": "rect", "width": 260, "height": 320, "x": 140, "y": 250, "fill": "#e9dcc0" },
+        { "id": "pane0", "type": "rect", "width": 260, "height": 6, "x": 140, "y": 404, "fill": "ink", "opacity": 0.5 },
+        { "id": "pane1", "type": "rect", "width": 6, "height": 320, "x": 267, "y": 250, "fill": "ink", "opacity": 0.5 },
+        { "id": "table", "type": "rect", "width": 380, "height": 22, "x": 80, "y": 660, "fill": "ink", "opacity": 0.85 },
+        { "id": "plate0", "type": "shape", "shape": "ellipse", "width": 90, "height": 90, "x": 150, "y": 545, "fill": "bg", "stroke": "ink", "strokeWidth": 4, "opacity": { "binding": "interpolate", "inputRange": [12, 30], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } },
+        { "id": "plate1", "type": "shape", "shape": "ellipse", "width": 90, "height": 90, "x": 300, "y": 545, "fill": "bg", "stroke": "ink", "strokeWidth": 4, "opacity": { "binding": "interpolate", "inputRange": [22, 40], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } },
+        { "id": "line", "type": "text", "text": "THEN TWO PLATES", "fontFamily": "Manrope", "fontSize": 40, "fontWeight": 600, "fill": "ink", "x": 0, "y": 760, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [30, 46], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } }
+      ]
+    },
+    {
+      "role": "dusk", "duration": 60, "layout": "lamp", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "#e2d3b8" },
+        { "id": "win", "type": "rect", "width": 300, "height": 380, "x": 120, "y": 220, "fill": "#c98f3d" },
+        { "id": "pane0", "type": "rect", "width": 300, "height": 8, "x": 120, "y": 404, "fill": "ink", "opacity": 0.7 },
+        { "id": "pane1", "type": "rect", "width": 8, "height": 380, "x": 266, "y": 220, "fill": "ink", "opacity": 0.7 },
+        { "id": "lamp", "type": "circle", "radius": 26, "x": 244, "y": 620, "fill": "accent", "opacity": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.75, 1, 0.75] }, "shadow": { "color": "rgba(179,118,26,0.7)", "blur": 30 } },
+        { "id": "line", "type": "text", "text": "NINETY YEARS.", "fontFamily": "Manrope", "fontSize": 44, "fontWeight": 800, "fill": "ink", "x": 0, "y": 730, "textAlign": "center", "maxWidth": 540 },
+        { "id": "line2", "type": "text", "text": "STILL THE TABLE.", "fontFamily": "Manrope", "fontSize": 32, "fontWeight": 600, "fill": "ink", "x": 0, "y": 786, "textAlign": "center", "maxWidth": 540, "opacity": 0.85 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

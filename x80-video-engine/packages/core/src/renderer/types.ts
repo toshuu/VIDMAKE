@@ -150,6 +150,8 @@ export interface Renderer {
       scaleX?: number;
       scaleY?: number;
       rotation?: number;
+      skewX?: number;
+      skewY?: number;
       anchorX?: number;
       anchorY?: number;
     },

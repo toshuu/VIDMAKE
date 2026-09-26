@@ -1,0 +1,61 @@
+{
+  "id": "t07-kyoto",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "path",
+  "concept": {
+    "palette": { "bg": "#cfd8dd", "ink": "#26313a", "accent": "#c73e1d", "accent2": "#5d6f7a", "pillBg": "#26313a", "pillFg": "#f2e8dc" },
+    "faces": { "display": "Manrope", "hero": "Manrope", "kicker": "IBM Plex Mono" },
+    "signature": "walking through the gate: three depths slide at three speeds",
+    "signatureWhy": "parallax-journey strategy — depth-separated lateral drift, push-through gate"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "slide", "params": { "direction": "left" } }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "approach", "duration": 60, "layout": "far-gate", "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#e8eef1" }, { "offset": 0.6, "color": "bg" }, { "offset": 1, "color": "#aebfc9" }] } },
+        { "id": "far", "type": "container", "x": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0, -40] }, "children": [
+          { "id": "m0", "type": "shape", "shape": "polygon", "width": 300, "height": 200, "points": 3, "x": -40, "y": 380, "fill": "accent2", "opacity": 0.45 },
+          { "id": "m1", "type": "shape", "shape": "polygon", "width": 340, "height": 230, "points": 3, "x": 240, "y": 360, "fill": "accent2", "opacity": 0.4 }
+        ] },
+        { "id": "mid", "type": "container", "x": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0, -110] }, "children": [
+          { "id": "sun", "type": "circle", "radius": 60, "x": 330, "y": 330, "fill": "#f2e8dc", "opacity": 0.9 }
+        ] },
+        { "id": "near", "type": "container", "x": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0, -220] }, "children": [
+          { "id": "p0", "type": "rect", "width": 34, "height": 300, "x": 150, "y": 420, "fill": "accent" },
+          { "id": "p1", "type": "rect", "width": 34, "height": 300, "x": 356, "y": 420, "fill": "accent" },
+          { "id": "beam0", "type": "rect", "width": 330, "height": 26, "x": 105, "y": 400, "fill": "accent" },
+          { "id": "beam1", "type": "rect", "width": 270, "height": 18, "x": 135, "y": 452, "fill": "accent" }
+        ] },
+        { "id": "k", "type": "text", "text": "KYOTO · AUTUMN", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 5, "fill": "ink", "x": 32, "y": 96 }
+      ]
+    },
+    {
+      "role": "through", "duration": 60, "layout": "passage", "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#e8eef1" }, { "offset": 1, "color": "#b9c7d1" }] } },
+        { "id": "gate", "type": "container", "opacity": { "binding": "interpolate", "inputRange": [30, 55], "outputRange": [1, 0] }, "children": [
+          { "id": "p0", "type": "rect", "width": 60, "height": 560, "x": { "binding": "keyframes", "frames": [0, 59], "values": [120, -160] }, "y": 260, "fill": "accent" },
+          { "id": "p1", "type": "rect", "width": 60, "height": 560, "x": { "binding": "keyframes", "frames": [0, 59], "values": [360, 640] }, "y": 260, "fill": "accent" },
+          { "id": "beam", "type": "rect", "width": 640, "height": 44, "x": -50, "y": 230, "fill": "accent" }
+        ] },
+        { "id": "leaves", "type": "particles", "count": 46, "seed": 12, "colors": ["accent", "#d4691e"], "size": [2, 5], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": false },
+        { "id": "line", "type": "text", "text": "PASS UNDER", "fontFamily": "Manrope", "fontSize": 44, "fontWeight": 800, "fill": "ink", "x": 0, "y": 780, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "temple", "duration": 60, "layout": "arrival", "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#f2dfc8" }, { "offset": 0.55, "color": "#d9a05f" }, { "offset": 1, "color": "#7d4a2d" }] } },
+        { "id": "sun", "type": "circle", "radius": 74, "x": 196, "y": 380, "fill": "#f7ecd9" },
+        { "id": "roof", "type": "shape", "shape": "polygon", "width": 420, "height": 120, "points": 3, "x": 60, "y": 520, "fill": "ink", "rotation": 180 },
+        { "id": "hall", "type": "rect", "width": 300, "height": 180, "x": 120, "y": 620, "fill": "ink" },
+        { "id": "glow", "type": "rect", "width": 60, "height": 120, "x": 240, "y": 650, "fill": "accent2", "opacity": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.5, 1, 0.6] } },
+        { "id": "hero", "type": "text", "text": "STAY A WHILE", "fontFamily": "Manrope", "fontSize": 52, "fontWeight": 800, "fill": "ink", "x": 0, "y": 120, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": true,
+  "grain": false
+}

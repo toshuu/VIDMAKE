@@ -1,0 +1,61 @@
+{
+  "id": "t03-descent",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "trench",
+  "concept": {
+    "palette": { "bg": "#04121f", "ink": "#d7f0ff", "accent": "#38e1c6", "accent2": "#8fb8ff", "pillBg": "#0a2136", "pillFg": "#38e1c6" },
+    "faces": { "display": "Manrope", "hero": "Manrope", "kicker": "IBM Plex Mono" },
+    "signature": "one continuous dive: content drifts up as light dies",
+    "signatureWhy": "vertical-scroll strategy — descent pacing, dimming grade, rising particle density"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "sunlight", "duration": 60, "layout": "epipelagic", "badge": false,
+      "nodes": [
+        { "id": "sea", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#0e3a5c" }, { "offset": 1, "color": "bg" }] } },
+        { "id": "rays", "type": "rect", "width": 90, "height": 700, "x": 120, "y": -40, "rotation": 18, "fill": "#8fb8ff", "opacity": 0.16 },
+        { "id": "rays2", "type": "rect", "width": 60, "height": 700, "x": 330, "y": -40, "rotation": 18, "fill": "#8fb8ff", "opacity": 0.12 },
+        { "id": "school", "type": "container", "y": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [120, -60] }, "children": [
+          { "id": "f0", "type": "shape", "shape": "ellipse", "width": 70, "height": 34, "x": 90, "y": 420, "fill": "accent2", "opacity": 0.9 },
+          { "id": "f1", "type": "shape", "shape": "ellipse", "width": 54, "height": 28, "x": 200, "y": 470, "fill": "accent2", "opacity": 0.8 },
+          { "id": "f2", "type": "shape", "shape": "ellipse", "width": 62, "height": 30, "x": 320, "y": 440, "fill": "accent2", "opacity": 0.85 }
+        ] },
+        { "id": "depth", "type": "text", "text": "200M", "fontFamily": "Manrope", "fontSize": 120, "fontWeight": 800, "fill": "ink", "x": 32, "y": 620, "opacity": 0.95 },
+        { "id": "zone", "type": "text", "text": "SUNLIGHT ZONE", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 5, "fill": "accent", "x": 34, "y": 760 }
+      ]
+    },
+    {
+      "role": "twilight", "duration": 60, "layout": "mesopelagic", "badge": false,
+      "nodes": [
+        { "id": "sea", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "#06121f" },
+        { "id": "drift", "type": "container", "y": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [80, -80] }, "children": [
+          { "id": "jelly", "type": "shape", "shape": "ellipse", "width": 130, "height": 90, "x": 200, "y": 330, "fill": "accent", "opacity": 0.75 },
+          { "id": "tent1", "type": "rect", "width": 6, "height": 130, "x": 240, "y": 420, "fill": "accent", "opacity": 0.5 },
+          { "id": "tent2", "type": "rect", "width": 6, "height": 110, "x": 290, "y": 420, "fill": "accent", "opacity": 0.5 },
+          { "id": "eye", "type": "circle", "radius": 44, "x": 380, "y": 560, "fill": "rgba(0,0,0,0)", "stroke": "accent2", "strokeWidth": 3, "opacity": 0.8 }
+        ] },
+        { "id": "glow", "type": "particles", "count": 40, "seed": 8, "colors": ["accent", "#ffffff"], "size": [1, 3], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": true },
+        { "id": "depth", "type": "text", "text": "1000M", "fontFamily": "Manrope", "fontSize": 120, "fontWeight": 800, "fill": "ink", "x": 32, "y": 660, "opacity": 0.9 },
+        { "id": "zone", "type": "text", "text": "TWILIGHT · LAST LIGHT", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "accent", "x": 34, "y": 800 }
+      ]
+    },
+    {
+      "role": "midnight", "duration": 60, "layout": "bathypelagic", "badge": false,
+      "nodes": [
+        { "id": "sea", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "#010507" },
+        { "id": "swarm", "type": "particles", "count": 120, "seed": 21, "colors": ["accent", "accent2", "#ffffff"], "size": [1, 3], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": true },
+        { "id": "angler", "type": "container", "y": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [60, -40] }, "children": [
+          { "id": "body", "type": "shape", "shape": "ellipse", "width": 170, "height": 110, "x": 180, "y": 380, "fill": "#0d2233" },
+          { "id": "jaw", "type": "shape", "shape": "polygon", "width": 90, "height": 60, "points": 3, "x": 330, "y": 400, "fill": "#0d2233", "rotation": 90 },
+          { "id": "lure", "type": "circle", "radius": 12, "x": 300, "y": 330, "fill": "accent", "opacity": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [0.4, 1, 0.4, 1, 0.4] } }
+        ] },
+        { "id": "depth", "type": "text", "text": "4000M", "fontFamily": "Manrope", "fontSize": 120, "fontWeight": 800, "fill": "ink", "x": 32, "y": 640, "opacity": 0.85 },
+        { "id": "zone", "type": "text", "text": "MIDNIGHT · NO SUN", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "accent", "x": 34, "y": 780 }
+      ]
+    }
+  ],
+  "chrome": true,
+  "grain": false
+}

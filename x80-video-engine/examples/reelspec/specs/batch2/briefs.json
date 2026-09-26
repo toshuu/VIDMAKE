@@ -1,0 +1,63 @@
+{
+  "_note": "ROUND 2 BRIEFS. Each entry is the ENTIRE input the planner gets: category + natural-language brief only. No palette, layout, shots, type, motion, or media direction — the planner decides the full visual language (typography, shapes, 2D motion, 3D, images, footage, icons, diagrams) per brief.",
+  "r01-europa": {
+    "category": "space",
+    "brief": "NASA's Europa Clipper is flying to an ice-covered moon with a hidden ocean. Make space nerds feel the anticipation."
+  },
+  "r02-blue-hour": {
+    "category": "music",
+    "brief": "Teaser for Blue Hour, a late-night jazz trio's new album. Make someone who never listens to jazz press play."
+  },
+  "r03-brutalism": {
+    "category": "architecture",
+    "brief": "Defend Brutalist concrete architecture to people who think it's ugly. Change one mind."
+  },
+  "r04-hangul": {
+    "category": "language",
+    "brief": "Tell the story of King Sejong inventing the Korean alphabet so commoners could read. A history short for curious teens."
+  },
+  "r05-sleep": {
+    "category": "health",
+    "brief": "Explain why the first half of the night matters most for deep sleep. A health short for chronic scrollers."
+  },
+  "r06-wolves": {
+    "category": "nature",
+    "brief": "Yellowstone brought wolves back and the rivers changed. Make the case for rewilding to skeptics."
+  },
+  "r07-shutdown": {
+    "category": "business",
+    "brief": "A founder shut down her startup after three years. Turn the postmortem into the most useful seconds of another founder's week."
+  },
+  "r08-final-move": {
+    "category": "mind-sport",
+    "brief": "World championship, final game, one move decides everything. Make non-chess fans feel the tension."
+  },
+  "r09-dreams": {
+    "category": "kids",
+    "brief": "Why do we dream? Answer it for an eight-year-old — scientifically true, but magical."
+  },
+  "r10-capsule": {
+    "category": "fashion",
+    "brief": "Five pieces, thirty outfits. Convince a maximalist to try a capsule wardrobe."
+  },
+  "r11-cabin": {
+    "category": "property",
+    "brief": "An off-grid cabin in the pines, no road access in winter. Find it the right buyer, not the most buyers."
+  },
+  "r12-plastic": {
+    "category": "cause",
+    "brief": "Eight million tons of plastic enter the ocean every year. Turn guilt into one concrete action."
+  },
+  "r13-permadeath": {
+    "category": "gaming",
+    "brief": "An indie roguelike where you die every ten minutes — on purpose. Hype the launch for skeptical scrollers."
+  },
+  "r14-theseus": {
+    "category": "philosophy",
+    "brief": "If every plank of a ship is replaced, is it still the same ship? A teaser that starts arguments."
+  },
+  "r15-skyborn": {
+    "category": "data",
+    "brief": "What did the sky look like the day you were born? Invite someone to find their birth sky."
+  }
+}

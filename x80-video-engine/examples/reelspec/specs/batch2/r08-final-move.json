@@ -1,0 +1,58 @@
+{
+  "id": "r08-final-move",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "sixty-four",
+  "concept": {
+    "palette": { "bg": "#0c0b09", "ink": "#efe9dc", "accent": "#c8102e", "accent2": "#8a8378", "pillBg": "#1a1712", "pillFg": "#c8102e" },
+    "faces": { "display": "Rozha One", "hero": "Rozha One", "kicker": "IBM Plex Mono" },
+    "signature": "a board edge, a dying clock, one glowing move, a shake",
+    "signatureWhy": "tension strategy — countdown numerals, arrow strike, board-shake impact"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "none" }],
+  "acts": [
+    {
+      "role": "position", "duration": 60, "layout": "board-edge", "badge": false,
+      "nodes": [
+        { "id": "felt", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "board", "type": "container", "children": [
+          { "id": "q0", "type": "rect", "width": 110, "height": 110, "x": 50, "y": 330, "fill": "#241f18" },
+          { "id": "q1", "type": "rect", "width": 110, "height": 110, "x": 160, "y": 330, "fill": "ink" },
+          { "id": "q2", "type": "rect", "width": 110, "height": 110, "x": 270, "y": 330, "fill": "#241f18" },
+          { "id": "q3", "type": "rect", "width": 110, "height": 110, "x": 380, "y": 330, "fill": "ink" },
+          { "id": "q4", "type": "rect", "width": 110, "height": 110, "x": 50, "y": 440, "fill": "ink" },
+          { "id": "q5", "type": "rect", "width": 110, "height": 110, "x": 160, "y": 440, "fill": "#241f18" },
+          { "id": "q6", "type": "rect", "width": 110, "height": 110, "x": 270, "y": 440, "fill": "ink" },
+          { "id": "q7", "type": "rect", "width": 110, "height": 110, "x": 380, "y": 440, "fill": "#241f18" },
+          { "id": "wk", "type": "circle", "radius": 34, "x": 193, "y": 353, "fill": "ink", "stroke": "accent", "strokeWidth": 4 },
+          { "id": "bk", "type": "circle", "radius": 34, "x": 303, "y": 463, "fill": "#241f18", "stroke": "accent", "strokeWidth": 4 }
+        ] },
+        { "id": "k", "type": "text", "text": "GAME 14 · DECISIVE", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "accent2", "x": 50, "y": 250 }
+      ]
+    },
+    {
+      "role": "clock", "duration": 60, "layout": "flag-fall", "badge": false,
+      "nodes": [
+        { "id": "felt", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "c0", "type": "text", "text": "0:09", "fontFamily": "IBM Plex Mono", "fontSize": 120, "fontWeight": 700, "fill": "ink", "x": 0, "y": 380, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [0, 8], "outputRange": [1, 1] } },
+        { "id": "c1", "type": "text", "text": "0:03", "fontFamily": "IBM Plex Mono", "fontSize": 150, "fontWeight": 700, "fill": "accent2", "x": 0, "y": 365, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "keyframes", "frames": [0, 19, 20, 39, 40, 59], "values": [0, 0, 1, 1, 0, 0] } },
+        { "id": "c2", "type": "text", "text": "0:00", "fontFamily": "IBM Plex Mono", "fontSize": 190, "fontWeight": 700, "fill": "accent", "x": 0, "y": 345, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "keyframes", "frames": [0, 39, 40, 59], "values": [0, 0, 1, 1] } },
+        { "id": "k", "type": "text", "text": "WHITE TO MOVE", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 5, "fill": "accent2", "x": 0, "y": 250, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "mate", "duration": 60, "layout": "the-move", "badge": false,
+      "nodes": [
+        { "id": "felt", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "shake", "type": "container", "x": { "binding": "keyframes", "frames": [0, 18, 22, 26, 30, 59], "values": [0, 0, -14, 12, 0, 0] }, "children": [
+          { "id": "from", "type": "circle", "radius": 40, "x": 130, "y": 420, "fill": "ink", "stroke": "accent2", "strokeWidth": 3 },
+          { "id": "to", "type": "circle", "radius": 40, "x": 370, "y": 240, "fill": "ink", "stroke": "accent", "strokeWidth": 5, "shadow": { "color": "rgba(200,16,46,0.8)", "blur": 34 } },
+          { "id": "arrow", "type": "path", "d": "M 170 440 L 370 260 M 370 260 l -46 6 M 370 260 l -8 46", "stroke": "accent", "strokeWidth": 8, "opacity": { "binding": "interpolate", "inputRange": [16, 30], "outputRange": [0, 1] } }
+        ] },
+        { "id": "mate", "type": "text", "text": "MATE", "fontFamily": "Rozha One", "fontSize": 130, "fontWeight": 400, "fill": "ink", "x": 0, "y": 660, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [26, 40], "outputRange": [0, 1] } }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

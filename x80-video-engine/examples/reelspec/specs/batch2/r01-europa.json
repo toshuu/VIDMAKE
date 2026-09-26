@@ -1,0 +1,53 @@
+{
+  "id": "r01-europa",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "ice-moon",
+  "concept": {
+    "palette": { "bg": "#030710", "ink": "#dcefff", "accent": "#6fd3ff", "accent2": "#ff9d5c", "pillBg": "#0a1626", "pillFg": "#6fd3ff" },
+    "faces": { "display": "Space Grotesk", "hero": "Space Grotesk", "kicker": "IBM Plex Mono" },
+    "signature": "a probe's curved fall into a cracked glowing moon",
+    "signatureWhy": "journey-then-reveal strategy: travel path, cracked sphere, ocean bloom"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "iris", "params": { "shape": "circle" } }],
+  "acts": [
+    {
+      "role": "signal", "duration": 60, "layout": "fall-line", "badge": false,
+      "nodes": [
+        { "id": "void", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "dust", "type": "particles", "count": 70, "seed": 51, "colors": ["ink"], "size": [1, 2], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": true },
+        { "id": "trail", "type": "path", "d": "M 90 120 C 200 260, 160 460, 330 640 S 420 800, 430 880", "stroke": "accent", "strokeWidth": 3, "opacity": 0.55 },
+        { "id": "probe", "type": "circle", "radius": 10, "fill": "accent2", "shadow": { "color": "rgba(255,157,92,0.9)", "blur": 22 },
+          "x": { "binding": "path", "axis": "x", "points": [[90, 120], [200, 300], [250, 550], [430, 880]], "duration": 59 },
+          "y": { "binding": "path", "axis": "y", "points": [[90, 120], [200, 300], [250, 550], [430, 880]], "duration": 59 } },
+        { "id": "tag", "type": "text", "text": "800M KM OUT", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "accent", "x": 300, "y": 180, "textAlign": "right", "maxWidth": 200 }
+      ]
+    },
+    {
+      "role": "arrival", "duration": 60, "layout": "cracked-moon", "badge": false,
+      "nodes": [
+        { "id": "void", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "moon", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 700, "tiltX": 10, "tiltY": -14, "fov": 52 },
+          "light": { "dir": [-0.5, -0.5, 0.7], "ambient": 0.3 },
+          "objects": [
+            { "kind": "sphere", "x": 0, "y": 40, "z": 0, "r": 170, "lat": 7, "lon": 14, "color": "#9fc4dd" },
+            { "kind": "wire", "x": 0, "y": 40, "z": 0, "w": 360, "h": 120, "d": 120, "color": "accent" }
+          ] },
+        { "id": "crack", "type": "path", "d": "M 200 300 L 250 420 L 225 520 L 290 640 L 270 760", "stroke": "accent2", "strokeWidth": 5, "opacity": { "binding": "interpolate", "inputRange": [18, 40], "outputRange": [0, 1] }, "shadow": { "color": "rgba(255,157,92,0.8)", "blur": 18 } },
+        { "id": "word", "type": "text", "text": "ICE OVER FIRE", "fontFamily": "Space Grotesk", "fontSize": 46, "fontWeight": 700, "fill": "ink", "x": 32, "y": 800 }
+      ]
+    },
+    {
+      "role": "ocean", "duration": 60, "layout": "hidden-sea", "badge": false,
+      "nodes": [
+        { "id": "void", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "bloom", "type": "circle", "radius": { "binding": "keyframes", "frames": [0, 59], "values": [40, 260] }, "x": { "binding": "keyframes", "frames": [0, 59], "values": [230, 10] }, "y": { "binding": "keyframes", "frames": [0, 59], "values": [440, 220] }, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "accent" }, { "offset": 1, "color": "rgba(111,211,255,0)" }] }, "opacity": 0.75 },
+        { "id": "word", "type": "text", "text": "AN OCEAN", "fontFamily": "Space Grotesk", "fontSize": 64, "fontWeight": 700, "fill": "ink", "x": 0, "y": 700, "textAlign": "center", "maxWidth": 540 },
+        { "id": "word2", "type": "text", "text": "UNDER THE ICE", "fontFamily": "IBM Plex Mono", "fontSize": 22, "fontWeight": 500, "letterSpacing": 6, "fill": "accent", "x": 0, "y": 782, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

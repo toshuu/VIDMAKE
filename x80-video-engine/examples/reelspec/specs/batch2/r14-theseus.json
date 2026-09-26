@@ -1,0 +1,55 @@
+{
+  "id": "r14-theseus",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "planks",
+  "concept": {
+    "palette": { "bg": "#efe9dc", "ink": "#1d1a14", "accent": "#b98a1c", "accent2": "#6e6250", "pillBg": "#1d1a14", "pillFg": "#b98a1c" },
+    "faces": { "display": "Rozha One", "hero": "Rozha One", "kicker": "IBM Plex Mono" },
+    "signature": "a ship rebuilt in gold before your eyes, then torn in two by a question",
+    "signatureWhy": "replace-then-split strategy — stagger gold crossfades, sliding halves, vote bars"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "ship", "duration": 60, "layout": "harbor", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "hull", "type": "shape", "shape": "polygon", "width": 400, "height": 150, "points": 4, "x": 70, "y": 420, "fill": "ink" },
+        { "id": "mast", "type": "rect", "width": 16, "height": 260, "x": 262, "y": 180, "fill": "ink" },
+        { "id": "sail", "type": "shape", "shape": "polygon", "width": 150, "height": 200, "points": 3, "x": 286, "y": 200, "fill": "accent2", "opacity": 0.85 },
+        { "id": "sea", "type": "path", "d": "M 40 640 q 40 -24 80 0 t 80 0 t 80 0 t 80 0 t 80 0", "stroke": "accent2", "strokeWidth": 5, "opacity": 0.7 },
+        { "id": "k", "type": "text", "text": "ATHENS · EVERY PLANK NEW", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "letterSpacing": 3, "fill": "accent2", "x": 40, "y": 130 }
+      ]
+    },
+    {
+      "role": "replace", "duration": 60, "layout": "gold-work", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "p0", "type": "rect", "width": 400, "height": 26, "x": 70, "y": 420, "fill": "ink" },
+        { "id": "g0", "type": "rect", "width": 400, "height": 26, "x": 70, "y": 420, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 22], "outputRange": [0, 1] }, "index": 0, "step": 8 } },
+        { "id": "p1", "type": "rect", "width": 400, "height": 26, "x": 70, "y": 452, "fill": "ink" },
+        { "id": "g1", "type": "rect", "width": 400, "height": 26, "x": 70, "y": 452, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 22], "outputRange": [0, 1] }, "index": 1, "step": 8 } },
+        { "id": "p2", "type": "rect", "width": 400, "height": 26, "x": 70, "y": 484, "fill": "ink" },
+        { "id": "g2", "type": "rect", "width": 400, "height": 26, "x": 70, "y": 484, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 22], "outputRange": [0, 1] }, "index": 2, "step": 8 } },
+        { "id": "p3", "type": "rect", "width": 400, "height": 26, "x": 70, "y": 516, "fill": "ink" },
+        { "id": "g3", "type": "rect", "width": 400, "height": 26, "x": 70, "y": 516, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 22], "outputRange": [0, 1] }, "index": 3, "step": 8 } },
+        { "id": "cap", "type": "text", "text": "PLANK BY PLANK", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 5, "fill": "ink", "x": 0, "y": 620, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "vote", "duration": 60, "layout": "same-ship", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "half0", "type": "text", "text": "SAME", "fontFamily": "Rozha One", "fontSize": 96, "fontWeight": 400, "fill": "ink", "x": { "binding": "interpolate", "inputRange": [8, 34], "outputRange": [150, 40] }, "y": 300 },
+        { "id": "half1", "type": "text", "text": "SHIP?", "fontFamily": "Rozha One", "fontSize": 96, "fontWeight": 400, "fill": "ink", "x": { "binding": "interpolate", "inputRange": [8, 34], "outputRange": [150, 262] }, "y": 410 },
+        { "id": "yes", "type": "rect", "width": { "binding": "interpolate", "inputRange": [30, 52], "outputRange": [0, 244], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "height": 30, "x": 40, "y": 620, "fill": "accent" },
+        { "id": "yesl", "type": "text", "text": "YES 51", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 700, "fill": "ink", "x": 40, "y": 660 },
+        { "id": "no", "type": "rect", "width": { "binding": "interpolate", "inputRange": [30, 52], "outputRange": [0, 232], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "height": 30, "x": 268, "y": 620, "fill": "accent2" },
+        { "id": "nol", "type": "text", "text": "NO 49", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 700, "fill": "ink", "x": 268, "y": 660 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

@@ -1,0 +1,48 @@
+{
+  "id": "t05-snowball",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "compound",
+  "concept": {
+    "palette": { "bg": "#07130d", "ink": "#eaf5ec", "accent": "#4ade80", "accent2": "#e8b34b", "pillBg": "#0e2417", "pillFg": "#4ade80" },
+    "faces": { "display": "IBM Plex Mono", "hero": "Inter", "kicker": "IBM Plex Mono" },
+    "signature": "the chart is the hero — an exponential curve eats the frame",
+    "signatureWhy": "data-as-protagonist strategy: type annotates, the curve performs"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "principal", "duration": 60, "layout": "flatline", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "axis", "type": "rect", "width": 476, "height": 3, "x": 32, "y": 640, "fill": "ink", "opacity": 0.4 },
+        { "id": "flat", "type": "path", "d": "M 32 640 L 508 636", "stroke": "accent", "strokeWidth": 5 },
+        { "id": "n0", "type": "text", "text": "$1,000", "fontFamily": "IBM Plex Mono", "fontSize": 56, "fontWeight": 700, "fill": "ink", "x": 32, "y": 200 },
+        { "id": "cap", "type": "text", "text": "YEAR 0 · THE SEED", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "letterSpacing": 3, "fill": "accent", "x": 32, "y": 300 }
+      ]
+    },
+    {
+      "role": "bend", "duration": 60, "layout": "bend", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "axis", "type": "rect", "width": 476, "height": 3, "x": 32, "y": 640, "fill": "ink", "opacity": 0.4 },
+        { "id": "curve", "type": "path", "d": "M 32 640 C 150 636, 220 620, 300 560 S 440 380, 508 220", "stroke": "accent", "strokeWidth": 6 },
+        { "id": "c0", "type": "circle", "radius": 18, "x": 120, "y": 600, "fill": "accent2", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 0, "step": 6 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 0, "step": 6 }, "anchorX": 18, "anchorY": 18 },
+        { "id": "c1", "type": "circle", "radius": 22, "x": 250, "y": 540, "fill": "accent2", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 1, "step": 6 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 1, "step": 6 }, "anchorX": 22, "anchorY": 22 },
+        { "id": "c2", "type": "circle", "radius": 28, "x": 380, "y": 420, "fill": "accent2", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 2, "step": 6 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 0, "to": 1 }, "index": 2, "step": 6 }, "anchorX": 28, "anchorY": 28 },
+        { "id": "n1", "type": "text", "text": "$10,240", "fontFamily": "IBM Plex Mono", "fontSize": 56, "fontWeight": 700, "fill": "ink", "x": 32, "y": 160 }
+      ]
+    },
+    {
+      "role": "escape", "duration": 60, "layout": "escape", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "orb", "type": "circle", "radius": { "binding": "keyframes", "frames": [0, 30, 59], "values": [60, 150, 230] }, "x": { "binding": "keyframes", "frames": [0, 30, 59], "values": [210, 120, 40] }, "y": { "binding": "keyframes", "frames": [0, 30, 59], "values": [420, 330, 250] }, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "accent" }, { "offset": 1, "color": "rgba(74,222,128,0)" }] }, "opacity": 0.8 },
+        { "id": "n2", "type": "text", "text": "$104,857", "fontFamily": "IBM Plex Mono", "fontSize": 60, "fontWeight": 700, "fill": "ink", "x": 32, "y": 180, "opacity": { "binding": "interpolate", "inputRange": [20, 36], "outputRange": [0, 1] } },
+        { "id": "cap", "type": "text", "text": "YEAR 20 · TIME DID THE WORK", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "letterSpacing": 3, "fill": "accent", "x": 32, "y": 280 }
+      ]
+    }
+  ],
+  "chrome": true,
+  "grain": false
+}

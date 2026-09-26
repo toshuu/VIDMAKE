@@ -1,0 +1,77 @@
+{
+  "id": "v3-orrery",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "orrery",
+  "concept": {
+    "palette": { "bg": "#05070f", "ink": "#eef4ff", "accent": "#ffd166", "accent2": "#4dd4ff", "pillBg": "#101826", "pillFg": "#ffd166" },
+    "faces": { "display": "Inter", "hero": "Inter", "kicker": "Poppins" },
+    "signature": "a clockwork solar system: arms within arms, moons within moons",
+    "signatureWhy": "nested groups three deep — flat object lists cannot express this"
+  },
+  "durations": [60, 60],
+  "transitions": [{ "type": "fade", "duration": 16 }],
+  "acts": [
+    {
+      "role": "wide",
+      "duration": 60,
+      "layout": "orrery-wide",
+      "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        {
+          "id": "sys", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 800, "tiltX": 24, "tiltY": -12, "fov": 50 },
+          "light": { "dir": [0.3, -0.75, 0.6], "ambient": 0.25 },
+          "fog": { "color": "bg", "near": -500, "far": 700 },
+          "objects": [
+            { "kind": "points", "x": 0, "y": 0, "z": -150, "w": 520, "h": 700, "d": 200, "count": 110, "seed": 41, "color": "ink" },
+            { "kind": "sphere", "x": 0, "y": 60, "z": 0, "r": 70, "lat": 6, "lon": 12, "color": "accent" },
+            { "kind": "group", "ry": -20, "children": [
+              { "kind": "torus", "x": 0, "y": 60, "z": 0, "w": 300, "d": 36, "seg": 16, "tub": 6, "color": "accent2" },
+              { "kind": "group", "x": 150, "children": [
+                { "kind": "sphere", "x": 0, "y": 60, "z": 0, "r": 30, "lat": 5, "lon": 10, "color": "accent2" },
+                { "kind": "group", "x": 52, "children": [
+                  { "kind": "sphere", "x": 0, "y": 60, "z": 0, "r": 12, "lat": 4, "lon": 8, "color": "ink" }
+                ] }
+              ] },
+              { "kind": "group", "x": -190, "children": [
+                { "kind": "sphere", "x": 0, "y": 60, "z": 0, "r": 22, "lat": 5, "lon": 10, "color": "#e2725b" }
+              ] }
+            ] }
+          ]
+        },
+        { "id": "k", "type": "text", "text": "CLOCKWORK", "fontFamily": "Poppins", "fontSize": 24, "fontWeight": 700, "letterSpacing": 8, "fill": "accent", "x": 32, "y": 72 }
+      ]
+    },
+    {
+      "role": "tilt",
+      "duration": 60,
+      "layout": "orrery-tilt",
+      "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        {
+          "id": "sys", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 620, "tiltX": 38, "tiltY": -30, "fov": 58 },
+          "light": { "dir": [-0.5, -0.6, 0.55], "ambient": 0.3 },
+          "objects": [
+            { "kind": "sphere", "x": 0, "y": 80, "z": 0, "r": 90, "lat": 6, "lon": 12, "color": "accent" },
+            { "kind": "group", "ry": 30, "rx": -12, "children": [
+              { "kind": "torus", "x": 0, "y": 80, "z": 0, "w": 380, "d": 28, "seg": 18, "tub": 6, "color": "accent2" },
+              { "kind": "group", "x": 190, "children": [
+                { "kind": "cylinder", "x": 0, "y": 80, "z": 0, "w": 44, "h": 90, "seg": 10, "color": "ink" },
+                { "kind": "group", "x": 0, "y": -70, "children": [
+                  { "kind": "disc", "x": 0, "y": 80, "z": 0, "r": 16, "color": "accent" }
+                ] }
+              ] }
+            ] }
+          ]
+        },
+        { "id": "hero", "type": "text", "text": "WORLDS", "fontFamily": "Inter", "fontSize": 72, "fontWeight": 800, "fill": "ink", "x": 32, "y": 700, "opacity": { "binding": "interpolate", "inputRange": [8, 22], "outputRange": [0, 1] } },
+        { "id": "sub", "type": "text", "text": "WITHIN WORLDS", "fontFamily": "Poppins", "fontSize": 22, "fontWeight": 700, "letterSpacing": 6, "fill": "accent2", "x": 32, "y": 786 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

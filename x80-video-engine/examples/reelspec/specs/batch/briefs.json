@@ -1,0 +1,62 @@
+{
+  "t01-silicon": {
+    "category": "technology",
+    "brief": "Launch video for MIRA-1, a 3nm AI chip shipping Q3. Engineering audience. Make it feel like a blueprint, not an ad.",
+    "strategy": "engineering schematic: wireframe chip over perspective grid, mono spec callouts, torus seal"
+  },
+  "t02-press": {
+    "category": "history",
+    "brief": "Tell the story of Gutenberg's printing press in Mainz, 1440 — a history-channel short.",
+    "strategy": "letterpress: parchment, spring-stamp type blocks, ruled folio finale"
+  },
+  "t03-descent": {
+    "category": "science",
+    "brief": "Take viewers down through ocean zones, 200m to 4000m. A science short, awe first.",
+    "strategy": "continuous vertical dive: upward drift, dying light, rising particle density"
+  },
+  "t04-morning": {
+    "category": "product",
+    "brief": "Product film for the Kama pour-over coffee set. Slow, quiet, premium. Three words.",
+    "strategy": "whitespace luxury: one word per act, near-static motion, steam only"
+  },
+  "t05-snowball": {
+    "category": "finance",
+    "brief": "Explain compound interest so a teenager feels it. A finance short.",
+    "strategy": "data-as-protagonist: the exponential curve performs, type annotates"
+  },
+  "t06-diwali": {
+    "category": "culture",
+    "brief": "A Diwali greeting: one flame, a rangoli, then celebration.",
+    "strategy": "light ritual: flame flicker, counter-rotating kolam geometry, darkness as canvas"
+  },
+  "t07-kyoto": {
+    "category": "travel",
+    "brief": "Kyoto in autumn teaser: approach a torii gate, pass through it, arrive at a temple at sunset.",
+    "strategy": "parallax journey: three depths at three speeds, push-through gate"
+  },
+  "t08-vaccine": {
+    "category": "education",
+    "brief": "Explain how vaccines train the immune system as a friendly cellular chase. An education short.",
+    "strategy": "animated diagram: motionPath antibody pursuit, staged pops, pastel lab clarity"
+  },
+  "t09-entropy": {
+    "category": "abstract",
+    "brief": "An abstract short on entropy: show order visibly losing to chaos.",
+    "strategy": "system decay: stagger cascades, heat color binding, order as subject"
+  },
+  "t10-keeper": {
+    "category": "storytelling",
+    "brief": "A three-shot micro-story: a lighthouse keeper keeps the light through storm into dawn.",
+    "strategy": "cinematic vignette chapters: sweeping beam choreography, title-card chapters"
+  },
+  "t11-marathon": {
+    "category": "sport",
+    "brief": "Marathon hype reel: kilometer 41, the wall, the surge, the finish tape. 2:09:41.",
+    "strategy": "diagonal energy: tilted world, strobing numerals, speed-line barrages"
+  },
+  "t12-ramen": {
+    "category": "food",
+    "brief": "A ramen recipe in three steps: vessel, broth and noodles, toppings. End hungry.",
+    "strategy": "top-down assembly: concentric construction, spring-set toppings, steam"
+  }
+}

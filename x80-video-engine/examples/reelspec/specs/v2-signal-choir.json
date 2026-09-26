@@ -1,0 +1,57 @@
+{
+  "id": "v2-signal-choir",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "choir",
+  "concept": {
+    "palette": { "bg": "#070b16", "ink": "#e8f4ff", "accent": "#7dd3fc", "accent2": "#c084fc", "pillBg": "#101a30", "pillFg": "#e8f4ff" },
+    "faces": { "display": "Inter", "hero": "Inter", "kicker": "Poppins" },
+    "signature": "a choir of dots blooming in cascade under a three-beat headline",
+    "signatureWhy": "particles + stagger grid + keyframed type; no footage, no hero stack"
+  },
+  "durations": [60, 60],
+  "transitions": [{ "type": "fade", "duration": 16 }],
+  "subcomps": {
+    "verse": {
+      "id": "verse", "type": "container",
+      "children": [
+        { "id": "rule", "type": "rect", "width": 120, "height": 6, "x": 0, "y": 0, "fill": "accent2" },
+        { "id": "line", "type": "text", "text": "VERSE", "fontFamily": "Poppins", "fontSize": 20, "fontWeight": 700, "letterSpacing": 6, "fill": "accent2", "x": 0, "y": 18 }
+      ]
+    }
+  },
+  "acts": [
+    {
+      "role": "tuning",
+      "duration": 60,
+      "layout": "switchboard",
+      "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "stars", "type": "particles", "count": 120, "seed": 11, "colors": ["#ffffff", "accent", "accent2"], "size": [1, 3], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": true },
+        { "id": "v", "use": "verse", "x": 32, "y": 90 },
+        { "id": "c0", "type": "circle", "radius": 26, "x": 90, "y": 420, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 0, "step": 4 }, "scaleX": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0.4, 1] }, "index": 0, "step": 4 }, "scaleY": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0.4, 1] }, "index": 0, "step": 4 } },
+        { "id": "c1", "type": "circle", "radius": 26, "x": 230, "y": 420, "fill": "accent2", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 1, "step": 4 }, "scaleX": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0.4, 1] }, "index": 1, "step": 4 }, "scaleY": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0.4, 1] }, "index": 1, "step": 4 } },
+        { "id": "c2", "type": "circle", "radius": 26, "x": 370, "y": 420, "fill": "ink", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 2, "step": 4 }, "scaleX": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0.4, 1] }, "index": 2, "step": 4 }, "scaleY": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0.4, 1] }, "index": 2, "step": 4 } },
+        { "id": "c3", "type": "circle", "radius": 26, "x": 160, "y": 520, "fill": "accent2", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 3, "step": 4 } },
+        { "id": "c4", "type": "circle", "radius": 26, "x": 300, "y": 520, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1] }, "index": 4, "step": 4 } },
+        { "id": "head", "type": "text", "text": "TUNE IN", "fontFamily": "Inter", "fontSize": 60, "fontWeight": 800, "fill": "ink", "x": 32, "y": { "binding": "keyframes", "frames": [0, 20, 30, 50], "values": [700, 640, 660, 640] }, "opacity": { "binding": "interpolate", "inputRange": [4, 16], "outputRange": [0, 1] } }
+      ]
+    },
+    {
+      "role": "chorus",
+      "duration": 60,
+      "layout": "switchboard",
+      "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "stars", "type": "particles", "count": 120, "seed": 12, "colors": ["accent2", "#ffffff", "accent"], "size": [1, 3], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": true },
+        { "id": "v", "use": "verse", "x": 32, "y": 90 },
+        { "id": "beam", "type": "rect", "width": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [40, 200, 120, 476, 476] }, "height": 14, "x": 32, "y": 300, "fill": "accent" },
+        { "id": "head", "type": "text", "text": "SING OUT", "fontFamily": "Inter", "fontSize": 60, "fontWeight": 800, "fill": "accent2", "x": 32, "y": 640, "opacity": { "binding": "interpolate", "inputRange": [8, 22], "outputRange": [0, 1] } },
+        { "id": "tail", "type": "text", "text": "EVERY DOT HAS A PART", "fontFamily": "Poppins", "fontSize": 20, "fontWeight": 700, "letterSpacing": 4, "fill": "ink", "x": 32, "y": 720 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

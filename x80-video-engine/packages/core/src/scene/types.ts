@@ -59,16 +59,18 @@ export interface ClipRect {
 }
 
 /**
- * Declarative filter stack (CSS `filter` essentials, static per node).
+ * Declarative filter stack (CSS `filter` essentials).
  * Applied natively by the backend (no pixel loops): blur in px, the rest
- * as unitless factors. All values must be finite and non-negative.
+ * as unitless factors. Every field accepts a plain number or an
+ * AnimNumber binding — focus pulls, grade shifts, and blur reveals are
+ * frame-pure. All resolved values must be finite and non-negative.
  */
 export interface NodeFilter {
-  blur?: number;
-  brightness?: number;
-  contrast?: number;
-  saturate?: number;
-  grayscale?: number;
+  blur?: AnimNumber;
+  brightness?: AnimNumber;
+  contrast?: AnimNumber;
+  saturate?: AnimNumber;
+  grayscale?: AnimNumber;
 }
 
 /** Effect invocation in the compositing pipeline (composable, ordered). */
@@ -85,6 +87,9 @@ export interface BaseNode {
   scaleX?: AnimNumber;
   scaleY?: AnimNumber;
   rotation?: AnimNumber;
+  /** 2.5D tilt in degrees (shear). Frame-pure; composes as T·A·R·Sk·S·A⁻¹. */
+  skewX?: AnimNumber;
+  skewY?: AnimNumber;
   anchorX?: number;
   anchorY?: number;
   opacity?: AnimNumber;
@@ -92,17 +97,17 @@ export interface BaseNode {
   blendMode?: BlendMode;
   crop?: ClipRect;
   clip?: ClipRect;
-  /** Declarative GPU-style filter (blur/grades), static per node. */
+  /** Declarative GPU-style filter (blur/grades); every field animatable. */
   filter?: NodeFilter;
   /**
    * CSS `backdrop-filter: blur()` equivalent: blurs already-painted pixels
    * inside the node's own axis-aligned bbox BEFORE the node paints.
-   * Radius in px (surface units), static per node. Supported on
-   * rect/rrect/circle with static geometry; every other type throws.
-   * Ancestors must be translation-only (opacity is fine) — scale/rotation
-   * above would misplace the blurred region.
+   * Radius in px (surface units); accepts an AnimNumber for blur reveals.
+   * Supported on rect/rrect/circle with resolvable geometry; every other
+   * type throws. Ancestors must be translation-only (opacity is fine) —
+   * scale/rotation above would misplace the blurred region.
    */
-  backdropBlur?: number;
+  backdropBlur?: AnimNumber;
   /** Reference to a mask node id. */
   mask?: string;
   effects?: Effect[];
@@ -119,8 +124,9 @@ export interface GroupNode extends BaseNode {
 
 export interface RectangleNode extends BaseNode {
   type: 'rect';
-  width: number;
-  height: number;
+  /** Kinetic geometry: grows, shrinks, and wipes frame-pure. */
+  width: AnimNumber;
+  height: AnimNumber;
   fill?: Fill;
   stroke?: string;
   strokeWidth?: number;
@@ -130,9 +136,10 @@ export interface RectangleNode extends BaseNode {
 
 export interface RoundedRectangleNode extends BaseNode {
   type: 'rrect';
-  width: number;
-  height: number;
-  radius: number | [number, number, number, number];
+  /** Kinetic geometry (see RectangleNode). Tuple radii stay static. */
+  width: AnimNumber;
+  height: AnimNumber;
+  radius: AnimNumber | [number, number, number, number];
   fill?: Fill;
   stroke?: string;
   strokeWidth?: number;
@@ -142,7 +149,8 @@ export interface RoundedRectangleNode extends BaseNode {
 
 export interface CircleNode extends BaseNode {
   type: 'circle';
-  radius: number;
+  /** Kinetic radius: pulses and blooms frame-pure. */
+  radius: AnimNumber;
   fill?: Fill;
   stroke?: string;
   strokeWidth?: number;
@@ -168,8 +176,8 @@ export interface SvgNode extends BaseNode {
   type: 'svg';
   /** Raw SVG markup or asset id (see assets/types). */
   svg: string;
-  width?: number;
-  height?: number;
+  width?: AnimNumber;
+  height?: AnimNumber;
 }
 
 export interface TextNode extends BaseNode {
@@ -251,8 +259,8 @@ export interface ImageNode extends BaseNode {
   type: 'image';
   /** Asset id (preferred) or inline src. */
   src: string;
-  width?: number;
-  height?: number;
+  width?: AnimNumber;
+  height?: AnimNumber;
   /** CSS-like fit inside width/height box. */
   fit?: 'cover' | 'contain' | 'fill' | 'none';
 }
@@ -271,23 +279,28 @@ export interface VideoNode extends BaseNode {
   /** true = wrap; 'pingpong' = forward-backward (short clips stay alive). */
   loop?: boolean | 'pingpong';
   fit?: 'cover' | 'contain' | 'fill' | 'none';
-  width?: number;
-  height?: number;
+  width?: AnimNumber;
+  height?: AnimNumber;
 }
 
 export interface ShapeNode extends BaseNode {
   type: 'shape';
   shape: 'star' | 'polygon' | 'arrow' | 'ellipse' | 'line';
-  width: number;
-  height: number;
+  /** Kinetic geometry (resolved per frame like rect dims). */
+  width: AnimNumber;
+  height: AnimNumber;
   points?: number;
-  fill?: string;
+  fill?: Fill;
   stroke?: string;
   strokeWidth?: number;
+  shadow?: TextShadow;
 }
 
 export interface MaskNode extends BaseNode {
   type: 'mask';
+  /** Optional cutout rect (local 0,0,w,h clip); without dims, pass-through group. */
+  width?: number;
+  height?: number;
 }
 
 export interface EffectLayerNode extends BaseNode {

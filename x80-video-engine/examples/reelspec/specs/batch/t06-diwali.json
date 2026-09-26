@@ -1,0 +1,51 @@
+{
+  "id": "t06-diwali",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "deepavali",
+  "concept": {
+    "palette": { "bg": "#0d0a1a", "ink": "#fdeecd", "accent": "#f5a623", "accent2": "#c0392b", "pillBg": "#1d1430", "pillFg": "#f5a623" },
+    "faces": { "display": "Rozha One", "hero": "Rozha One", "kicker": "Poppins" },
+    "signature": "one diya, then a rangoli, then a sky of flames",
+    "signatureWhy": "light-ritual strategy: flicker + counter-rotating geometry, darkness as canvas"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "dusk", "duration": 60, "layout": "first-flame", "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#241a3f" }, { "offset": 0.55, "color": "#0d0a1a" }, { "offset": 1, "color": "#070512" }] } },
+        { "id": "stars", "type": "particles", "count": 50, "seed": 6, "colors": ["#ffffff"], "size": [1, 2], "area": { "w": 540, "h": 500 }, "at": [0, 0], "twinkle": true },
+        { "id": "bowl", "type": "shape", "shape": "ellipse", "width": 150, "height": 60, "x": 195, "y": 640, "fill": "accent2" },
+        { "id": "flame", "type": "circle", "radius": 26, "x": 244, "y": 590, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#ffe9a8" }, { "offset": 0.55, "color": "accent" }, { "offset": 1, "color": "rgba(245,166,35,0)" }] }, "opacity": { "binding": "keyframes", "frames": [0, 12, 24, 36, 48, 59], "values": [0.85, 1, 0.8, 1, 0.85, 1] }, "shadow": { "color": "rgba(245,166,35,0.8)", "blur": 40 } },
+        { "id": "k", "type": "text", "text": "ONE FLAME", "fontFamily": "Poppins", "fontSize": 24, "fontWeight": 700, "letterSpacing": 8, "fill": "accent", "x": 0, "y": 760, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "rangoli", "duration": 60, "layout": "kolam", "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "ring0", "type": "shape", "shape": "polygon", "width": 330, "height": 330, "points": 8, "x": 105, "y": 240, "fill": "rgba(0,0,0,0)", "stroke": "accent", "strokeWidth": 4, "rotation": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0, 45] }, "anchorX": 165, "anchorY": 165, "opacity": { "binding": "interpolate", "inputRange": [4, 20], "outputRange": [0, 1] } },
+        { "id": "ring1", "type": "shape", "shape": "star", "width": 250, "height": 250, "points": 8, "x": 145, "y": 280, "fill": "rgba(0,0,0,0)", "stroke": "accent2", "strokeWidth": 4, "rotation": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0, -60] }, "anchorX": 125, "anchorY": 125, "opacity": { "binding": "interpolate", "inputRange": [12, 28], "outputRange": [0, 1] } },
+        { "id": "ring2", "type": "shape", "shape": "polygon", "width": 150, "height": 150, "points": 6, "x": 195, "y": 330, "fill": "accent", "rotation": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0, 90] }, "anchorX": 75, "anchorY": 75, "opacity": { "binding": "interpolate", "inputRange": [20, 36], "outputRange": [0, 1] } },
+        { "id": "k", "type": "text", "text": "DRAWN IN POWDER", "fontFamily": "Poppins", "fontSize": 22, "fontWeight": 700, "letterSpacing": 6, "fill": "accent", "x": 0, "y": 700, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "sky", "duration": 60, "layout": "aakash", "badge": false,
+      "nodes": [
+        { "id": "night", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "row", "type": "container", "children": [
+          { "id": "d0", "type": "circle", "radius": 20, "x": 70, "y": 420, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#ffe9a8" }, { "offset": 1, "color": "rgba(245,166,35,0)" }] }, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [0.7, 1, 0.75, 1] } },
+          { "id": "d1", "type": "circle", "radius": 20, "x": 200, "y": 420, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#ffe9a8" }, { "offset": 1, "color": "rgba(245,166,35,0)" }] }, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [1, 0.7, 1, 0.8] } },
+          { "id": "d2", "type": "circle", "radius": 20, "x": 330, "y": 420, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#ffe9a8" }, { "offset": 1, "color": "rgba(245,166,35,0)" }] }, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [0.8, 1, 0.7, 1] } },
+          { "id": "d3", "type": "circle", "radius": 20, "x": 450, "y": 420, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#ffe9a8" }, { "offset": 1, "color": "rgba(245,166,35,0)" }] }, "opacity": { "binding": "keyframes", "frames": [0, 20, 40, 59], "values": [1, 0.8, 1, 0.7] } }
+        ] },
+        { "id": "hero", "type": "text", "text": "SHUBH", "fontFamily": "Rozha One", "fontSize": 96, "fontWeight": 400, "fill": "ink", "x": 0, "y": 560, "textAlign": "center", "maxWidth": 540, "shadow": { "color": "rgba(245,166,35,0.65)", "blur": 34 } },
+        { "id": "hero2", "type": "text", "text": "DEEPAVALI", "fontFamily": "Rozha One", "fontSize": 80, "fontWeight": 400, "fill": "accent", "x": 0, "y": 668, "textAlign": "center", "maxWidth": 540, "shadow": { "color": "rgba(245,166,35,0.65)", "blur": 34 } }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

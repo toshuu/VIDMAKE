@@ -1,0 +1,59 @@
+{
+  "id": "t11-marathon",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "redline",
+  "concept": {
+    "palette": { "bg": "#0a0a0b", "ink": "#f4f4f2", "accent": "#d4ff3f", "accent2": "#ff3b30", "pillBg": "#d4ff3f", "pillFg": "#0a0a0b" },
+    "faces": { "display": "Bebas Neue", "hero": "Inter", "kicker": "Inter" },
+    "signature": "everything leans forward: tilted world, punching numbers",
+    "signatureWhy": "diagonal-energy strategy — static -10° tilt, strobe numerals, speed-line barrages"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "push-cut", "params": { "direction": "left" } }, { "type": "push-cut", "params": { "direction": "left" } }],
+  "acts": [
+    {
+      "role": "wall", "duration": 60, "layout": "the-wall", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "tilt", "type": "container", "rotation": -10, "anchorX": 270, "anchorY": 480, "children": [
+          { "id": "km", "type": "text", "text": "KM 41", "fontFamily": "Bebas Neue", "fontSize": 200, "fontWeight": 400, "fill": "ink", "x": 60, "y": 300, "opacity": { "binding": "keyframes", "frames": [0, 8, 16, 24, 59], "values": [0, 1, 0.6, 1, 1] } },
+          { "id": "bar", "type": "rect", "width": 420, "height": 22, "x": 60, "y": 540, "fill": "accent" },
+          { "id": "pack0", "type": "circle", "radius": 16, "x": 80, "y": 640, "fill": "accent2" },
+          { "id": "pack1", "type": "circle", "radius": 16, "x": 150, "y": 640, "fill": "ink", "opacity": 0.7 },
+          { "id": "pack2", "type": "circle", "radius": 16, "x": 220, "y": 640, "fill": "ink", "opacity": 0.5 },
+          { "id": "pack3", "type": "circle", "radius": 16, "x": 290, "y": 640, "fill": "ink", "opacity": 0.35 }
+        ] },
+        { "id": "k", "type": "text", "text": "THE WALL", "fontFamily": "Inter", "fontSize": 22, "fontWeight": 800, "letterSpacing": 8, "fill": "accent", "x": 32, "y": 96 }
+      ]
+    },
+    {
+      "role": "surge", "duration": 60, "layout": "surge", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "lines", "type": "container", "children": [
+          { "id": "s0", "type": "rect", "width": 300, "height": 10, "x": { "binding": "keyframes", "frames": [0, 59], "values": [540, -320] }, "y": 240, "fill": "accent", "opacity": 0.85 },
+          { "id": "s1", "type": "rect", "width": 420, "height": 14, "x": { "binding": "keyframes", "frames": [0, 59], "values": [540, -440] }, "y": 420, "fill": "ink", "opacity": 0.7 },
+          { "id": "s2", "type": "rect", "width": 260, "height": 8, "x": { "binding": "keyframes", "frames": [0, 59], "values": [540, -280] }, "y": 620, "fill": "accent2", "opacity": 0.9 }
+        ] },
+        { "id": "tilt", "type": "container", "rotation": -10, "anchorX": 270, "anchorY": 480, "children": [
+          { "id": "go", "type": "text", "text": "GO", "fontFamily": "Bebas Neue", "fontSize": 260, "fontWeight": 400, "fill": "accent", "x": 120, "y": 320, "scaleX": { "binding": "keyframes", "frames": [0, 10, 59], "values": [0.6, 1.1, 1] }, "scaleY": { "binding": "keyframes", "frames": [0, 10, 59], "values": [0.6, 1.1, 1] }, "anchorX": 130, "anchorY": 130 }
+        ] },
+        { "id": "heart", "type": "circle", "radius": 26, "x": 244, "y": 760, "fill": "accent2", "scaleX": { "binding": "keyframes", "frames": [0, 10, 20, 30, 40, 50, 59], "values": [1, 1.35, 1, 1.35, 1, 1.35, 1] }, "scaleY": { "binding": "keyframes", "frames": [0, 10, 20, 30, 40, 50, 59], "values": [1, 1.35, 1, 1.35, 1, 1.35, 1] }, "anchorX": 26, "anchorY": 26 }
+      ]
+    },
+    {
+      "role": "tape", "duration": 60, "layout": "finish", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "tilt", "type": "container", "rotation": -10, "anchorX": 270, "anchorY": 480, "children": [
+          { "id": "tape", "type": "rect", "width": 700, "height": 40, "x": -80, "y": 430, "fill": "ink" },
+          { "id": "fin", "type": "text", "text": "FINISH", "fontFamily": "Bebas Neue", "fontSize": 170, "fontWeight": 400, "fill": "accent", "x": 40, "y": 500 }
+        ] },
+        { "id": "conf", "type": "particles", "count": 90, "seed": 26, "colors": ["accent", "accent2", "#f4f4f2"], "size": [2, 5], "area": { "w": 540, "h": 500 }, "at": [0, 200], "twinkle": false },
+        { "id": "time", "type": "text", "text": "2:09:41", "fontFamily": "Inter", "fontSize": 40, "fontWeight": 800, "fill": "ink", "x": 0, "y": 760, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

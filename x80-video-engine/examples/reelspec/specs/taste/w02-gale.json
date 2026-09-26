@@ -1,0 +1,50 @@
+{
+  "id": "w02-gale",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "wind-tunnel",
+  "concept": {
+    "palette": { "bg": "#0c0d10", "ink": "#ece8df", "accent": "#f5c518", "accent2": "#5a6472", "pillBg": "#17191f", "pillFg": "#f5c518" },
+    "faces": { "display": "Inter", "hero": "Inter", "kicker": "IBM Plex Mono" },
+    "signature": "a product trial by combat: three wind rounds, one unimpressed umbrella",
+    "signatureWhy": "plan: deadpan dial; hook = rating stated flat in second one; sequential gauge rounds; restraint = rain + canopy + gauge"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "none" }, { "type": "none" }],
+  "acts": [
+    {
+      "role": "rated", "duration": 60, "layout": "claim", "badge": false,
+      "nodes": [
+        { "id": "tunnel", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "rain", "type": "particles", "count": 110, "seed": 81, "colors": ["accent2"], "size": [1, 3], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": false },
+        { "id": "canopy", "type": "circle", "radius": 150, "x": 120, "y": 420, "fill": "ink", "clip": { "x": 120, "y": 420, "width": 300, "height": 150 } },
+        { "id": "stick", "type": "rect", "width": 12, "height": 220, "x": 264, "y": 560, "fill": "ink" },
+        { "id": "hook", "type": "circle", "radius": 26, "x": 238, "y": 754, "fill": "rgba(0,0,0,0)", "stroke": "ink", "strokeWidth": 12 },
+        { "id": "rate", "type": "text", "text": "RATED TO 120 KM/H.", "fontFamily": "Inter", "fontSize": 44, "fontWeight": 800, "fill": "ink", "x": 40, "y": 130 },
+        { "id": "fine", "type": "text", "text": "FINE. PROVE IT.", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "accent2", "x": 40, "y": 196 }
+      ]
+    },
+    {
+      "role": "rounds", "duration": 60, "layout": "three-rounds", "badge": false,
+      "nodes": [
+        { "id": "tunnel", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "rain", "type": "particles", "count": 110, "seed": 82, "colors": ["accent2"], "size": [1, 3], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": false },
+        { "id": "pole", "type": "rect", "width": 14, "height": 560, "x": 120, "y": 220, "fill": "accent2", "opacity": 0.6 },
+        { "id": "r0", "type": "text", "text": "60 — HELD", "fontFamily": "IBM Plex Mono", "fontSize": 40, "fontWeight": 700, "fill": "ink", "x": 170, "y": 300, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 0, "step": 8 } },
+        { "id": "r1", "type": "text", "text": "90 — HELD", "fontFamily": "IBM Plex Mono", "fontSize": 40, "fontWeight": 700, "fill": "ink", "x": 170, "y": 420, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 1, "step": 8 } },
+        { "id": "r2", "type": "text", "text": "120 — HELD", "fontFamily": "IBM Plex Mono", "fontSize": 40, "fontWeight": 700, "fill": "accent", "x": 170, "y": 540, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 18], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 2, "step": 8 } },
+        { "id": "canopy", "type": "circle", "radius": 60, "x": 400, "y": 480, "fill": "ink", "clip": { "x": 400, "y": 480, "width": 120, "height": 60 }, "rotation": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [-6, 6, -6, 6, 0] }, "anchorX": 60, "anchorY": 60 }
+      ]
+    },
+    {
+      "role": "dry", "duration": 60, "layout": "verdict", "badge": false,
+      "nodes": [
+        { "id": "tunnel", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "dry", "type": "rect", "width": 300, "height": 300, "x": 120, "y": 280, "fill": "rgba(0,0,0,0)", "stroke": "accent", "strokeWidth": 4 },
+        { "id": "word", "type": "text", "text": "STILL", "fontFamily": "Inter", "fontSize": 96, "fontWeight": 800, "fill": "ink", "x": 0, "y": 620, "textAlign": "center", "maxWidth": 540 },
+        { "id": "word2", "type": "text", "text": "DRY.", "fontFamily": "Inter", "fontSize": 96, "fontWeight": 800, "fill": "accent", "x": 0, "y": 724, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

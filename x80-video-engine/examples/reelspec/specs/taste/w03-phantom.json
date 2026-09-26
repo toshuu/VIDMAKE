@@ -1,0 +1,70 @@
+{
+  "id": "w03-phantom",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "shockwave",
+  "concept": {
+    "palette": { "bg": "#0e1116", "ink": "#e8e6e1", "accent": "#ff3b30", "accent2": "#8a94a6", "pillBg": "#1a1e26", "pillFg": "#ff3b30" },
+    "faces": { "display": "Space Grotesk", "hero": "Space Grotesk", "kicker": "IBM Plex Mono" },
+    "signature": "one brake light ignites, then the red wave walks backward through traffic that was fine",
+    "signatureWhy": "plan: system-simulation metaphor; hook = single ignition in second one; sequential wave via per-car stagger; restraint = dots + one wave"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "wipe", "params": { "direction": "up" } }, { "type": "slide", "params": { "direction": "left" } }],
+  "acts": [
+    {
+      "role": "flow", "duration": 60, "layout": "smooth", "badge": false,
+      "nodes": [
+        { "id": "asphalt", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "lane", "type": "container", "children": [
+          { "id": "d0", "type": "rect", "width": 46, "height": 6, "x": 40, "y": 470, "fill": "accent2", "opacity": 0.7 },
+          { "id": "d1", "type": "rect", "width": 46, "height": 6, "x": 160, "y": 470, "fill": "accent2", "opacity": 0.7 },
+          { "id": "d2", "type": "rect", "width": 46, "height": 6, "x": 280, "y": 470, "fill": "accent2", "opacity": 0.7 },
+          { "id": "d3", "type": "rect", "width": 46, "height": 6, "x": 400, "y": 470, "fill": "accent2", "opacity": 0.7 }
+        ] },
+        { "id": "cars", "type": "container", "children": [
+          { "id": "c0", "type": "rrect", "width": 64, "height": 34, "radius": 10, "x": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [60, 180], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "y": 420, "fill": "ink", "opacity": 0.92 },
+          { "id": "c1", "type": "rrect", "width": 64, "height": 34, "radius": 10, "x": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [200, 320], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "y": 420, "fill": "ink", "opacity": 0.92 },
+          { "id": "c2", "type": "rrect", "width": 64, "height": 34, "radius": 10, "x": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [340, 460], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "y": 420, "fill": "ink", "opacity": 0.92 }
+        ] },
+        { "id": "k", "type": "text", "text": "NO JAM. NO REASON TO BRAKE.", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "letterSpacing": 2, "fill": "accent2", "x": 40, "y": 220 }
+      ]
+    },
+    {
+      "role": "ignition", "duration": 60, "layout": "one-tap", "badge": false,
+      "nodes": [
+        { "id": "asphalt", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "lane", "type": "container", "children": [
+          { "id": "d0", "type": "rect", "width": 46, "height": 6, "x": 40, "y": 470, "fill": "accent2", "opacity": 0.7 },
+          { "id": "d1", "type": "rect", "width": 46, "height": 6, "x": 160, "y": 470, "fill": "accent2", "opacity": 0.7 },
+          { "id": "d2", "type": "rect", "width": 46, "height": 6, "x": 280, "y": 470, "fill": "accent2", "opacity": 0.7 },
+          { "id": "d3", "type": "rect", "width": 46, "height": 6, "x": 400, "y": 470, "fill": "accent2", "opacity": 0.7 }
+        ] },
+        { "id": "cars", "type": "container", "children": [
+          { "id": "c0", "type": "rrect", "width": 64, "height": 34, "radius": 10, "x": 120, "y": 420, "fill": "ink", "opacity": 0.92 },
+          { "id": "c1", "type": "rrect", "width": 64, "height": 34, "radius": 10, "x": 260, "y": 420, "fill": "ink", "opacity": 0.92 },
+          { "id": "c2", "type": "rrect", "width": 64, "height": 34, "radius": 10, "x": 400, "y": 420, "fill": "ink", "opacity": 0.92 },
+          { "id": "b2", "type": "circle", "radius": 12, "x": 452, "y": 424, "fill": "accent", "shadow": { "color": "rgba(255,59,48,0.9)", "blur": 24 }, "opacity": { "binding": "interpolate", "inputRange": [8, 18], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } }
+        ] },
+        { "id": "k", "type": "text", "text": "ONE DRIVER TAPS OUT.", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 700, "letterSpacing": 2, "fill": "accent", "x": 40, "y": 220 }
+      ]
+    },
+    {
+      "role": "wave", "duration": 60, "layout": "backward", "badge": false,
+      "nodes": [
+        { "id": "asphalt", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "cars", "type": "container", "children": [
+          { "id": "c0", "type": "rrect", "width": 64, "height": 34, "radius": 10, "x": 60, "y": 420, "fill": "ink", "opacity": 0.92 },
+          { "id": "c1", "type": "rrect", "width": 64, "height": 34, "radius": 10, "x": 210, "y": 420, "fill": "ink", "opacity": 0.92 },
+          { "id": "c2", "type": "rrect", "width": 64, "height": 34, "radius": 10, "x": 360, "y": 420, "fill": "ink", "opacity": 0.92 },
+          { "id": "b0", "type": "circle", "radius": 12, "x": 112, "y": 424, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "keyframes", "frames": [0, 10, 30, 59], "values": [0, 1, 1, 0.4] }, "index": 2, "step": 10 } },
+          { "id": "b1", "type": "circle", "radius": 12, "x": 262, "y": 424, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "keyframes", "frames": [0, 10, 30, 59], "values": [0, 1, 1, 0.4] }, "index": 1, "step": 10 } },
+          { "id": "b2", "type": "circle", "radius": 12, "x": 412, "y": 424, "fill": "accent", "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [0, 10], "outputRange": [1, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 0, "step": 10 } }
+        ] },
+        { "id": "take", "type": "text", "text": "NO CAUSE.", "fontFamily": "Space Grotesk", "fontSize": 60, "fontWeight": 700, "fill": "ink", "x": 40, "y": 620 },
+        { "id": "take2", "type": "text", "text": "JUST MATH.", "fontFamily": "Space Grotesk", "fontSize": 60, "fontWeight": 700, "fill": "accent", "x": 40, "y": 692 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

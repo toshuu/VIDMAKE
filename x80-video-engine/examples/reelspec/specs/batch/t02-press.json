@@ -1,0 +1,58 @@
+{
+  "id": "t02-press",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "press",
+  "concept": {
+    "palette": { "bg": "#efe3cc", "ink": "#1c1410", "accent": "#7d2a1e", "accent2": "#a3762a", "pillBg": "#1c1410", "pillFg": "#efe3cc" },
+    "faces": { "display": "Rozha One", "hero": "Rozha One", "kicker": "IBM Plex Mono" },
+    "signature": "movable type stamping onto parchment, ink and noise",
+    "signatureWhy": "letterpress strategy: spring-stamp blocks, ink-block particles, ruled page finale"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "place", "duration": 60, "layout": "mainz", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "specks", "type": "particles", "count": 60, "seed": 3, "colors": ["#1c1410", "#7d2a1e"], "size": [1, 2], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": false },
+        { "id": "press-top", "type": "rect", "width": 380, "height": 40, "x": 80, "y": 300, "fill": "ink" },
+        { "id": "press-bed", "type": "rect", "width": 380, "height": 24, "x": 80, "y": 560, "fill": "ink" },
+        { "id": "screw", "type": "rect", "width": 26, "height": 220, "x": 257, "y": 340, "fill": "accent" },
+        { "id": "k", "type": "text", "text": "MAINZ · 1440", "fontFamily": "IBM Plex Mono", "fontSize": 22, "fontWeight": 500, "letterSpacing": 5, "fill": "accent", "x": 32, "y": 96 },
+        { "id": "hero", "type": "text", "text": "THE PRESS", "fontFamily": "Rozha One", "fontSize": 84, "fontWeight": 400, "fill": "ink", "x": 30, "y": 660 }
+      ]
+    },
+    {
+      "role": "stamp", "duration": 60, "layout": "typecase", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "L0", "type": "rrect", "width": 96, "height": 120, "radius": 6, "anchorX": 48, "anchorY": 60, "x": 36, "y": 220, "fill": "ink", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 0, "step": 5 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 0, "step": 5 }, "children": [{ "id": "L0t", "type": "text", "text": "G", "fontFamily": "Rozha One", "fontSize": 72, "fontWeight": 400, "fill": "bg", "x": 22, "y": 16 }] },
+        { "id": "L1", "type": "rrect", "width": 96, "height": 120, "radius": 6, "anchorX": 48, "anchorY": 60, "x": 148, "y": 220, "fill": "ink", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 1, "step": 5 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 1, "step": 5 }, "children": [{ "id": "L1t", "type": "text", "text": "U", "fontFamily": "Rozha One", "fontSize": 72, "fontWeight": 400, "fill": "bg", "x": 22, "y": 16 }] },
+        { "id": "L2", "type": "rrect", "width": 96, "height": 120, "radius": 6, "anchorX": 48, "anchorY": 60, "x": 260, "y": 220, "fill": "accent", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 2, "step": 5 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 2, "step": 5 }, "children": [{ "id": "L2t", "type": "text", "text": "T", "fontFamily": "Rozha One", "fontSize": 72, "fontWeight": 400, "fill": "bg", "x": 26, "y": 16 }] },
+        { "id": "L3", "type": "rrect", "width": 96, "height": 120, "radius": 6, "anchorX": 48, "anchorY": 60, "x": 372, "y": 220, "fill": "ink", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 3, "step": 5 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 3, "step": 5 }, "children": [{ "id": "L3t", "type": "text", "text": "E", "fontFamily": "Rozha One", "fontSize": 72, "fontWeight": 400, "fill": "bg", "x": 26, "y": 16 }] },
+        { "id": "L4", "type": "rrect", "width": 96, "height": 120, "radius": 6, "anchorX": 48, "anchorY": 60, "x": 92, "y": 380, "fill": "ink", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 4, "step": 5 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 4, "step": 5 }, "children": [{ "id": "L4t", "type": "text", "text": "N", "fontFamily": "Rozha One", "fontSize": 72, "fontWeight": 400, "fill": "bg", "x": 22, "y": 16 }] },
+        { "id": "L5", "type": "rrect", "width": 96, "height": 120, "radius": 6, "anchorX": 48, "anchorY": 60, "x": 204, "y": 380, "fill": "ink", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 5, "step": 5 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 5, "step": 5 }, "children": [{ "id": "L5t", "type": "text", "text": "B", "fontFamily": "Rozha One", "fontSize": 72, "fontWeight": 400, "fill": "bg", "x": 24, "y": 16 }] },
+        { "id": "L6", "type": "rrect", "width": 96, "height": 120, "radius": 6, "anchorX": 48, "anchorY": 60, "x": 316, "y": 380, "fill": "ink", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 6, "step": 5 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 6, "step": 5 }, "children": [{ "id": "L6t", "type": "text", "text": "E", "fontFamily": "Rozha One", "fontSize": 72, "fontWeight": 400, "fill": "bg", "x": 26, "y": 16 }] },
+        { "id": "L7", "type": "rrect", "width": 96, "height": 120, "radius": 6, "anchorX": 48, "anchorY": 60, "x": 204, "y": 540, "fill": "accent", "scaleX": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 7, "step": 5 }, "scaleY": { "binding": "stagger", "base": { "binding": "spring", "from": 1.6, "to": 1 }, "index": 7, "step": 5 }, "children": [{ "id": "L7t", "type": "text", "text": "R", "fontFamily": "Rozha One", "fontSize": 72, "fontWeight": 400, "fill": "bg", "x": 24, "y": 16 }] },
+        { "id": "G", "type": "text", "text": "GUTENBERG", "fontFamily": "IBM Plex Mono", "fontSize": 24, "fontWeight": 600, "letterSpacing": 10, "fill": "accent", "x": 0, "y": 720, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "page", "duration": 60, "layout": "folio", "badge": false,
+      "nodes": [
+        { "id": "paper", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "sheet", "type": "rect", "width": 420, "height": 560, "x": 60, "y": 180, "fill": "#f7efdc", "stroke": "ink", "strokeWidth": 2 },
+        { "id": "r0", "type": "rect", "width": 320, "height": 14, "x": 110, "y": 250, "fill": "ink", "opacity": 0.85 },
+        { "id": "r1", "type": "rect", "width": 320, "height": 14, "x": 110, "y": 290, "fill": "ink", "opacity": 0.7 },
+        { "id": "r2", "type": "rect", "width": 220, "height": 14, "x": 110, "y": 330, "fill": "accent", "opacity": 0.9 },
+        { "id": "r3", "type": "rect", "width": 320, "height": 14, "x": 110, "y": 370, "fill": "ink", "opacity": 0.7 },
+        { "id": "r4", "type": "rect", "width": 280, "height": 14, "x": 110, "y": 410, "fill": "ink", "opacity": 0.7 },
+        { "id": "drop", "type": "text", "text": "A", "fontFamily": "Rozha One", "fontSize": 130, "fontWeight": 400, "fill": "accent", "x": 96, "y": 480 },
+        { "id": "line", "type": "text", "text": "180 COPIES · ONE IDEA", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 3, "fill": "ink", "x": 0, "y": 790, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

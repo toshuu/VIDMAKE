@@ -1,0 +1,61 @@
+{
+  "id": "r03-brutalism",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "concrete",
+  "concept": {
+    "palette": { "bg": "#8f8c86", "ink": "#141311", "accent": "#ff4d00", "accent2": "#3a3835", "pillBg": "#141311", "pillFg": "#ff4d00" },
+    "faces": { "display": "Bebas Neue", "hero": "Inter", "kicker": "IBM Plex Mono" },
+    "signature": "a concrete tower that scrolls past like a monument drive-by",
+    "signatureWhy": "monument strategy: raw stacked mass, one human dot, safety-orange truth"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "slide", "params": { "direction": "up" } }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "mass", "duration": 60, "layout": "elevation", "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#a8a49c" }, { "offset": 1, "color": "bg" }] } },
+        { "id": "tower", "type": "container", "y": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [120, -40] }, "children": [
+          { "id": "b0", "type": "rect", "width": 300, "height": 130, "x": 120, "y": 420, "fill": "accent2" },
+          { "id": "b1", "type": "rect", "width": 240, "height": 120, "x": 150, "y": 300, "fill": "#2e2c29" },
+          { "id": "b2", "type": "rect", "width": 180, "height": 110, "x": 180, "y": 190, "fill": "accent2" },
+          { "id": "win0", "type": "rect", "width": 200, "height": 14, "x": 170, "y": 340, "fill": "bg", "opacity": 0.8 },
+          { "id": "win1", "type": "rect", "width": 140, "height": 14, "x": 200, "y": 230, "fill": "bg", "opacity": 0.8 },
+          { "id": "stripe", "type": "rect", "width": 300, "height": 18, "x": 120, "y": 460, "fill": "accent" }
+        ] },
+        { "id": "dot", "type": "circle", "radius": 9, "x": 400, "y": 720, "fill": "accent" },
+        { "id": "k", "type": "text", "text": "LONDON · 1972", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "ink", "x": 32, "y": 96 }
+      ]
+    },
+    {
+      "role": "scale", "duration": 60, "layout": "human-dot", "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "wall", "type": "rect", "width": 540, "height": 700, "x": 0, "y": 130, "fill": "accent2" },
+        { "id": "grid", "type": "container", "children": [
+          { "id": "w0", "type": "rect", "width": 60, "height": 60, "x": 60, "y": 220, "fill": "bg", "opacity": 0.85 },
+          { "id": "w1", "type": "rect", "width": 60, "height": 60, "x": 160, "y": 220, "fill": "bg", "opacity": 0.85 },
+          { "id": "w2", "type": "rect", "width": 60, "height": 60, "x": 260, "y": 220, "fill": "bg", "opacity": 0.85 },
+          { "id": "w3", "type": "rect", "width": 60, "height": 60, "x": 360, "y": 220, "fill": "bg", "opacity": 0.85 },
+          { "id": "w4", "type": "rect", "width": 60, "height": 60, "x": 60, "y": 320, "fill": "bg", "opacity": 0.85 },
+          { "id": "w5", "type": "rect", "width": 60, "height": 60, "x": 160, "y": 320, "fill": "bg", "opacity": 0.85 },
+          { "id": "fig", "type": "rect", "width": 26, "height": 130, "x": 267, "y": 560, "fill": "accent" },
+          { "id": "figh", "type": "circle", "radius": 16, "x": 261, "y": 520, "fill": "accent" }
+        ] },
+        { "id": "line", "type": "text", "text": "BUILT FOR PEOPLE,", "fontFamily": "Inter", "fontSize": 34, "fontWeight": 800, "fill": "ink", "x": 32, "y": 850 },
+        { "id": "line2", "type": "text", "text": "NOT PHOTOGRAPHS", "fontFamily": "Inter", "fontSize": 34, "fontWeight": 800, "fill": "ink", "x": 32, "y": 892 }
+      ]
+    },
+    {
+      "role": "verdict", "duration": 60, "layout": "verdict", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "ink" },
+        { "id": "word", "type": "text", "text": "UGLY?", "fontFamily": "Bebas Neue", "fontSize": 220, "fontWeight": 400, "fill": "bg", "x": 0, "y": 300, "textAlign": "center", "maxWidth": 540 },
+        { "id": "bar", "type": "rect", "width": { "binding": "interpolate", "inputRange": [10, 40], "outputRange": [0, 476], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "height": 20, "x": 32, "y": 560, "fill": "accent" },
+        { "id": "word2", "type": "text", "text": "HONEST.", "fontFamily": "Bebas Neue", "fontSize": 220, "fontWeight": 400, "fill": "accent", "x": 0, "y": 600, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [30, 48], "outputRange": [0, 1] } }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

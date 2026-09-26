@@ -1,0 +1,53 @@
+{
+  "id": "y1-moonphase",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "cold-precision",
+  "concept": {
+    "palette": { "bg": "#0e1116", "ink": "#e8eaed", "accent": "#c9ccd4", "accent2": "#d4af5a", "pillBg": "#171b22", "pillFg": "#c9ccd4" },
+    "faces": { "display": "Manrope", "hero": "Manrope", "kicker": "IBM Plex Mono" },
+    "signature": "a silver disc, a gold moon edge, almost nothing else moves",
+    "signatureWhy": "plan: cold-precision read, dials 5/3/3; restraint = disc + moon + 3 lines; explicitly not beige+brass"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "none" }],
+  "acts": [
+    {
+      "role": "disc", "duration": 60, "layout": "macro", "badge": false,
+      "nodes": [
+        { "id": "void", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "dial", "type": "circle", "radius": 190, "x": 80, "y": 280, "fill": "#151a21", "stroke": "accent", "strokeWidth": 3 },
+        { "id": "ticks", "type": "container", "children": [
+          { "id": "t12", "type": "rect", "width": 6, "height": 26, "x": 267, "y": 292, "fill": "accent" },
+          { "id": "t3", "type": "rect", "width": 26, "height": 6, "x": 438, "y": 463, "fill": "accent" },
+          { "id": "t6", "type": "rect", "width": 6, "height": 26, "x": 267, "y": 634, "fill": "accent" },
+          { "id": "t9", "type": "rect", "width": 26, "height": 6, "x": 96, "y": 463, "fill": "accent" }
+        ] },
+        { "id": "moon", "type": "circle", "radius": 44, "x": 226, "y": { "binding": "interpolate", "inputRange": [6, 54], "outputRange": [560, 420], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "fill": "accent2", "opacity": { "binding": "interpolate", "inputRange": [6, 24], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "shadow": { "color": "rgba(212,175,90,0.7)", "blur": 30 } },
+        { "id": "dust", "type": "particles", "count": 22, "seed": 91, "colors": ["accent"], "size": [1, 2], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": true }
+      ]
+    },
+    {
+      "role": "hands", "duration": 60, "layout": "one-complication", "badge": false,
+      "nodes": [
+        { "id": "void", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "dial", "type": "circle", "radius": 190, "x": 80, "y": 230, "fill": "#151a21", "stroke": "accent", "strokeWidth": 3 },
+        { "id": "moon", "type": "circle", "radius": 44, "x": 226, "y": 370, "fill": "accent2", "opacity": 0.95 },
+        { "id": "hour", "type": "rect", "width": 10, "height": 110, "x": 265, "y": 310, "fill": "ink", "rotation": -60, "anchorX": 5, "anchorY": 110 },
+        { "id": "min", "type": "rect", "width": 7, "height": 150, "x": 266, "y": 270, "fill": "ink", "rotation": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [30, 80], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "anchorX": 3.5, "anchorY": 150 },
+        { "id": "cap", "type": "text", "text": "ONE COMPLICATION", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 5, "fill": "accent", "x": 40, "y": 700 },
+        { "id": "sub", "type": "text", "text": "29.5 DAYS, TRACKED", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 400, "letterSpacing": 5, "fill": "accent2", "x": 40, "y": 740, "opacity": 0.85 }
+      ]
+    },
+    {
+      "role": "name", "duration": 60, "layout": "full-moon", "badge": false,
+      "nodes": [
+        { "id": "void", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "moon", "type": "circle", "radius": 120, "x": 150, "y": 300, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#f2e3bb" }, { "offset": 0.7, "color": "accent2" }, { "offset": 1, "color": "rgba(212,175,90,0)" }] } },
+        { "id": "name", "type": "text", "text": "MERIDIAN", "fontFamily": "Manrope", "fontSize": 54, "fontWeight": 800, "letterSpacing": 10, "fill": "ink", "x": 40, "y": 640 },
+        { "id": "cal", "type": "text", "text": "MOONPHASE · 41MM", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 400, "letterSpacing": 4, "fill": "accent", "x": 42, "y": 716 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

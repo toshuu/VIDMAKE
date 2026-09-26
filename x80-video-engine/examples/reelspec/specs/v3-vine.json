@@ -1,0 +1,66 @@
+{
+  "id": "v3-vine",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "signal-vine",
+  "concept": {
+    "palette": { "bg": "#04120c", "ink": "#e9fbef", "accent": "#4ade80", "accent2": "#a7f3d0", "pillBg": "#0a2417", "pillFg": "#e9fbef" },
+    "faces": { "display": "Inter", "hero": "Inter", "kicker": "Poppins" },
+    "signature": "a signal vine climbing through space, budding orbs at its knots",
+    "signatureWhy": "tube-along-curve + threaded torus rings — growth as geometry"
+  },
+  "durations": [60, 60],
+  "transitions": [{ "type": "fade", "duration": 16 }],
+  "acts": [
+    {
+      "role": "sprout",
+      "duration": 60,
+      "layout": "climb",
+      "badge": false,
+      "nodes": [
+        { "id": "soil", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        {
+          "id": "growth", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 700, "tiltX": 10, "tiltY": -10, "fov": 55 },
+          "light": { "dir": [-0.3, -0.8, 0.5], "ambient": 0.3 },
+          "fog": { "color": "bg", "near": -400, "far": 500 },
+          "objects": [
+            { "kind": "points", "x": 0, "y": 0, "z": -120, "w": 500, "h": 800, "d": 160, "count": 80, "seed": 17, "color": "accent2" },
+            { "kind": "tube", "points": [[-140, 300, 0], [-60, 140, 70], [40, 40, -40], [120, -120, 30], [60, -260, 0]], "r": 14, "seg": 20, "sides": 6, "color": "#4ade80" },
+            { "kind": "torus", "x": -60, "y": 140, "z": 70, "w": 90, "d": 26, "seg": 10, "tub": 6, "color": "accent2" },
+            { "kind": "torus", "x": 40, "y": 40, "z": -40, "w": 76, "d": 24, "seg": 10, "tub": 6, "color": "accent2" },
+            { "kind": "sphere", "x": 120, "y": -120, "z": 30, "r": 34, "lat": 5, "lon": 10, "color": "#a7f3d0" },
+            { "kind": "sphere", "x": 60, "y": -260, "z": 0, "r": 46, "lat": 5, "lon": 10, "color": "#4ade80" }
+          ]
+        },
+        { "id": "k", "type": "text", "text": "SIGNAL VINE", "fontFamily": "Poppins", "fontSize": 24, "fontWeight": 700, "letterSpacing": 8, "fill": "accent", "x": 32, "y": 72 }
+      ]
+    },
+    {
+      "role": "bloom",
+      "duration": 60,
+      "layout": "bloom",
+      "badge": false,
+      "nodes": [
+        { "id": "soil", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        {
+          "id": "crown", "type": "scene3d", "width": 540, "height": 960,
+          "camera": { "distance": 560, "tiltX": 16, "tiltY": 14, "fov": 52 },
+          "light": { "dir": [0.4, -0.7, 0.55], "ambient": 0.32 },
+          "objects": [
+            { "kind": "group", "ry": -18, "children": [
+              { "kind": "tube", "points": [[0, 260, 0], [-40, 100, 40], [30, -40, -30], [0, -180, 0]], "r": 16, "seg": 18, "sides": 6, "color": "#4ade80" },
+              { "kind": "sphere", "x": -40, "y": 100, "z": 40, "r": 30, "lat": 5, "lon": 10, "color": "accent2" },
+              { "kind": "sphere", "x": 30, "y": -40, "z": -30, "r": 38, "lat": 5, "lon": 10, "color": "#a7f3d0" },
+              { "kind": "sphere", "x": 0, "y": -180, "z": 0, "r": 58, "lat": 6, "lon": 12, "color": "#4ade80" },
+              { "kind": "torus", "x": 0, "y": -180, "z": 0, "w": 170, "d": 30, "seg": 14, "tub": 6, "color": "accent2" }
+            ] }
+          ]
+        },
+        { "id": "hero", "type": "text", "text": "BLOOM", "fontFamily": "Inter", "fontSize": 68, "fontWeight": 800, "fill": "ink", "x": 32, "y": 700, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [6, 20], "outputRange": [0, 1] }, "index": 0, "step": 0 } },
+        { "id": "sub", "type": "text", "text": "EVERY KNOT A SIGNAL", "fontFamily": "Poppins", "fontSize": 20, "fontWeight": 700, "letterSpacing": 5, "fill": "accent", "x": 32, "y": 786 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

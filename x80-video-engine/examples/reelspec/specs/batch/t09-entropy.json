@@ -1,0 +1,56 @@
+{
+  "id": "t09-entropy",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "decay",
+  "concept": {
+    "palette": { "bg": "#101014", "ink": "#e8e8ec", "accent": "#ff5a36", "accent2": "#ffb03a", "pillBg": "#1c1c22", "pillFg": "#ff5a36" },
+    "faces": { "display": "Space Grotesk", "hero": "Space Grotesk", "kicker": "IBM Plex Mono" },
+    "signature": "a perfect grid catches fire from the inside out",
+    "signatureWhy": "system-decay strategy: stagger cascades + heat color binding, order as the subject"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "dissolve" }, { "type": "fade" }],
+  "subcomps": {
+    "tile": { "id": "tile", "type": "rrect", "width": 120, "height": 120, "radius": 10, "fill": "ink", "opacity": 0.92, "anchorX": 60, "anchorY": 60 }
+  },
+  "acts": [
+    {
+      "role": "order", "duration": 60, "layout": "grid-perfect", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "t00", "use": "tile", "x": 78, "y": 250 }, { "id": "t01", "use": "tile", "x": 210, "y": 250 }, { "id": "t02", "use": "tile", "x": 342, "y": 250 },
+        { "id": "t10", "use": "tile", "x": 78, "y": 382 }, { "id": "t11", "use": "tile", "x": 210, "y": 382 }, { "id": "t12", "use": "tile", "x": 342, "y": 382 },
+        { "id": "t20", "use": "tile", "x": 78, "y": 514 }, { "id": "t21", "use": "tile", "x": 210, "y": 514 }, { "id": "t22", "use": "tile", "x": 342, "y": 514 },
+        { "id": "word", "type": "text", "text": "ORDER", "fontFamily": "Space Grotesk", "fontSize": 68, "fontWeight": 700, "letterSpacing": 14, "fill": "ink", "x": 0, "y": 720, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "crack", "duration": 60, "layout": "grid-cracking", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "t00", "type": "rrect", "width": 120, "height": 120, "radius": 10, "x": 78, "y": 250, "fill": "ink", "anchorX": 60, "anchorY": 60, "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [0, -14] }, "index": 0, "step": 5 } },
+        { "id": "t01", "type": "rrect", "width": 120, "height": 120, "radius": 10, "x": 210, "y": 250, "fill": "ink", "anchorX": 60, "anchorY": 60, "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [0, 9] }, "index": 1, "step": 5 } },
+        { "id": "t02", "type": "rrect", "width": 120, "height": 120, "radius": 10, "x": 342, "y": 250, "fill": "ink", "anchorX": 60, "anchorY": 60, "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [0, -22] }, "index": 2, "step": 5 } },
+        { "id": "t10", "type": "rrect", "width": 120, "height": 120, "radius": 10, "x": 78, "y": 382, "fill": "ink", "anchorX": 60, "anchorY": 60, "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [0, 17] }, "index": 3, "step": 5 } },
+        { "id": "t11", "type": "rrect", "width": 120, "height": 120, "radius": 10, "x": 210, "y": 382, "fill": { "binding": "color", "inputRange": [10, 50], "colorStops": ["#e8e8ec", "#ff5a36"] }, "anchorX": 60, "anchorY": 60, "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [0, 31] }, "index": 4, "step": 5 }, "scaleX": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [1, 1.25] }, "index": 4, "step": 5 }, "scaleY": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [1, 1.25] }, "index": 4, "step": 5 } },
+        { "id": "t12", "type": "rrect", "width": 120, "height": 120, "radius": 10, "x": 342, "y": 382, "fill": "ink", "anchorX": 60, "anchorY": 60, "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [0, -11] }, "index": 5, "step": 5 } },
+        { "id": "t20", "type": "rrect", "width": 120, "height": 120, "radius": 10, "x": 78, "y": 514, "fill": "ink", "anchorX": 60, "anchorY": 60, "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [0, 24] }, "index": 6, "step": 5 } },
+        { "id": "t21", "type": "rrect", "width": 120, "height": 120, "radius": 10, "x": 210, "y": 514, "fill": "ink", "anchorX": 60, "anchorY": 60, "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [0, -18] }, "index": 7, "step": 5 } },
+        { "id": "t22", "type": "rrect", "width": 120, "height": 120, "radius": 10, "x": 342, "y": 514, "fill": "ink", "anchorX": 60, "anchorY": 60, "rotation": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [10, 50], "outputRange": [0, 13] }, "index": 8, "step": 5 } },
+        { "id": "word", "type": "text", "text": "CRACK", "fontFamily": "Space Grotesk", "fontSize": 68, "fontWeight": 700, "letterSpacing": 14, "fill": "accent2", "x": 0, "y": 720, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "heat", "duration": 60, "layout": "grid-ash", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "binding": "color", "inputRange": [0, 59], "colorStops": ["#101014", "#1d0d08"] } },
+        { "id": "ember", "type": "particles", "count": 70, "seed": 30, "colors": ["accent", "accent2"], "size": [1, 4], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": true },
+        { "id": "core", "type": "circle", "radius": 90, "x": 180, "y": 330, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "accent2" }, { "offset": 1, "color": "rgba(255,176,58,0)" }] }, "opacity": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.4, 0.9, 0.6] } },
+        { "id": "word", "type": "text", "text": "ENTROPY", "fontFamily": "Space Grotesk", "fontSize": 64, "fontWeight": 700, "letterSpacing": 8, "fill": "accent", "x": 0, "y": 700, "textAlign": "center", "maxWidth": 540 },
+        { "id": "sub", "type": "text", "text": "ALWAYS WINS", "fontFamily": "IBM Plex Mono", "fontSize": 22, "fontWeight": 500, "letterSpacing": 10, "fill": "ink", "x": 0, "y": 786, "textAlign": "center", "maxWidth": 540, "opacity": 0.8 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

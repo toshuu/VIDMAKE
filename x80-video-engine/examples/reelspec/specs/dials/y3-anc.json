@@ -1,0 +1,49 @@
+{
+  "id": "y3-anc",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "wave-tank",
+  "concept": {
+    "palette": { "bg": "#f4f2ec", "ink": "#1a1d24", "accent": "#2456e0", "accent2": "#c26a1b", "pillBg": "#1a1d24", "pillFg": "#f4f2ec" },
+    "faces": { "display": "Space Grotesk", "hero": "Space Grotesk", "kicker": "IBM Plex Mono" },
+    "signature": "two waves walk toward each other and erase into a flat glowing line",
+    "signatureWhy": "plan: diagram-as-art; hook = loud wave + rising mirror in second one; morph-via-pair; directional wipe/slide = signal flow"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "wipe", "params": { "direction": "left" } }, { "type": "slide", "params": { "direction": "left" } }],
+  "acts": [
+    {
+      "role": "noise", "duration": 60, "layout": "racket", "badge": false,
+      "nodes": [
+        { "id": "lab", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "wave", "type": "path", "d": "M 40 420 q 40 -90 80 0 t 80 0 t 80 0 t 80 0 t 80 0", "stroke": "accent2", "strokeWidth": 9, "x": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [-30, 30], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } },
+        { "id": "mic", "type": "circle", "radius": 16, "x": 120, "y": 620, "fill": "ink" },
+        { "id": "micl", "type": "text", "text": "MIC", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 700, "letterSpacing": 3, "fill": "ink", "x": 112, "y": 660 },
+        { "id": "k", "type": "text", "text": "THE WORLD IS LOUD", "fontFamily": "Space Grotesk", "fontSize": 40, "fontWeight": 700, "fill": "ink", "x": 40, "y": 180 }
+      ]
+    },
+    {
+      "role": "mirror", "duration": 60, "layout": "antiphase", "badge": false,
+      "nodes": [
+        { "id": "lab", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "wave", "type": "path", "d": "M 40 400 q 40 -80 80 0 t 80 0 t 80 0 t 80 0 t 80 0", "stroke": "accent2", "strokeWidth": 7, "opacity": 0.85 },
+        { "id": "anti", "type": "path", "d": "M 40 440 q 40 80 80 0 t 80 0 t 80 0 t 80 0 t 80 0", "stroke": "accent", "strokeWidth": 7, "opacity": { "binding": "interpolate", "inputRange": [6, 30], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } },
+        { "id": "spk", "type": "rrect", "width": 90, "height": 130, "radius": 14, "x": 225, "y": 600, "fill": "ink", "opacity": { "binding": "interpolate", "inputRange": [10, 28], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } },
+        { "id": "spkl", "type": "text", "text": "SPEAKER", "fontFamily": "IBM Plex Mono", "fontSize": 19, "fontWeight": 700, "letterSpacing": 3, "fill": "ink", "x": 216, "y": 748 },
+        { "id": "k", "type": "text", "text": "SO MAKE THE OPPOSITE", "fontFamily": "Space Grotesk", "fontSize": 36, "fontWeight": 700, "fill": "ink", "x": 40, "y": 180 }
+      ]
+    },
+    {
+      "role": "quiet", "duration": 60, "layout": "flatline", "badge": false,
+      "nodes": [
+        { "id": "lab", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "ghost0", "type": "path", "d": "M 40 420 q 40 -90 80 0 t 80 0 t 80 0 t 80 0 t 80 0", "stroke": "accent2", "strokeWidth": 5, "opacity": { "binding": "interpolate", "inputRange": [0, 30], "outputRange": [0.7, 0], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } },
+        { "id": "ghost1", "type": "path", "d": "M 40 420 q 40 90 80 0 t 80 0 t 80 0 t 80 0 t 80 0", "stroke": "accent", "strokeWidth": 5, "opacity": { "binding": "interpolate", "inputRange": [0, 30], "outputRange": [0.7, 0], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } },
+        { "id": "flat", "type": "rect", "width": { "binding": "interpolate", "inputRange": [10, 44], "outputRange": [0, 460], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "height": 8, "x": 40, "y": 416, "fill": "ink", "shadow": { "color": "rgba(36,86,224,0.55)", "blur": 18 } },
+        { "id": "take", "type": "text", "text": "QUIET,", "fontFamily": "Space Grotesk", "fontSize": 64, "fontWeight": 700, "fill": "ink", "x": 40, "y": 620 },
+        { "id": "take2", "type": "text", "text": "MATHEMATICALLY", "fontFamily": "IBM Plex Mono", "fontSize": 24, "fontWeight": 500, "letterSpacing": 4, "fill": "accent", "x": 42, "y": 700 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

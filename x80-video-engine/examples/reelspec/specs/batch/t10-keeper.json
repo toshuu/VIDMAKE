@@ -1,0 +1,50 @@
+{
+  "id": "t10-keeper",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "beacon",
+  "concept": {
+    "palette": { "bg": "#0a1220", "ink": "#e9eef4", "accent": "#f5d67b", "accent2": "#5f7a99", "pillBg": "#12233a", "pillFg": "#f5d67b" },
+    "faces": { "display": "Manrope", "hero": "Manrope", "kicker": "Bebas Neue" },
+    "signature": "three shots, one sweeping beam, chapters like title cards",
+    "signatureWhy": "cinematic-vignette strategy — light choreography carries the story, not sets"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "one", "duration": 60, "layout": "establishing", "badge": false,
+      "nodes": [
+        { "id": "sea", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#0a1220" }, { "offset": 0.7, "color": "#0d1a2e" }, { "offset": 1, "color": "#060b14" }] } },
+        { "id": "rock", "type": "shape", "shape": "polygon", "width": 420, "height": 160, "points": 5, "x": 60, "y": 700, "fill": "#05080e" },
+        { "id": "tower", "type": "rect", "width": 64, "height": 380, "x": 238, "y": 330, "fill": "#101b2c" },
+        { "id": "lamp", "type": "circle", "radius": 26, "x": 244, "y": 290, "fill": "accent", "shadow": { "color": "rgba(245,214,123,0.9)", "blur": 44 } },
+        { "id": "beam", "type": "rect", "width": 560, "height": 90, "x": 270, "y": 272, "fill": { "kind": "linear", "angle": 90, "stops": [{ "offset": 0, "color": "rgba(245,214,123,0.85)" }, { "offset": 1, "color": "rgba(245,214,123,0)" }] }, "blendMode": "screen", "rotation": { "binding": "keyframes", "frames": [0, 30, 59], "values": [-14, 10, -14] }, "anchorX": 0, "anchorY": 45, "opacity": 0.8 },
+        { "id": "rain", "type": "particles", "count": 90, "seed": 14, "colors": ["accent2"], "size": [1, 2], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": false },
+        { "id": "ch", "type": "text", "text": "CHAPTER ONE", "fontFamily": "Bebas Neue", "fontSize": 34, "fontWeight": 400, "letterSpacing": 8, "fill": "accent", "x": 0, "y": 120, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [8, 24], "outputRange": [0, 1] } }
+      ]
+    },
+    {
+      "role": "two", "duration": 60, "layout": "lamp-room", "badge": false,
+      "nodes": [
+        { "id": "room", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "#0d1626" },
+        { "id": "lens", "type": "circle", "radius": 130, "x": 140, "y": 300, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "#fff3d0" }, { "offset": 0.5, "color": "accent" }, { "offset": 1, "color": "rgba(245,214,123,0)" }] }, "opacity": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.75, 1, 0.75] } },
+        { "id": "keeper", "type": "rect", "width": 70, "height": 220, "x": 400, "y": 420, "fill": "#04070d" },
+        { "id": "head", "type": "circle", "radius": 30, "x": 405, "y": 370, "fill": "#04070d" },
+        { "id": "ch", "type": "text", "text": "CHAPTER TWO", "fontFamily": "Bebas Neue", "fontSize": 34, "fontWeight": 400, "letterSpacing": 8, "fill": "accent", "x": 0, "y": 120, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [8, 24], "outputRange": [0, 1] } },
+        { "id": "line", "type": "text", "text": "HE TRIMMED THE WICK", "fontFamily": "Manrope", "fontSize": 30, "fontWeight": 600, "fill": "ink", "x": 0, "y": 720, "textAlign": "center", "maxWidth": 540 }
+      ]
+    },
+    {
+      "role": "three", "duration": 60, "layout": "dawn", "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "binding": "color", "inputRange": [0, 59], "colorStops": ["#0a1220", "#3a4a6b"] } },
+        { "id": "sun", "type": "circle", "radius": 60, "x": 210, "y": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [620, 420] }, "fill": "accent", "opacity": 0.9 },
+        { "id": "tower", "type": "rect", "width": 64, "height": 380, "x": 238, "y": 330, "fill": "#05080e" },
+        { "id": "ch", "type": "text", "text": "CHAPTER THREE", "fontFamily": "Bebas Neue", "fontSize": 34, "fontWeight": 400, "letterSpacing": 8, "fill": "accent", "x": 0, "y": 120, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [8, 24], "outputRange": [0, 1] } },
+        { "id": "line", "type": "text", "text": "HE KEPT THE LIGHT", "fontFamily": "Manrope", "fontSize": 40, "fontWeight": 800, "fill": "ink", "x": 0, "y": 730, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

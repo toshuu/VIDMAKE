@@ -166,3 +166,241 @@ verified distinct). Never rely on faux-600 — it used to fall back silently.
 - [ ] Icons: set ≥5, retinted, probed, license noted
 - [ ] Signature element present and named in plan header
 - [ ] No dead space in any act still
+- [ ] Plan block written BEFORE any JSON (§7: premise/angle/hook/metaphor/beats)
+- [ ] Reading floors hold: every line settled ≥ floor (§7), sequential text held as a set
+- [ ] At most one type-only act; the centerpiece SHOWS the idea happening (§7 ladder)
+- [ ] Sequential moments declared in the plan and built with stagger/sharedFly/keyframes
+- [ ] Banned defaults absent or justified in writing: hero-number reflex, centered hero, back-to-back fades, stock chrome
+- [ ] Design read written; dials set (variance/motion/density) and honored in the render
+- [ ] Every significant motion carries an intent (§8.3); come-from-nowhere/sluggish-landing absent
+- [ ] Optical pass done (§8.5); palette/face rotation respected
+- [ ] Final creative review answered (6 questions, §8.6) with fixes applied
+
+## 7. Zero-shot taste contract (adapted from latent-spaces/brag)
+
+brag is a Hyperframes launch-video skill (browser renderer, comedy launch
+tone) — none of its runtime transfers. What transfers is its *planning
+discipline*: premise before composition, readable pacing, specificity, and
+gates. Adapted below to X80's JSON-first deterministic engine. Source:
+`https://github.com/latent-spaces/brag` (SKILL.md, step-1/step-2, tones).
+
+### 7.1 Premise before composition (the plan block)
+
+No JSON before a written plan block exists (record in meta/decisions).
+The block answers, in this order:
+
+1. **Idea** — one sentence: what is this reel *about*?
+2. **Angle** — the creative premise: what makes this video specific to
+   this topic and no other? If the angle fits any brief, it is not an angle.
+3. **Hook (first 1–2s)** — the single invented opening moment. Planned
+   before anything else. A word, image, or motion that earns the next
+   seconds — never just "scene 1 of the template."
+4. **Metaphor** — what visual metaphor or physical behavior best
+   communicates the idea? Ask it explicitly before choosing any layout:
+   history → artifact/process · science → system/simulation/transformation
+   · finance → accumulation/branching · story → environment/journey.
+5. **Beats** — 2–4 story beats (hook → reveal → 1–2 sharp moments → landing).
+   Each beat names what the viewer *sees happening*, not a title card topic.
+6. **Tone/energy** — one dial setting (§7.5) + one freeform phrase.
+7. **Sequential moments** — what appears one-by-one (objects, words, cards,
+   events)? Declared here, built with stagger/sharedFly/keyframes.
+8. **Reading budget** — per act: word count vs duration at §7.3 floors.
+   Over budget → cut copy or split the act, never speed up.
+
+### 7.2 Show-ladder (show the idea happening)
+
+Prefer visualizing the actual concept/process/event over title cards that
+describe it. Ladder, strongest first:
+
+1. **Live process / simulated event** — the mechanism working on screen
+   (pins lifting, river meandering, antibodies chasing, planks replacing).
+2. **Diagram of the thing** — a working schematic (hypnogram, cross-section,
+   flow), drawn as the art itself.
+3. **Artifact / object** — the thing itself, staged (bowl, record, tower).
+4. **Type-only** — words as the visual. Allowed, but at most ONE type-only
+   act per reel; it must carry the sharpest line in the reel.
+
+A reel of three title cards is a slide deck, not a video — reject it at
+plan review even if every frame is pretty.
+
+### 7.3 Reading floors (pacing from motion, never from skimming)
+
+Pace comes from fast entrances, cuts, and motion — never from pulling text
+before it can be read. Every line holds fully visible and settled:
+
+- 1–3 word label: **≥ 0.8s settled** (≈24f @30fps).
+- Longer line: **≥ 0.3s per word**, minimum ≈1.2s (≈9f/word, min 36f).
+- The hook line gets the most time, not the least.
+- Sequential text: items may snap fast, but the full set then HOLDS to
+  floor (snap accents ≠ readable lines). Every-other-beat minimum.
+- Fast-in + hold reads punchy AND legible. Fast-in + gone reads as a glitch.
+
+`checkSpec` enforces the coarse form (words-per-act vs duration); the
+planner enforces the fine form (per-line settle windows in bindings).
+
+### 7.4 Restraint + every-frame-designed
+
+- **Restraint:** 2–3 strong visual decisions per reel, intentional. More
+  effects ≠ better. Name the decisions in the plan block; cut the rest.
+- **Every frame designed:** no filler backgrounds (a flat color with
+  nothing on it is a failed frame unless the plan justifies silence),
+  no arbitrary decoration, no repeated visual grammar across acts unless
+  it IS the concept (repetition with variation > repetition).
+- **Specificity test:** cover the palette/faces and ask "which brief is
+  this for?" If unanswerable, the reel is generic — replan the metaphor.
+
+### 7.5 Energy dial (defaults, never templates)
+
+Pick one per reel for pacing + transitions + type energy. Freeform direction
+may override any row; the dial only sets defaults so choices stay coherent.
+
+| Dial | Pacing | Type energy | Transitions |
+|---|---|---|---|
+| `quiet` | 3 acts, long holds, silence is a decision | light/medium, generous tracking, mixed case | slow crossfade, holds |
+| `clean` | 3–4 acts, comfortable | medium, breathing room | crossfade, clean wipe/slide |
+| `confident` | 3 acts, one claim each | heavy or medium, sentence case | hard cut, minimal |
+| `loud` | 4–6 acts, some < 2s | ALL CAPS heavy, oversized, tilted words allowed | hard cut, flash, push |
+| `grand` | 3–4 acts, dramatic reveals | full-bleed large, caps or heavy | dramatic wipe, scale-in crossfade |
+| `smooth` | 4–5 acts, feature-card rhythm | title case medium, clean | slide, smooth wipe |
+
+Rule: no two consecutive acts share a transition unless the dial says
+`loud`. A fade followed by a fade is a planning failure, not a style.
+
+### 7.6 Banned defaults (justify in writing or don't ship)
+
+These are the documented convergence reflexes (batch-1/batch-2 reports).
+Any of them in a plan needs one written sentence of justification:
+
+- hero-number + tracked-kicker as the emphasis move
+- centered hero as the default alignment
+- back-to-back fades
+- stock progress chrome on a free system (invent orientation or justify)
+- flat unmotivated backgrounds filling > 40% of a frame
+
+---
+
+## 8. Planning intelligence (adapted: TasteSkill + Emil Kowalski + Vercel)
+
+Three web-UI taste systems, mined for what transfers to deterministic
+video planning. None of their runtimes transfer (no React/Tailwind/
+browser/GSAP/WAAPI). What transfers is judgment: read-before-generating,
+named motion, optical finishing, review-before-shipping. Sources:
+`Leonxlnx/taste-skill` (dials, design read, anti-defaults, pre-flight),
+`emilkowalski/skills` (vocabulary, intent, review posture),
+`vercel-labs/web-interface-guidelines` (optical alignment, motion purpose,
+transform origin). Six concepts only — everything below is one of them.
+
+### 8.1 DESIGN READ (one line, before anything else)
+
+LLM output converges because generation starts before reading. Before dials,
+before JSON, write one line:
+
+> Reading this as: \<topic> for \<audience>, with a \<visual> language,
+> leaning toward \<X80 strategy>.
+
+Examples:
+- "Reading this as: a luxury watch film for collectors, with a cold-precision
+  language, leaning toward macro-detail + slow push-ins."
+- "Reading this as: a night-market hype reel for scrollers, with a dense
+  neon-chaos language, leaning toward staggered card bursts."
+If the read is genuinely ambiguous between two directions, ask one question.
+Otherwise declare and proceed. The read, not habit, sets every choice below.
+
+### 8.2 CREATIVE DIALS (planning controls, NOT templates)
+
+Per reel, three numbers 1–10, recorded in the plan block. They gate density,
+energy, and asymmetry decisions — they never select layouts.
+
+- `designVariance`: 1 = symmetric/grid calm · 10 = deliberate asymmetry.
+  Baseline 7. Trust-first/calm briefs 3–4 · premium 6–7 · wild 9–10.
+- `motionIntensity`: 1 = still frames + cuts · 10 = continuous choreography.
+  Baseline 6. Quiet 2–3 · clean 5–6 · loud 8–10.
+- `visualDensity`: 1 = gallery air · 10 = packed field. Baseline 4.
+  Never exceed 7 without naming what was cut to pay for it.
+
+Coherence rule (the dials' real job): the reel must *move like its number*.
+A motion-8 reel with static frames is broken; a motion-3 reel with springs
+everywhere is broken. Density above 7 with no focal hierarchy is clutter,
+not richness — cut or rank elements before shipping.
+
+### 8.3 MOTION INTENT (one reason per motion, or delete it)
+
+Every significant binding answers: what does this motion communicate?
+Allowed answers: **storytelling · causality · emphasis · spatial
+relationship · transformation · rhythm · delight**. "It looked cool" is not
+an answer — delete the motion (Emil's remedial step 1, and the single
+highest-value review habit). Record intents beside beats in the plan block.
+
+Frequency gate: motifs seen every act (rain, grain, kickers) stay subtle;
+one-shot moments may be big. Never animate what the viewer watches most
+with the slowest curve — entrances resolve fast (spring, expo-out
+interpolate), exits may linger; linear only for tickers/marquees.
+
+### 8.4 MOTION VOCABULARY (reason in these terms; X80 mechanisms mapped)
+
+Name the move before building it. Each maps to an existing mechanism —
+vocabulary expands *reasoning*, never the engine:
+
+- **reveal** — uncover via clip/wipe/opacity (clip rects, iris/push-cut).
+- **stagger** — cascade with per-index delay (`stagger()`, index × step).
+- **morph** — same-structure shape interpolation (`bakeMorph` frames).
+- **shared-element** — one element travels across a cut (`sharedFly` overlay).
+- **parallax** — layers at different speeds for depth (multi-rate binds).
+- **anticipation** — small opposite wind-up before the move (keyframes dip).
+- **follow-through** — trailing settle after the main stop (spring tail, lagged second binding).
+- **squash & stretch** — scaleX≠scaleY deformation for weight/speed.
+- **origin-aware** — growth/spin from its visual anchor (`anchorX/Y` set and
+  documented per node; never a centered pop for a corner-anchored thing).
+- **asymmetric easing** — accelerate ≠ decelerate (per-segment easing arrays;
+  expo-out entrances, gentle exits).
+- **orbit / pulse / float** — continuous ambient loops (`motionPath` loops,
+  heartbeat keyframes, drift binds). Ambient loops must be ignorable —
+  if a loop competes with the message, cut it.
+- **typewriter** — character-by-character caption reveal (caption `reveal`).
+
+Review vocabulary: **come-from-nowhere** (scale(0) pops — banned; enter at
+0.9–0.97 + opacity), **sluggish landing** (ease-in entrances — banned),
+**symmetric in/out** on deliberate moments (flag it).
+
+### 8.5 OPTICAL COMPOSITION (geometry first, eyes last)
+
+Math places; rendered stills judge. After first stills, do an optical pass:
+
+- **Deliberate alignment** — every element aligns to something (edge, axis,
+  optical center). No accidental placement; check stills at full size.
+- **Optical nudges** — per-family centering offsets (capK table), trailing
+  letter-spacing compensation, and ±few-px nudges where perception beats
+  geometry (all-caps needs less top room; round shapes need overshoot to
+  *look* aligned). Record nudges as numbers, never vibes.
+- **Balance in lockups** — icon + text pairings matched in visual weight
+  (thin icon next to heavy type needs a stroke/weight step up).
+- **Consistency locks** — one corner-radius scale, one accent, one palette
+  temperature per reel; mixed systems need a written rule or they get unified.
+- **Palette rotation** — never ship the just-used family twice running
+  (warm-paper + brass + espresso may appear only with a written brand reason;
+  same for any family). Name the family you are *not* using and why.
+- **Serif/face discipline** — display serif only with a brief-level reason
+  (heritage, editorial, luxury-with-cause); emphasis stays inside the same
+  family (weight/italic), never a mixed-family word swap. Rotate display
+  faces across consecutive reels.
+- **Kicker restraint** — max 2 kickers per 3-act reel unless justified; a
+  kicker on every act is eyebrow-templating. Drop it or vary the treatment.
+
+### 8.6 FINAL CREATIVE REVIEW (on rendered stills, fix-or-justify loop)
+
+After stills, before calling anything done, answer in writing:
+
+1. Does the design read as intentional? (Would a viewer believe choices
+   were made, or does it look generated?)
+2. Is the composition optically balanced? (§8.5 pass done?)
+3. Does every motion communicate something? (§8.3 intents hold? Anything
+   moving only because the planner knows how → deleted?)
+4. Is the reel too predictable? (Same beat shape 3×? Same transition
+   twice? Same alignment everywhere?)
+5. Is there a stronger visual idea hiding inside the same brief?
+6. Copy re-read: every string grammatical, referents clear, no truncation
+   marks, no fake-precise numbers the brief doesn't own?
+
+Then update the checklist: plan block (§7.1 + read + dials + intents) —
+add `- [ ] Design read written; dials set (variance/motion/density)` and
+`- [ ] Final creative review answered (6 questions) with fixes applied`.

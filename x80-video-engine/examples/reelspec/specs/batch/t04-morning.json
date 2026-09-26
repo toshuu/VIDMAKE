@@ -1,0 +1,44 @@
+{
+  "id": "t04-morning",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "still",
+  "concept": {
+    "palette": { "bg": "#f6f1e7", "ink": "#2b2118", "accent": "#c96f4a", "accent2": "#8a7a5f", "pillBg": "#2b2118", "pillFg": "#f6f1e7" },
+    "faces": { "display": "Inter", "hero": "Inter", "kicker": "Manrope" },
+    "signature": "one word per act, acres of whitespace, a quiet silhouette",
+    "signatureWhy": "whitespace-luxury strategy: restraint is the design, motion barely whispers"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "pour", "duration": 60, "layout": "empty", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "dripper", "type": "shape", "shape": "polygon", "width": 150, "height": 130, "points": 3, "x": 195, "y": 330, "fill": "ink", "rotation": 180, "opacity": 0.9 },
+        { "id": "cup", "type": "rrect", "width": 130, "height": 110, "radius": 22, "x": 205, "y": 520, "fill": "rgba(0,0,0,0)", "stroke": "ink", "strokeWidth": 5 },
+        { "id": "steam", "type": "particles", "count": 24, "seed": 4, "colors": ["accent2"], "size": [2, 4], "area": { "w": 200, "h": 200 }, "at": [170, 120], "twinkle": false },
+        { "id": "word", "type": "text", "text": "POUR.", "fontFamily": "Inter", "fontSize": 72, "fontWeight": 800, "fill": "ink", "x": 0, "y": 730, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [10, 30], "outputRange": [0, 1] } }
+      ]
+    },
+    {
+      "role": "bloom", "duration": 60, "layout": "empty", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "pool", "type": "shape", "shape": "ellipse", "width": 200, "height": 60, "x": 170, "y": 420, "fill": "accent", "opacity": { "binding": "interpolate", "inputRange": [6, 40], "outputRange": [0.25, 0.85] } },
+        { "id": "ring1", "type": "shape", "shape": "ellipse", "width": 260, "height": 80, "x": 140, "y": 410, "fill": "rgba(0,0,0,0)", "stroke": "accent2", "strokeWidth": 2, "opacity": { "binding": "interpolate", "inputRange": [16, 44], "outputRange": [0, 0.7] } },
+        { "id": "word", "type": "text", "text": "BLOOM.", "fontFamily": "Inter", "fontSize": 72, "fontWeight": 800, "fill": "ink", "x": 0, "y": 730, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [10, 30], "outputRange": [0, 1] } }
+      ]
+    },
+    {
+      "role": "drink", "duration": 60, "layout": "empty", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "word", "type": "text", "text": "DRINK.", "fontFamily": "Inter", "fontSize": 72, "fontWeight": 800, "fill": "accent", "x": 0, "y": 400, "textAlign": "center", "maxWidth": 540, "opacity": { "binding": "interpolate", "inputRange": [10, 30], "outputRange": [0, 1] } },
+        { "id": "mark", "type": "text", "text": "KAMA POUR-OVER · 02", "fontFamily": "Manrope", "fontSize": 22, "fontWeight": 500, "letterSpacing": 4, "fill": "ink", "x": 0, "y": 500, "textAlign": "center", "maxWidth": 540, "opacity": 0.75 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

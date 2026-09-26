@@ -8,9 +8,15 @@ Pipeline: this JSON → `POST /api/validate` (self-check) →
 `POST /api/render` → `GET /api/jobs/<id>` → MP4.
 Canvas is locked: **540×960 @ 30fps**. A 15s reel = 450 frames.
 
-Rule #0 for generated JSON: **never invent a field, kind, layout, style, or
-transition name.** Anything unknown throws and the job fails. If you need a
-new capability, ask for a new JSON option + engine pairing instead.
+Rule #0 for generated JSON: **presets are shortcuts, not a cage.**
+The 7 named layouts (§A.4), the 7 subject kinds (§A.7), the kicker styles
+(§A.5) and the 5 role names are reusable presets. The planner may ALWAYS
+invent new arrangements via the open composition language (PART C):
+`layout: "free"` (alias `"custom"`) + `nodes` + `kind: "raw"` subjects,
+custom roles/systems/kicker styles, N-line titles, and variable transition
+durations. Unknown *engine* primitives (node types, effect names) still throw
+— invent arrangements, never engine keywords. If you need a genuinely new
+engine capability, ask for a new JSON option + engine pairing instead.
 
 ---
 
@@ -22,7 +28,7 @@ new capability, ask for a new JSON option + engine pairing instead.
 |---|---|---|---|
 | `id` | string | yes | Non-empty. Used in the MP4 filename. Slug style (`india-fest-15s`). |
 | `canvas` | `{w,h,fps}` | yes | Must be exactly `{w:540,h:960,fps:30}`. Locked. |
-| `system` | string | yes | `"cinematic"` or `"stack"`. Kicker style must match (pill→stack, overline→cinematic). |
+| `system` | string | yes | Preset `"cinematic"` or `"stack"` (kicker style must match), or `"free"` / any custom name (no system rules, mixing allowed). |
 | `concept` | object | yes | Palette + faces + signature (below). |
 | `durations` | number[] | yes | Length **=== acts.length**. Each an integer **≥ 30** frames. Sum = reel length. |
 | `transitions` | object[] | yes | Length **=== acts.length − 1** (single-act reel → `[]`). `[]` with several acts = hard cuts + whooshes. |
@@ -56,9 +62,9 @@ new capability, ask for a new JSON option + engine pairing instead.
 
 | Field | Type | Rules |
 |---|---|---|
-| `role` | string | `hook` \| `proof` \| `proof2` \| `scale` \| `cta`. Planning label only (recorded, never changes pixels). Recommended arc order as listed. |
+| `role` | string | Preset `hook` \| `proof` \| `proof2` \| `scale` \| `cta`, or any custom label (`montage`, `bridge`, `reveal`…). Planning label only (recorded, never changes pixels). Recommended arc order as listed. |
 | `duration` | number | Frames for this act (mirrored in top-level `durations`). |
-| `layout` | string | One of §A.4. Unknown → throw. |
+| `layout` | string | 7 presets (§A.4) or `"free"` / `"custom"` (PART C — no preset builder runs; compose from `nodes` + `subjects` + optional kicker/title atoms). Any act (preset or free) may also carry additive `nodes`. Unknown → throw. |
 | `kicker` | object \| null | §A.5. `null` = none. |
 | `title` | object | §A.6. |
 | `center` | boolean | Centered title treatment (poster/takeover). |
@@ -70,7 +76,10 @@ new capability, ask for a new JSON option + engine pairing instead.
 | `badge` | boolean | `n/5` badge. Default **true**; set `false` to hide. |
 | `design` | object | Layout extras: `numeral` (lower3rd ghost number string), `frame` (poster hairline bool), `ticket` (ticket card object), `veil` (takeover rising veil bool), `mark` (emblem mark string). |
 
-## A.4 Layouts (7)
+## A.4 Layouts (7 presets + open `free`)
+
+The 7 named values are **reusable shortcuts**. `"free"` (alias `"custom"`)
+runs no preset builder — see PART C.
 
 | Layout | System | Renders | Key fields |
 |---|---|---|---|
@@ -81,6 +90,7 @@ new capability, ask for a new JSON option + engine pairing instead.
 | `takeover` | cinematic | Veil + kinetic title + CTA pill + lockup | `cta`, `ctaAt`, `lockup`, `design.veil` |
 | `stack` | stack | Kicker pill + hero title + sub, subjects | `title`, `kicker.style:'pill'` |
 | `lowtitle` | stack | Big hero title low + sub | `titleSize`, `titleY`, `subY` |
+| `free` / `custom` | free (or any) | Whatever `nodes` + `subjects` + optional kicker/title describe (PART C) | `nodes`, any subjects, 0–8 title lines, custom kicker |
 
 ## A.5 Kicker
 
@@ -88,7 +98,10 @@ new capability, ask for a new JSON option + engine pairing instead.
 "kicker": { "text": "INDIA ITSELF", "style": "pill", "face": "Bebas Neue", "y": 84, "at": 6, "x": 32 }
 ```
 
-- `style`: `"pill"` (stack) or `"overline"` (cinematic). Must match `system`.
+- `style`: `"pill"` (stack preset) or `"overline"` (cinematic preset).
+  Under preset systems the style must match the system. Under `free`/custom
+  systems (or `free` layouts) any style is allowed: `"custom"` (or any name)
+  renders the free-positioned label atom honoring `y/at/x/face/size/letterSpacing`.
 - `face`: optional family override (verbatim Google Fonts name). Weight is
   fixed 700 by the layout.
 - `y` (pill y / overline y, default 84/96), `at` (entrance frame, default
@@ -106,7 +119,9 @@ new capability, ask for a new JSON option + engine pairing instead.
   "sub": "LOVING INDIA", "subY": 330 }
 ```
 
-- `lines`: **1–2** items (`ticket` layout: must be `[]`). No `…`/`...` in text.
+- `lines`: preset layouts take **1–2** items (`ticket`: must be `[]`).
+  `free`/`custom` layouts take **0–8** lines or omit `title` entirely when
+  `nodes` carry the typography. No `…`/`...` in text.
 - `fill`: `"ink"` \| `"accent"` \| `"accent2"` \| hex \| rgba.
 - `glow`: optional shadow color (accent fills default to accent glow).
 - Per-text font: line `face` wins → title `face` → slot face
@@ -132,11 +147,12 @@ new capability, ask for a new JSON option + engine pairing instead.
 |---|---|
 | `bg` | `style`: `night` (gradient+glow) \| `flat`. `color` (flat) or `top`/`mid`/`glow` (night). |
 | `flipbook` | `cast`: row name (aliases resolve, §B.4). `srcPrefix`: sheet name + `/`. `box`: `[w,h]` or `{w,h}`. `order`: frame indices (repeats = ping-pong), `rate`: frames per sprite-frame. `hold`: `true` = play once + hold last; `N` = extend final pose N frames/cycle; omitted = loop. `at`: start frame. `x`: number or `{from,to,at:[f1,f2]}` slide; `y`: number; `scale`. |
-| `icons` | `mode`: `chip` (disc) \| `trio` (3-disc row) \| `strip` (raw, no discs). `icons`: 1–3 asset ids. `srcPrefix?`. `at`: `[x,y]` anchor (bare number = entrance timing). `r`: disc radius. `entranceAt`. |
+| `icons` | `mode`: `chip` (disc) \| `trio` (3-disc row) \| `strip` (raw, no discs). `icons`: 1–8 asset ids (trio preset = 3; more lay out a longer row). `srcPrefix?`. `at`: `[x,y]` anchor (bare number = entrance timing). `r`: disc radius. `entranceAt`. |
 | `footage` | `clip`: clip id (`clip-sign`, `clip-buffet`, `clip-tables`, `clip-entry`, `clip-gods`). `zoom`: `[from,to]` Ken Burns (default `[1,1.07]`). `tint`: `{color, opacity}`. |
 | `emblem` | `mark`: brand initial. `at`: `[x,y]`. `r?`. |
 | `ticker` | `items`: string. `y?`, `at?`. |
 | `props` | `items`: `{src, box, x, y, at?, float?}` — `float`: `true` or `[dx,dy]` drift. (`float:false` = static.) |
+| `raw` | `nodes`: one FreeNode or array (PART C) — arbitrary engine fragments, usable inside ANY layout. |
 
 Shipped library (`GET /api/assets`): casts `india-festival/DandiyaWoman,
 DholMan, DiyaWoman, TempleDancer, FestivalWoman`, `spr3/*`, `spr2/*`, `k2/*`;
@@ -146,7 +162,9 @@ clips listed above. Anything uploaded via §B appears here too.
 ## A.8 Transitions
 
 `transitions[i]` sits between act *i* and *i+1*: `{ "type": "slide", "params": { "direction": "left" } }`.
-`{ "type": "none" }` or `[]` (multi-act) = hard cut.
+`{ "type": "none" }` or `[]` (multi-act) = hard cut. Optional `duration`
+(6–30, default 12) varies the blend length; optional `easing` overrides
+`ease-in-out`. Omitting both reproduces the exact legacy 12-frame geometry.
 
 | Type | Params |
 |---|---|
@@ -159,9 +177,11 @@ clips listed above. Anything uploaded via §B appears here too.
 ## A.9 Validation (job fails listing these — self-check before sending)
 
 Locked canvas · durations length = acts · each ≥ 30 · transitions length =
-acts−1 · palette colors valid · faces non-empty · layouts known · title 1–2
-lines (ticket: 0) · no truncation marks · fills valid · face strings non-empty ·
-weights int 1–1000 · subject kinds/fields per §A.7 · unknown font family at
+acts−1 · each transition `duration` (if present) integer 6–30 · palette colors valid · faces non-empty · layouts known (7 presets + free/custom) · title 1–2
+lines on presets (ticket: 0), 0–8 on free · free acts need title lines,
+subjects, or nodes (empty stages rejected) · no truncation marks · fills valid · face strings non-empty ·
+weights int 1–1000 · subject kinds/fields per §A.7 (incl. `raw.nodes`) · act
+`nodes` (if present) must be valid engine fragments · unknown font family at
 render time throws (auto-fetch attempted first).
 
 ## A.10 Spec examples (3)
@@ -260,6 +280,68 @@ render time throws (auto-fetch attempted first).
   "audio": { "stingers": "cuts" }
 }
 ```
+
+---
+
+# PART C — OPEN COMPOSITION LANGUAGE (templates optional)
+
+**Principle:** `PRIMITIVES → COMPOSITION LANGUAGE → ARBITRARY SCENE GRAPH →
+ANIMATION/TIMELINE → RENDERER`. The planner invents layouts; presets are
+shortcuts it *may* use, never the only valid structures. Do NOT solve a new
+brief by requesting more templates — express it in this language.
+
+## C.1 Free acts
+
+```json
+{ "role": "mandala", "duration": 90, "layout": "free", "badge": false,
+  "kicker": { "text": "ORBIT STUDY", "style": "custom", "y": 64, "x": 40 },
+  "nodes": [ { "id": "halo", "type": "circle", "radius": 220, "x": 50, "y": 300,
+    "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "accent" }, { "offset": 1, "color": "rgba(0,0,0,0)" }] },
+    "opacity": 0.5, "blendMode": "screen" } ] }
+```
+
+- `layout: "free"` (alias `"custom"`): no preset builder runs. The act is
+  `subjects` + optional kicker/title atoms + `nodes`.
+- `role`: any non-empty string. `hook/proof/proof2/scale/cta` are preset
+  labels; `mandala/bridge/reveal/montage` etc. are equally valid.
+- `title` (optional on free): 0–8 `lines` + `sub`, rendered as a neutral
+  stacked atom (`titleSize/titleY/center/face` honored). Anything wilder —
+  asymmetric type walls, rotated captions, mixed sizes — goes in `nodes`
+  `text` directly.
+- `system: "free"` (or any custom name): skips kicker-style matching and
+  mixing bans. Preset systems keep their rules for backward compatibility.
+- Free acts need *something* visual: title lines, subjects, or nodes.
+  Empty stages are rejected loudly (never silent black).
+- ANY act (preset or free) may carry additive `nodes`: extend a preset
+  without forking it.
+
+## C.2 FreeNode reference (one engine node, arbitrary nesting)
+
+| Field | Meaning |
+|---|---|
+| `id` | Non-empty; namespaced per act (`act1-halo`) so acts never collide. |
+| `type` | Engine primitive: `container` `group` `rect` `rrect` `circle` `path` `svg` `text` `caption` `image` `video` `shape` `effectLayer`. Unknown → throw. |
+| `x/y/scaleX/scaleY/rotation/opacity` | Number or animation binding: `{binding:'interpolate', inputRange, outputRange, options?}` or `{binding:'spring', from?, to?, …}` or `{binding:'color', inputRange, colorStops}` (fills). |
+| `fontSize/letterSpacing` (text) | Number or binding (kinetic type, re-laid-out per frame). |
+| `fill` | Hex/rgba, palette alias (`bg/ink/accent/accent2/pillBg/pillFg`), gradient (`linear/radial/conic` + stops), or `{binding:'color',…}`. Aliases resolve inside gradient stops too. |
+| `stroke/shadow` | Colors accept aliases. |
+| `blendMode/filter/backdropBlur/clip/crop/effects/visible` | Full engine surface (e.g. `blendMode:'screen'`, `filter:{blur,brightness,…}`, `effects:[{type:'vignette',…}]`). Unknown effect names throw. |
+| `children` | Arbitrary nesting (`container → group → text …`). |
+| Type-specific | `rect/rrect/circle`: `width/height/radius`; `text`: `text/fontFamily/fontWeight/textAlign/maxWidth/lineHeight`; `image/video`: `src/box/fit/loop`; `path`: `d`; `rrect`: `radius`. |
+
+Raw subjects embed the same fragments inside any act:
+`{ "kind": "raw", "nodes": [{ "id": "blade", "type": "rect", … }] }`.
+
+## C.3 Novel proof (zero presets — all three compile today)
+
+- **Orbit mandala** (`system: free`, roles `mandala/resolve`): radial halo
+  + orbit ring group + spring-driven word; second act is a 4-line title
+  stack no preset allows.
+- **Diagonal blade** (`system: atelier`, role `blade`, layout `custom`):
+  rotated shards + gradient blade via `raw` subject + rotated side-type +
+  filter chip; custom kicker at free coordinates.
+- **Preset + extras**: `layout: giant` with additive `nodes` sticker —
+  preset pixels unchanged, invention layered on top.
 
 ---
 

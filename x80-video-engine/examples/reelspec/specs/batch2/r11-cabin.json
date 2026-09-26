@@ -1,0 +1,55 @@
+{
+  "id": "r11-cabin",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "offgrid",
+  "concept": {
+    "palette": { "bg": "#0b1512", "ink": "#f0e9d8", "accent": "#ffb347", "accent2": "#3d5a4c", "pillBg": "#14201a", "pillFg": "#ffb347" },
+    "faces": { "display": "Manrope", "hero": "Manrope", "kicker": "IBM Plex Mono" },
+    "signature": "one warm window in a cold forest, then the numbers that matter",
+    "signatureWhy": "shelter strategy — night exterior, glowing interior, qualifying coordinates"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "fade" }, { "type": "fade" }],
+  "acts": [
+    {
+      "role": "night", "duration": 60, "layout": "treeline", "badge": false,
+      "nodes": [
+        { "id": "sky", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": { "kind": "linear", "angle": 180, "stops": [{ "offset": 0, "color": "#060c0a" }, { "offset": 1, "color": "bg" }] } },
+        { "id": "snow", "type": "particles", "count": 80, "seed": 71, "colors": ["ink"], "size": [1, 3], "area": { "w": 540, "h": 960 }, "at": [0, 0], "twinkle": false },
+        { "id": "pines", "type": "container", "children": [
+          { "id": "t0", "type": "shape", "shape": "polygon", "width": 110, "height": 190, "points": 3, "x": 20, "y": 560, "fill": "#060c0a" },
+          { "id": "t1", "type": "shape", "shape": "polygon", "width": 140, "height": 240, "points": 3, "x": 380, "y": 520, "fill": "#060c0a" }
+        ] },
+        { "id": "roof", "type": "shape", "shape": "polygon", "width": 220, "height": 130, "points": 3, "x": 160, "y": 480, "fill": "#05080a", "rotation": 180 },
+        { "id": "hut", "type": "rect", "width": 150, "height": 130, "x": 195, "y": 590, "fill": "#0a120e" },
+        { "id": "win", "type": "rect", "width": 54, "height": 64, "x": 243, "y": 620, "fill": "accent", "opacity": { "binding": "keyframes", "frames": [0, 30, 59], "values": [0.65, 1, 0.7] }, "shadow": { "color": "rgba(255,179,71,0.85)", "blur": 36 } },
+        { "id": "smoke", "type": "particles", "count": 18, "seed": 72, "colors": ["#5a6b62"], "size": [3, 7], "area": { "w": 90, "h": 150 }, "at": [230, 330], "twinkle": false }
+      ]
+    },
+    {
+      "role": "inside", "duration": 60, "layout": "hearth", "badge": false,
+      "nodes": [
+        { "id": "room", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "#120d08" },
+        { "id": "fire", "type": "circle", "radius": 90, "x": 180, "y": 380, "fill": { "kind": "radial", "stops": [{ "offset": 0, "color": "accent" }, { "offset": 1, "color": "rgba(255,179,71,0)" }] }, "opacity": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [0.7, 1, 0.75, 1, 0.7] } },
+        { "id": "mug", "type": "circle", "radius": 34, "x": 120, "y": 600, "fill": "ink", "opacity": 0.9 },
+        { "id": "book", "type": "rect", "width": 130, "height": 40, "x": 300, "y": 610, "fill": "accent2", "rotation": -8 },
+        { "id": "line", "type": "text", "text": "WOOD HEAT.", "fontFamily": "Manrope", "fontSize": 52, "fontWeight": 800, "fill": "ink", "x": 40, "y": 730 },
+        { "id": "line2", "type": "text", "text": "WOOL SOCKS. SILENCE.", "fontFamily": "Manrope", "fontSize": 30, "fontWeight": 600, "fill": "accent", "x": 40, "y": 796 }
+      ]
+    },
+    {
+      "role": "terms", "duration": 60, "layout": "survey", "badge": false,
+      "nodes": [
+        { "id": "bg", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "pin", "type": "circle", "radius": 26, "x": 244, "y": 330, "fill": "accent", "opacity": { "binding": "interpolate", "inputRange": [6, 22], "outputRange": [0, 1] }, "shadow": { "color": "rgba(255,179,71,0.8)", "blur": 26 } },
+        { "id": "ring", "type": "circle", "radius": { "binding": "interpolate", "inputRange": [6, 50], "outputRange": [26, 120] }, "x": { "binding": "interpolate", "inputRange": [6, 50], "outputRange": [244, 150] }, "y": { "binding": "interpolate", "inputRange": [6, 50], "outputRange": [330, 236] }, "fill": "rgba(0,0,0,0)", "stroke": "accent", "strokeWidth": 3, "opacity": { "binding": "interpolate", "inputRange": [6, 50], "outputRange": [0.9, 0] } },
+        { "id": "coords", "type": "text", "text": "45.92°N", "fontFamily": "IBM Plex Mono", "fontSize": 64, "fontWeight": 700, "fill": "ink", "x": 40, "y": 560 },
+        { "id": "terms", "type": "text", "text": "NO ROAD NOV–MAR · SKIS ONLY", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 3, "fill": "accent", "x": 40, "y": 650 },
+        { "id": "ask", "type": "text", "text": "IF THAT'S A PROBLEM,", "fontFamily": "Manrope", "fontSize": 28, "fontWeight": 600, "fill": "ink", "x": 40, "y": 740 },
+        { "id": "ask2", "type": "text", "text": "IT'S NOT YOUR CABIN", "fontFamily": "Manrope", "fontSize": 28, "fontWeight": 800, "fill": "accent", "x": 40, "y": 782 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

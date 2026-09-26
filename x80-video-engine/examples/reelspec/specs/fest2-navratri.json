@@ -1,0 +1,84 @@
+{
+  "id": "fest2-navratri",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "navratri",
+  "concept": {
+    "palette": { "bg": "#0b1026", "ink": "#f7ecd4", "accent": "#e8b34b", "accent2": "#eba63f", "pillBg": "#141b33", "pillFg": "#e8b34b" },
+    "faces": { "display": "Rozha One", "hero": "Inter", "kicker": "Poppins" },
+    "signature": "four new dancers from one sheet: diya lit, regions dance, lantern rises",
+    "signatureWhy": "plan: sheet-is-the-cast; hook = flame in second one; sequential regional beats; restraint = indigo night + marigold + one flame motif"
+  },
+  "durations": [90, 120, 120, 120],
+  "transitions": [
+    { "type": "slide", "params": { "direction": "left" } },
+    { "type": "push-cut", "params": { "direction": "left" } },
+    { "type": "fade" }
+  ],
+  "acts": [
+    {
+      "role": "lighting", "duration": 90, "layout": "first-flame", "badge": false,
+      "kicker": { "text": "9 NIGHTS · ONE FESTIVAL", "style": "custom", "y": 96, "x": 40, "size": 21, "letterSpacing": 6 },
+      "subjects": [
+        { "kind": "bg", "style": "flat", "color": "#0b1026" }
+      ],
+      "nodes": [
+        { "id": "diya", "type": "image", "src": "fest2/diya", "width": 300, "height": 252, "fit": "contain", "x": 120, "y": 330, "scaleX": { "binding": "interpolate", "inputRange": [0, 30], "outputRange": [0.4, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "scaleY": { "binding": "interpolate", "inputRange": [0, 30], "outputRange": [0.4, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "anchorX": 150, "anchorY": 126, "opacity": { "binding": "interpolate", "inputRange": [0, 18], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } },
+        { "id": "petal0", "type": "image", "src": "fest2/flowers", "width": 120, "height": 102, "fit": "contain", "x": 60, "y": { "binding": "interpolate", "inputRange": [10, 89], "outputRange": [120, 420], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "opacity": 0.9, "rotation": 14 },
+        { "id": "petal1", "type": "image", "src": "fest2/flowers", "width": 90, "height": 77, "fit": "contain", "x": 400, "y": { "binding": "interpolate", "inputRange": [20, 89], "outputRange": [80, 460], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "opacity": 0.85, "rotation": -18 },
+        { "id": "mark", "type": "text", "text": "I", "fontFamily": "Poppins", "fontSize": 20, "fontWeight": 700, "fill": "accent", "x": 496, "y": 60 }
+      ]
+    },
+    {
+      "role": "west", "duration": 120, "layout": "dandiya-night", "badge": false,
+      "kicker": { "text": "THE WEST DANCES", "style": "custom", "y": 84, "x": 40, "size": 21, "letterSpacing": 6 },
+      "title": { "face": "Inter", "lines": [{ "text": "DANDIYA", "fill": "ink" }, { "text": "BEATS", "fill": "accent" }], "sub": "STICKS · SPIN · DHOL", "subY": 700 },
+      "titleSize": 64, "titleY": 560,
+      "subjects": [
+        { "kind": "bg", "style": "flat", "color": "#0b1026" },
+        { "kind": "flipbook", "cast": "DandiyaWoman", "srcPrefix": "fest2", "box": [350, 366], "order": [1, 2, 3, 4, 3, 2], "rate": 5, "x": 30, "y": 150, "scale": 1 },
+        { "kind": "flipbook", "cast": "DholMan", "srcPrefix": "fest2", "box": [220, 285], "order": [0, 2, 0, 4], "rate": 6, "x": 300, "y": 420, "scale": 1 }
+      ],
+      "nodes": [
+        { "id": "sticks", "type": "image", "src": "fest2/dandiya", "width": 150, "height": 134, "fit": "contain", "x": 360, "y": 130, "rotation": -12, "opacity": { "binding": "interpolate", "inputRange": [10, 28], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } },
+        { "id": "mark", "type": "text", "text": "II", "fontFamily": "Poppins", "fontSize": 20, "fontWeight": 700, "fill": "accent", "x": 492, "y": 60 }
+      ]
+    },
+    {
+      "role": "south", "duration": 120, "layout": "southern-sway", "badge": false,
+      "kicker": { "text": "THE SOUTH SWAYS", "style": "custom", "y": 84, "x": 40, "size": 21, "letterSpacing": 6 },
+      "title": { "face": "Inter", "lines": [{ "text": "GRACE", "fill": "ink" }, { "text": "NOTES", "fill": "accent" }], "sub": "SARI · MUNDU · LAMPS", "subY": 700 },
+      "titleSize": 64, "titleY": 560,
+      "subjects": [
+        { "kind": "bg", "style": "flat", "color": "#0d0f2b" },
+        { "kind": "flipbook", "cast": "SariWoman", "srcPrefix": "fest2", "box": [330, 344], "order": [1, 2, 3, 4, 3, 2], "rate": 6, "x": 20, "y": 160, "scale": 1 },
+        { "kind": "flipbook", "cast": "MunduMan", "srcPrefix": "fest2", "box": [330, 362], "order": [0, 1, 3, 4], "rate": 6, "x": 200, "y": 170, "scale": 1 }
+      ],
+      "nodes": [
+        { "id": "petals", "type": "image", "src": "fest2/flowers", "width": 170, "height": 145, "fit": "contain", "x": 330, "y": { "binding": "interpolate", "inputRange": [0, 119], "outputRange": [120, 380], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "opacity": 0.9 },
+        { "id": "mark", "type": "text", "text": "III", "fontFamily": "Poppins", "fontSize": 20, "fontWeight": 700, "fill": "accent", "x": 488, "y": 60 }
+      ]
+    },
+    {
+      "role": "sky", "duration": 120, "layout": "lantern-rise", "badge": false,
+      "title": { "face": "Rozha One", "lines": [{ "text": "SHUBH", "fill": "ink" }, { "text": "NAVRATRI", "fill": "accent" }], "sub": "" },
+      "titleSize": 72, "titleY": 620, "center": true,
+      "subjects": [
+        { "kind": "bg", "style": "night", "top": "#131a38", "mid": "#0b1026", "glow": "rgba(232,179,75,0.22)" }
+      ],
+      "nodes": [
+        { "id": "stars", "type": "particles", "count": 60, "seed": 9, "colors": ["#ffffff", "accent"], "size": [1, 2], "area": { "w": 540, "h": 600 }, "at": [0, 0], "twinkle": true },
+        { "id": "lamp", "type": "image", "src": "fest2/lantern", "width": 190, "height": 190, "fit": "contain", "x": 175, "y": { "binding": "interpolate", "inputRange": [0, 119], "outputRange": [560, 180], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "opacity": { "binding": "interpolate", "inputRange": [0, 24], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } } },
+        { "id": "row", "type": "container", "children": [
+          { "id": "f0", "type": "image", "src": "fest2/diya", "width": 96, "height": 81, "fit": "contain", "x": 60, "y": 830, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [30, 44], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 0, "step": 5 } },
+          { "id": "f1", "type": "image", "src": "fest2/diya", "width": 96, "height": 81, "fit": "contain", "x": 182, "y": 830, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [30, 44], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 1, "step": 5 } },
+          { "id": "f2", "type": "image", "src": "fest2/diya", "width": 96, "height": 81, "fit": "contain", "x": 304, "y": 830, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [30, 44], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 2, "step": 5 } },
+          { "id": "f3", "type": "image", "src": "fest2/diya", "width": 96, "height": 81, "fit": "contain", "x": 426, "y": 830, "opacity": { "binding": "stagger", "base": { "binding": "interpolate", "inputRange": [30, 44], "outputRange": [0, 1], "options": { "extrapolateLeft": "clamp", "extrapolateRight": "clamp" } }, "index": 3, "step": 5 } }
+        ] },
+        { "id": "mark", "type": "text", "text": "IV", "fontFamily": "Poppins", "fontSize": 20, "fontWeight": 700, "fill": "accent", "x": 496, "y": 60 }
+      ]
+    }
+  ],
+  "audio": { "stingers": "cuts" },
+  "chrome": false,
+  "grain": true
+}

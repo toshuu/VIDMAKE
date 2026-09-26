@@ -1,0 +1,50 @@
+{
+  "id": "r13-permadeath",
+  "canvas": { "w": 540, "h": 960, "fps": 30 },
+  "system": "die-again",
+  "concept": {
+    "palette": { "bg": "#08070c", "ink": "#e8e6f0", "accent": "#ff2e63", "accent2": "#08d9d6", "pillBg": "#16141f", "pillFg": "#ff2e63" },
+    "faces": { "display": "Bebas Neue", "hero": "Bebas Neue", "kicker": "IBM Plex Mono" },
+    "signature": "die in red, count in mono, glory in cyan",
+    "signatureWhy": "arcade-loop strategy — flash death, ticking counter, rushing corridor payoff"
+  },
+  "durations": [60, 60, 60],
+  "transitions": [{ "type": "none" }, { "type": "none" }],
+  "acts": [
+    {
+      "role": "death", "duration": 60, "layout": "flatline", "badge": false,
+      "nodes": [
+        { "id": "crypt", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "flash", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "accent", "opacity": { "binding": "keyframes", "frames": [0, 6, 14, 59], "values": [0.9, 0.9, 0, 0] } },
+        { "id": "died", "type": "text", "text": "YOU DIED", "fontFamily": "Bebas Neue", "fontSize": 130, "fontWeight": 400, "fill": "accent", "x": 0, "y": 400, "textAlign": "center", "maxWidth": 540 },
+        { "id": "cause", "type": "text", "text": "SPIKE TRAP · RUN 047", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "ink", "x": 0, "y": 560, "textAlign": "center", "maxWidth": 540, "opacity": 0.8 }
+      ]
+    },
+    {
+      "role": "tally", "duration": 60, "layout": "ledger-deaths", "badge": false,
+      "nodes": [
+        { "id": "crypt", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "n0", "type": "text", "text": "045", "fontFamily": "IBM Plex Mono", "fontSize": 90, "fontWeight": 700, "fill": "accent2", "x": 60, "y": 300, "opacity": { "binding": "keyframes", "frames": [0, 15, 30, 59], "values": [0, 1, 0.25, 0.25] } },
+        { "id": "n1", "type": "text", "text": "046", "fontFamily": "IBM Plex Mono", "fontSize": 90, "fontWeight": 700, "fill": "accent2", "x": 60, "y": 420, "opacity": { "binding": "keyframes", "frames": [0, 15, 30, 59], "values": [0, 0, 1, 0.25] } },
+        { "id": "n2", "type": "text", "text": "047", "fontFamily": "IBM Plex Mono", "fontSize": 130, "fontWeight": 700, "fill": "ink", "x": 60, "y": 540, "opacity": { "binding": "keyframes", "frames": [0, 15, 30, 45, 59], "values": [0, 0, 0, 1, 1] } },
+        { "id": "cap", "type": "text", "text": "DEATHS ARE PROGRESS", "fontFamily": "IBM Plex Mono", "fontSize": 20, "fontWeight": 500, "letterSpacing": 4, "fill": "accent", "x": 60, "y": 730 }
+      ]
+    },
+    {
+      "role": "glory", "duration": 60, "layout": "corridor", "badge": false,
+      "nodes": [
+        { "id": "crypt", "type": "rect", "width": 540, "height": 960, "x": 0, "y": 0, "fill": "bg" },
+        { "id": "rush", "type": "container", "children": [
+          { "id": "l0", "type": "rect", "width": 10, "height": 700, "x": 120, "y": 130, "fill": "accent2", "rotation": 24, "anchorX": 5, "anchorY": 350, "opacity": 0.7 },
+          { "id": "l1", "type": "rect", "width": 10, "height": 700, "x": 410, "y": 130, "fill": "accent2", "rotation": -24, "anchorX": 5, "anchorY": 350, "opacity": 0.7 },
+          { "id": "l2", "type": "rect", "width": 8, "height": 700, "x": 200, "y": 130, "fill": "ink", "rotation": 12, "anchorX": 4, "anchorY": 350, "opacity": 0.4 },
+          { "id": "l3", "type": "rect", "width": 8, "height": 700, "x": 332, "y": 130, "fill": "ink", "rotation": -12, "anchorX": 4, "anchorY": 350, "opacity": 0.4 }
+        ], "scaleX": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0.7, 1.6] }, "scaleY": { "binding": "interpolate", "inputRange": [0, 59], "outputRange": [0.7, 1.6] }, "anchorX": 270, "anchorY": 480 },
+        { "id": "loot", "type": "circle", "radius": 44, "x": 226, "y": 400, "fill": "accent2", "shadow": { "color": "rgba(8,217,214,0.9)", "blur": 40 }, "scaleX": { "binding": "interpolate", "inputRange": [20, 40], "outputRange": [0, 1] }, "scaleY": { "binding": "interpolate", "inputRange": [20, 40], "outputRange": [0, 1] }, "anchorX": 44, "anchorY": 44 },
+        { "id": "run", "type": "text", "text": "RUN 048", "fontFamily": "Bebas Neue", "fontSize": 110, "fontWeight": 400, "fill": "ink", "x": 0, "y": 700, "textAlign": "center", "maxWidth": 540 }
+      ]
+    }
+  ],
+  "chrome": false,
+  "grain": false
+}

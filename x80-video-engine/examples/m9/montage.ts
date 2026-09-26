@@ -74,7 +74,7 @@ export const buildMontage = (): VideoPlan =>
         params: { direction: 'left' },
         a: 'photoB',
         b: 'photoC',
-        aFreeze: 57,
+        aFreeze: 17,
       } as never,
       seq(70, 20, [leaf('photoC')]),
       seq(0, 90, [leaf('shade'), leaf('strip')]),
