@@ -1,0 +1,49 @@
+name: Render Poverty in India (VIDMAKE)
+
+on:
+  push:
+    paths:
+      - ".github/workflows/render-poverty-india.yml"
+      - "x80-video-engine/examples/poverty-india/**"
+      - "x80-video-engine/packages/**"
+      - "x80-video-engine/package.json"
+      - "x80-video-engine/package-lock.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout VIDMAKE
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: x80-video-engine/package-lock.json
+
+      - name: Install dependencies
+        working-directory: x80-video-engine
+        run: npm ci
+
+      - name: Build X80 workspaces
+        working-directory: x80-video-engine
+        run: npm run build
+
+      - name: Render with VIDMAKE
+        working-directory: x80-video-engine
+        run: node examples/poverty-india/render.mjs
+
+      - name: Upload MP4 and preview frames
+        uses: actions/upload-artifact@v4
+        with:
+          name: poverty-in-india-vidmake
+          path: x80-video-engine/output/poverty-in-india/
+          if-no-files-found: error
+          retention-days: 14
