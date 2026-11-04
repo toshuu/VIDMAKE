@@ -1,88 +1,104 @@
-/**
- * Wispr Flow — 30-second vertical product promo.
- * Original motion graphics + sourced product screenshots.
- * Built and rendered with VIDMAKE / X80.
- */
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { renderFrame } from '../../packages/core/dist/index.js';
-import { SkiaRenderer, createSkiaMeasurer, preloadImages } from '../../packages/renderer-skia/dist/index.js';
-import { renderToMp4 } from '../../packages/encoding/dist/index.js';
-
+/** Wispr Flow V2: original vector motion illustration campaign. */
+import {mkdirSync,writeFileSync} from 'node:fs';
+import {renderFrame} from '../../packages/core/dist/index.js';
+import {SkiaRenderer,createSkiaMeasurer} from '../../packages/renderer-skia/dist/index.js';
+import {renderToMp4} from '../../packages/encoding/dist/index.js';
 const W=540,H=960,FPS=30,N=900,OUT=new URL('../../output/wispr-flow/',import.meta.url);
 mkdirSync(OUT,{recursive:true});
 const clamp={extrapolateLeft:'clamp',extrapolateRight:'clamp'};
 const I=(a,b,x,y)=>({binding:'interpolate',inputRange:[a,b],outputRange:[x,y],options:clamp});
-const fade=(a,b)=>I(a,b,0,1);
-const move=(a,b,x,y)=>I(a,b,x,y);
-const R=(id,x,y,w,h,fill,extra={})=>({id,type:'rrect',x,y,width:w,height:h,radius:extra.radius??18,fill,...extra});
-const T=(id,value,x,y,size,fill='#f8f7f4',extra={})=>({id,type:'text',text:value,x,y,fontFamily:'sans-serif',fontSize:size,fontWeight:700,fill,...extra});
-const C=(id,x,y,r,fill,extra={})=>({id,type:'circle',x,y,radius:r,fill,...extra});
-const Img=(id,src,x,y,w,h,extra={})=>({id,type:'image',src,x,y,width:w,height:h,fit:'contain',...extra});
-const scene=(id,start,end,children)=>({id,type:'container',opacity:{binding:'interpolate',inputRange:[start,start+15,end-15,end],outputRange:[0,1,1,0],options:clamp},children});
-const ink='#111116',paper='#f7f5f1',violet='#8b70ff',lime='#d5ff70',muted='#aaa8b4';
-const nodes=[];
-nodes.push(R('base',0,0,W,H,ink,{radius:0}));
-nodes.push(T('brand','wispr flow',32,58,18,paper,{letterSpacing:1.5}));
-nodes.push(C('brand-dot',22,48,4,lime));
-nodes.push(T('index','VOICE / 001',410,58,12,muted,{letterSpacing:1.5}));
-nodes.push(scene('hero',0,165,[
- T('hero-kicker','YOUR THOUGHTS,',34,240,19,lime,{letterSpacing:2,opacity:fade(8,22)}),
- T('hero-title1','WITHOUT',30,330,66,paper,{opacity:fade(15,32),y:move(15,32,370,330)}),
- T('hero-title2','THE TYPING.',30,410,66,paper,{opacity:fade(22,40),y:move(22,40,450,410)}),
- T('hero-sub','Speak naturally. Get polished text.',34,510,20,muted,{fontWeight:400,opacity:fade(38,55)}),
- // kinetic sound wave
- ...Array.from({length:33},(_,i)=>R('wave-'+i,40+i*14,640-(Math.sin(i*.7)*1+1)*24,7,22+Math.abs(Math.sin(i*.7))*64,i%3===0?lime:violet,{radius:5,scaleY:I(0,90,.5,1.1)})),
- T('hero-foot','A NEW WAY TO WRITE',34,790,13,muted,{letterSpacing:2,opacity:fade(70,88)})
+const R=(id,x,y,w,h,fill,e={})=>({id,type:'rrect',x,y,width:w,height:h,radius:e.radius??18,fill,...e});
+const C=(id,x,y,r,fill,e={})=>({id,type:'circle',x,y,radius:r,fill,...e});
+const T=(id,text,x,y,size,fill,e={})=>({id,type:'text',text,x,y,fontFamily:'Arial',fontSize:size,fontWeight:e.fontWeight??700,fill,...e});
+const P=(id,d,fill,e={})=>({id,type:'path',d,fill,...e});
+const S=(id,a,b,children)=>({id,type:'container',opacity:I(a,b,0,1),children});
+const cream='#f7f1e7',ink='#171c35',coral='#ff6248',blue='#536dff',lime='#f5d64e',mint='#a7e6c5',white='#fffdf8',grey='#777b89';
+const n=[R('background',0,0,W,H,cream,{radius:0}),C('ambient',490,50,150,'#eee4d7'),T('brand','wispr',28,30,25,ink),C('brandmark',111,44,6,coral),T('series','VOICE / IDEAS / FLOW',320,42,11,ink,{letterSpacing:1.5})];
+
+// 0–5.2s: illustrated speaker, oversized kinetic headline.
+n.push(S('hero',0,155,[
+ T('eyebrow','YOUR VOICE, UNLOCKED',28,135,13,blue,{letterSpacing:2}),
+ T('hero-a','Think it.',26,195,76,ink),T('hero-b','Say it.',26,278,76,coral),
+ C('sun',382,595,130,lime),
+ ...Array.from({length:12},(_,i)=>{const a=i*Math.PI/6;return P('sunray'+i,'M '+(382+Math.cos(a)*145)+' '+(595+Math.sin(a)*145)+' L '+(382+Math.cos(a)*176)+' '+(595+Math.sin(a)*176),'none',{stroke:coral,strokeWidth:5});}),
+ P('torso','M270 790 Q265 680 320 655 Q390 625 440 700 L455 820 Z',blue),
+ R('neck',350,620,46,58,'#d99070',{radius:16}),C('head',370,540,88,'#f2ae83'),
+ P('hair','M285 540 Q270 420 370 414 Q475 422 463 535 Q435 480 410 482 Q370 515 305 490 Z',ink),
+ C('ear',284,555,17,'#f2ae83'),C('eye-left',345,535,5,ink),C('eye-right',402,535,5,ink),
+ P('smile','M350 580 Q377 610 405 580','none',{stroke:ink,strokeWidth:5}),
+ P('arm','M300 700 Q240 670 210 605 Q190 570 215 550 Q240 540 252 570 L290 630','none',{stroke:'#d99070',strokeWidth:25}),
+ R('speech',38,430,190,105,white,{radius:25,stroke:ink,strokeWidth:3}),
+ P('speech-tail','M178 525 L205 558 L205 525',white,{stroke:ink,strokeWidth:3}),
+ T('hello','hello, world',57,466,20,ink),R('idea-pill',28,630,120,42,mint,{radius:21,rotation:-8}),T('idea','IDEA!',55,642,16,ink,{rotation:-8}),
+ T('hero-caption','Wispr Flow turns speech into finished words.',28,865,16,ink,{fontWeight:500})
 ]));
-nodes.push(scene('pain',150,315,[
- T('pain-label','THE OLD WAY',34,190,15,muted,{letterSpacing:2}),
- T('pain-title','Your ideas move\nfaster than your\nfingers.',34,275,49,paper,{lineHeight:1.15,opacity:fade(158,180)}),
- R('keyboard-card',34,560,472,180,'#22212b',{radius:24,opacity:fade(185,205)}),
- ...Array.from({length:3},(_,row)=>Array.from({length:10},(_,col)=>R('key-'+row+'-'+col,52+col*43,580+row*42,34,31,'#393743',{radius:7,opacity:fade(190,210)}))).flat(),
- T('slow','45 WPM',64,800,22,muted,{opacity:fade(205,220)}),
- T('not-enough','THOUGHTS ≠ KEYSTROKES',250,800,13,lime,{opacity:fade(210,228),letterSpacing:1})
+
+// 5.2–10s: the keyboard obstacle course, animated keys flying away.
+n.push(S('problem',150,300,[
+ T('eyebrow2','THE OLD WORKFLOW',28,135,13,coral,{letterSpacing:2}),
+ T('problem-title','Still typing\nevery thought?',28,185,53,ink,{lineHeight:1.1}),
+ R('key-shadow',48,560,440,205,'#d8cfc2',{radius:30,rotation:-5}),R('keyboard',40,540,440,205,ink,{radius:30,rotation:-5}),
+ ...Array.from({length:4},(_,r)=>Array.from({length:7},(_,c)=>R('key'+r+'-'+c,64+c*57,565+r*38,43,27,(r+c)%4===0?coral:'#3b4263',{radius:7,rotation:-5}))).flat(),
+ R('spacebar',170,716,180,25,'#606789',{radius:9,rotation:-5}),
+ ...Array.from({length:7},(_,i)=>R('flying-key'+i,22+i*73,405-(i%3)*28,39,35,i%2?lime:mint,{radius:8,rotation:i%2?15:-12,y:I(165+i*5,235+i*5,405-(i%3)*28,345-(i%3)*38)})),
+ C('clock',425,380,61,lime,{stroke:ink,strokeWidth:4}),P('clockhand1','M425 380 L425 340','none',{stroke:ink,strokeWidth:6}),P('clockhand2','M425 380 L458 400','none',{stroke:ink,strokeWidth:6}),
+ T('clocklabel','TIME IS GOING…',350,465,12,ink,{letterSpacing:1.2}),T('problem-caption','Your ideas move faster than your fingers.',28,850,17,ink)
 ]));
-nodes.push(scene('solution',300,480,[
- T('solution-k','MEET WISPR FLOW',34,190,16,lime,{letterSpacing:2}),
- T('solution-title','Just speak.',34,275,64,paper,{opacity:fade(310,332),y:move(310,332,325,275)}),
- T('solution-copy','Flow turns your voice into clear,\npolished writing — right where\nyou are already working.',36,385,22,muted,{fontWeight:400,lineHeight:1.4,opacity:fade(330,350)}),
- Img('product-shot','wispr-auto-edit',48,570,444,280,{opacity:fade(350,372),scaleY:I(350,372,.92,1)}),
- T('shot-caption','SPEAK NATURALLY. FLOW REFINES IT.',52,885,12,lime,{letterSpacing:1.2})
+
+// 10–15s: voice orb, wave and flowing words.
+n.push(S('voice',295,445,[
+ T('eyebrow3','MEET YOUR NEW INPUT',28,135,13,blue,{letterSpacing:2}),T('voice-title','Talk. Watch\nit take shape.',28,185,56,ink,{lineHeight:1.08}),
+ C('halo',270,570,154,'#e2e0ff'),C('orb',270,570,112,blue),C('orb-core',270,570,78,'#788aff'),
+ ...Array.from({length:19},(_,i)=>R('wave'+i,132+i*15,555-Math.sin(i*.8)*26,7,26+Math.abs(Math.sin(i*.8))*70,i%3===0?lime:white,{radius:4})),
+ R('mic',248,480,44,112,white,{radius:22,stroke:ink,strokeWidth:4}),
+ P('mic-stand','M235 565 Q235 625 270 625 Q305 625 305 565 M270 625 L270 656 M245 656 L295 656','none',{stroke:ink,strokeWidth:5}),
+ P('trail-a','M55 730 C165 660 325 740 470 650','none',{stroke:coral,strokeWidth:5}),P('trail-b','M55 755 C165 685 325 765 470 680','none',{stroke:blue,strokeWidth:3}),
+ R('clear-pill',42,760,125,42,lime,{radius:21,rotation:-5}),T('clear-word','clear',76,773,16,ink),
+ R('confident-pill',345,730,150,42,mint,{radius:21,rotation:5}),T('confident-word','confident',368,743,15,ink),
+ T('voice-caption','Natural speech in. Beautiful writing out.',28,865,17,ink)
 ]));
-nodes.push(scene('refine',465,650,[
- T('refine-k','NOT JUST TRANSCRIPTION',34,175,15,lime,{letterSpacing:2}),
- T('refine-title','It gets the\nmeaning.',34,255,57,paper,{lineHeight:1.1}),
- R('raw-card',34,430,472,132,'#27252f',{radius:20}),
- T('raw-label','YOU SAY',56,462,12,muted,{letterSpacing:1.5}),
- T('raw-text','“um… move the launch, uh,\nactually to Monday…”',56,510,20,'#e3a6a6',{fontWeight:400}),
- T('arrow','↓',250,600,34,lime),
- R('clean-card',34,650,472,150,'#282a23',{radius:20,stroke:'#667a3c',strokeWidth:1}),
- T('clean-label','FLOW WRITES',56,682,12,lime,{letterSpacing:1.5}),
- T('clean-text','Move the launch to Monday.',56,745,22,paper,{fontWeight:600}),
- T('refine-foot','FILLERS OUT. CLARITY IN.',36,855,13,muted,{letterSpacing:1.5})
+
+// 15–20s: visual transformation from messy voice to polished writing.
+n.push(S('transform',440,600,[
+ T('eyebrow4','MORE THAN TRANSCRIPTION',28,130,13,coral,{letterSpacing:2}),T('transform-title','Your meaning.\nMade clear.',28,180,56,ink,{lineHeight:1.08}),
+ R('raw-card',22,390,225,250,'#ead8d0',{radius:23,rotation:-3}),T('raw-label','RAW VOICE',45,415,12,coral,{letterSpacing:1.4}),
+ T('raw-copy','“um… can you\nlike send the\nthingy before\nFriday, maybe?”',45,460,21,ink,{fontWeight:500,lineHeight:1.35}),
+ R('clean-card',285,390,232,250,white,{radius:23,stroke:blue,strokeWidth:3}),T('clean-label','WISPR FLOW',307,415,12,blue,{letterSpacing:1.4}),
+ T('clean-copy','Please send the\nfile before\nFriday.',307,468,23,ink,{lineHeight:1.35}),
+ C('magic-star',270,535,38,lime),T('magic-glyph','✦',253,512,34,coral),
+ P('magic-trail','M220 690 L340 570','none',{stroke:ink,strokeWidth:11}),
+ ...Array.from({length:9},(_,i)=>C('spark'+i,300+Math.cos(i*Math.PI/4)*58,550+Math.sin(i*Math.PI/4)*58,5+(i%3)*2,lime)),
+ C('check-circle',470,615,20,mint),T('check','✓',459,602,24,ink),
+ T('transform-caption','Less cleanup. More getting things done.',28,855,17,ink)
 ]));
-nodes.push(scene('everywhere',635,795,[
- T('everywhere-k','ONE FLOW. EVERYWHERE.',34,170,15,lime,{letterSpacing:2}),
- T('everywhere-title','Your apps.\nYour voice.',34,250,56,paper,{lineHeight:1.1}),
- Img('phone-shot','wispr-android',140,430,260,350,{opacity:fade(660,680)}),
- ...[['MAC','#d6d2ff'],['WINDOWS','#91c9ff'],['IPHONE','#d5ff70'],['ANDROID','#a8e4b7']].map(([label,color],i)=>R('platform-'+i,35+i*120,825,108,38,'#282630',{radius:19,stroke:color,strokeWidth:1})),
- ...[['MAC'],['WINDOWS'],['IPHONE'],['ANDROID']].map(([label],i)=>T('platform-label-'+i,label,47+i*120,850,10,paper,{letterSpacing:.5})),
- T('languages','100+ LANGUAGES  •  INCLUDING HINDI',34,900,12,muted,{letterSpacing:1})
+
+// 20–25s: illustrated desktop + phone product ecosystem.
+n.push(S('devices',590,755,[
+ T('eyebrow5','FITS YOUR FLOW',28,130,13,blue,{letterSpacing:2}),T('devices-title','Everywhere\nyou work.',28,180,57,ink,{lineHeight:1.08}),
+ R('monitor',25,380,335,240,ink,{radius:24}),R('monitor-screen',38,393,309,214,white,{radius:15}),
+ C('dot1',58,412,5,coral),C('dot2',76,412,5,lime),C('dot3',94,412,5,mint),T('app-name','wispr flow',58,440,15,ink),
+ R('line1',58,482,200,8,'#e2e4ed',{radius:4}),R('line2',58,502,240,8,'#e2e4ed',{radius:4}),R('line3',58,522,210,8,'#e2e4ed',{radius:4}),
+ R('highlight',58,550,250,34,'#e4f5eb',{radius:9}),T('doc-line','That sounds perfect.',70,559,14,ink),
+ R('stand',160,620,70,42,ink,{radius:8}),R('foot',125,658,140,13,blue,{radius:7}),
+ R('phone',355,450,150,285,ink,{radius:29,rotation:8}),R('screen',365,462,130,260,white,{radius:21,rotation:8}),R('notch',405,471,50,8,ink,{radius:4,rotation:8}),
+ C('phone-orb',430,555,31,blue),T('phone-mic','●',423,545,15,white),
+ ...Array.from({length:5},(_,i)=>R('phone-wave'+i,390+i*16,620,7,18+Math.sin(i+1)*16,i%2?coral:blue,{radius:4,rotation:8})),
+ T('phone-label','VOICE NOTE',390,680,9,ink,{rotation:8,letterSpacing:1}),
+ ...[['MAC',25,785,blue,105],['WINDOWS',145,785,coral,140],['IPHONE',300,785,ink,115],['ANDROID',25,835,blue,125]].map(([s,x,y,c,w],i)=>R('device-pill'+i,x,y,w,38,white,{radius:19,stroke:c,strokeWidth:2})),
+ ...[['MAC',52,797],['WINDOWS',165,797],['IPHONE',322,797],['ANDROID',52,847]].map(([s,x,y],i)=>T('device-text'+i,s,x,y,12,ink,{letterSpacing:1})),
+ T('device-caption','One voice. All your devices.',28,900,15,grey)
 ]));
-nodes.push(scene('end',780,900,[
- C('end-glow',270,380,130,'#4d3c8c',{opacity:fade(790,820)}),
- T('end-brand','wispr flow',34,300,27,paper,{letterSpacing:1.5,opacity:fade(795,815)}),
- T('end-title1','Talk.',34,440,84,paper,{opacity:fade(810,830),y:move(810,830,490,440)}),
- T('end-title2','It writes.',34,535,84,lime,{opacity:fade(825,845),y:move(825,845,585,535)}),
- T('end-cta','WRITE AT THE SPEED OF THOUGHT.',36,700,15,paper,{letterSpacing:1.4,opacity:fade(845,865)}),
- R('end-button',34,790,260,62,lime,{radius:31,opacity:fade(850,870)}),
- T('end-button-text','TRY WISPR FLOW  ↗',62,829,15,ink,{opacity:fade(850,870)}),
- T('end-url','wisprflow.ai',36,900,13,muted,{opacity:fade(860,880)})
+
+// 25–30s: bright, simple campaign close.
+n.push(S('outro',745,900,[
+ C('outro-sun',270,420,190,lime),
+ ...Array.from({length:16},(_,i)=>{const a=i*Math.PI/8;return P('outro-ray'+i,'M '+(270+Math.cos(a)*205)+' '+(420+Math.sin(a)*205)+' L '+(270+Math.cos(a)*245)+' '+(420+Math.sin(a)*245),'none',{stroke:coral,strokeWidth:7});}),
+ T('outro-brand','wispr flow',28,170,26,ink),T('outro-a','Say more.',25,320,72,ink),T('outro-b','Type less.',25,402,72,coral),
+ R('cta',28,690,315,72,ink,{radius:36}),T('cta-text','TRY WISPR FLOW  ↗',60,713,19,white,{letterSpacing:.7}),
+ T('url','wisprflow.ai',30,800,17,ink),T('tagline','WRITE AT THE SPEED OF THOUGHT.',30,865,12,grey,{letterSpacing:1.6})
 ]));
-const plan={composition:{id:'wispr-flow-promo',width:W,height:H,fps:FPS,durationInFrames:N,root:{id:'root',type:'container',children:nodes}},timeline:{kind:'sequence',from:0,durationInFrames:N,children:nodes.map(n=>({kind:'leaf',ref:n.id}))}};
-const renderer=new SkiaRenderer(),measureText=createSkiaMeasurer(),surface=renderer.createSurface(W,H);
-const assets=await preloadImages({'wispr-auto-edit':readFileSync(new URL('./assets/wispr-auto-edit.png',import.meta.url)),'wispr-android':readFileSync(new URL('./assets/wispr-android.png',import.meta.url))});
-const renderOptions={measureText,resolveAsset:(src)=>assets.get(src),assetInfo:(src)=>({width:src==='wispr-auto-edit'?900:1200,height:1200})};
-for(const frame of [40,190,370,540,700,860]){renderer.clear(surface,ink);renderFrame(renderer,surface,plan,frame,renderOptions);writeFileSync(new URL('preview-'+frame+'.png',OUT),await renderer.encodePng(surface));}
-const mp4=await renderToMp4({width:W,height:H,fps:FPS,frameCount:N,renderFrame:(frame)=>{renderer.clear(surface,ink);renderFrame(renderer,surface,plan,frame,renderOptions);return Buffer.from(renderer.readPixels(surface).data);},onProgress:(f,t)=>{if(f%150===0)console.log('Encoded',f,'/',t);}});
-writeFileSync(new URL('wispr-flow-promo.mp4',OUT),mp4);renderer.destroySurface(surface);console.log('WISPR_FLOW_RENDER_COMPLETE',mp4.length,'bytes');
+const plan={composition:{id:'wispr-flow-v2',width:W,height:H,fps:FPS,durationInFrames:N,root:{id:'root',type:'container',children:n}},timeline:{kind:'sequence',from:0,durationInFrames:N,children:n.map(x=>({kind:'leaf',ref:x.id}))}};
+const renderer=new SkiaRenderer(),measureText=createSkiaMeasurer(),surface=renderer.createSurface(W,H),opts={measureText};
+for(const frame of [55,205,350,500,660,820]){renderer.clear(surface,cream);renderFrame(renderer,surface,plan,frame,opts);writeFileSync(new URL('v2-preview-'+frame+'.png',OUT),await renderer.encodePng(surface));}
+const mp4=await renderToMp4({width:W,height:H,fps:FPS,frameCount:N,renderFrame:(frame)=>{renderer.clear(surface,cream);renderFrame(renderer,surface,plan,frame,opts);return Buffer.from(renderer.readPixels(surface).data);},onProgress:(f,t)=>{if(f%150===0)console.log('Encoded',f,'/',t);}});
+writeFileSync(new URL('wispr-flow-promo-v2.mp4',OUT),mp4);renderer.destroySurface(surface);console.log('WISPR_FLOW_V2_COMPLETE',mp4.length,'bytes');
