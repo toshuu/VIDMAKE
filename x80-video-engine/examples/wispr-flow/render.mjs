@@ -81,7 +81,8 @@ nodes.push(scene('end',780,900,[
 ]));
 const plan={composition:{id:'wispr-flow-promo',width:W,height:H,fps:FPS,durationInFrames:N,root:{id:'root',type:'container',children:nodes}},timeline:{kind:'sequence',from:0,durationInFrames:N,children:nodes.map(n=>({kind:'leaf',ref:n.id}))}};
 const renderer=new SkiaRenderer(),measureText=createSkiaMeasurer(),surface=renderer.createSurface(W,H);
-const assets=await preloadImages({'wispr-auto-edit':readFileSync(new URL('./assets/wispr-auto-edit.png',import.meta.url)),'wispr-android':readFileSync(new URL('./assets/wispr-android.png',import.meta.url))});\nconst renderOptions={measureText,resolveAsset:(src)=>assets.get(src),assetInfo:(src)=>({width:src==='wispr-auto-edit'?900:1200,height:1200})};
+const assets=await preloadImages({'wispr-auto-edit':readFileSync(new URL('./assets/wispr-auto-edit.png',import.meta.url)),'wispr-android':readFileSync(new URL('./assets/wispr-android.png',import.meta.url))});
+const renderOptions={measureText,resolveAsset:(src)=>assets.get(src),assetInfo:(src)=>({width:src==='wispr-auto-edit'?900:1200,height:1200})};
 for(const frame of [40,190,370,540,700,860]){renderer.clear(surface,ink);renderFrame(renderer,surface,plan,frame,renderOptions);writeFileSync(new URL('preview-'+frame+'.png',OUT),await renderer.encodePng(surface));}
 const mp4=await renderToMp4({width:W,height:H,fps:FPS,frameCount:N,renderFrame:(frame)=>{renderer.clear(surface,ink);renderFrame(renderer,surface,plan,frame,renderOptions);return Buffer.from(renderer.readPixels(surface).data);},onProgress:(f,t)=>{if(f%150===0)console.log('Encoded',f,'/',t);}});
 writeFileSync(new URL('wispr-flow-promo.mp4',OUT),mp4);renderer.destroySurface(surface);console.log('WISPR_FLOW_RENDER_COMPLETE',mp4.length,'bytes');
