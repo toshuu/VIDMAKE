@@ -11,7 +11,7 @@ const R=(id,x,y,w,h,fill,e={})=>({id,type:'rrect',x,y,width:w,height:h,radius:e.
 const C=(id,x,y,r,fill,e={})=>({id,type:'circle',x,y,radius:r,fill,...e});
 const T=(id,text,x,y,size,fill,e={})=>({id,type:'text',text,x,y,fontFamily:'Arial',fontSize:size,fontWeight:e.fontWeight??700,fill,...e});
 const P=(id,d,fill,e={})=>({id,type:'path',d,fill,...e});
-const S=(id,a,b,children)=>({id,type:'container',opacity:I(a,b,0,1),children});
+const S=(id,a,b,children)=>({id,type:'container',opacity:{binding:'interpolate',inputRange:[a,a+15,b-15,b],outputRange:[0,1,1,0],options:clamp},children});
 const cream='#f7f1e7',ink='#171c35',coral='#ff6248',blue='#536dff',lime='#f5d64e',mint='#a7e6c5',white='#fffdf8',grey='#777b89';
 const n=[R('background',0,0,W,H,cream,{radius:0}),C('ambient',490,50,150,'#eee4d7'),T('brand','wispr',28,30,25,ink),C('brandmark',111,44,6,coral),T('series','VOICE / IDEAS / FLOW',320,42,11,ink,{letterSpacing:1.5})];
 
