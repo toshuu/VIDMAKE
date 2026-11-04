@@ -25,12 +25,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: x80-video-engine/package-lock.json
 
       - name: Install dependencies
         working-directory: x80-video-engine
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Build X80 workspaces
         working-directory: x80-video-engine
