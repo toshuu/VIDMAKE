@@ -24,7 +24,7 @@ const circle = (id, x, y, radius, fill, extra = {}) => ({ id, type: 'circle', x,
 
 const scenes = [];
 const add = (...nodes) => scenes.push(...nodes);
-const sceneOpacity = (start, end) => fade(start, end);
+const sceneOpacity = (start, end) => ({ binding: 'interpolate', inputRange: [start, start + 12, end - 12, end], outputRange: [0, 1, 1, 0], options: clamp });
 const bg = '#101419', cream = '#f4ead8', saffron = '#f2a65a', teal = '#76c7b7', muted = '#aeb8b5';
 
 // Persistent background and editorial framing.
@@ -54,7 +54,7 @@ add({
     text('s2-title', 'Two different\nstarting lines.', 32, 250, 58, cream, { lineHeight: 1.12, opacity: fade(95, 112) }),
     // Small home: fragile roof and walls.
     rect('hut-wall', 70, 570, 155, 115, '#806b55'),
-    { id: 'hut-roof', type: 'polygon', points: [[52, 575], [148, 495], [245, 575]], fill: '#bd8050' },
+    rect('hut-roof-left', 88, 525, 80, 18, '#bd8050', { rotation: -40 }),\n    rect('hut-roof-right', 145, 525, 80, 18, '#bd8050', { rotation: 40 }),
     rect('hut-door', 130, 615, 38, 70, '#342b25'),
     rect('hut-ground', 35, 685, 230, 5, '#b38a61'),
     // Larger home / city block.
