@@ -1,0 +1,47 @@
+name: Render Wispr Flow Promo (VIDMAKE)
+
+on:
+  push:
+    paths:
+      - ".github/workflows/render-wispr-flow.yml"
+      - "x80-video-engine/examples/wispr-flow/**"
+      - "x80-video-engine/packages/**"
+      - "x80-video-engine/package.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout VIDMAKE
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Download visual references
+        working-directory: x80-video-engine
+        run: |
+          mkdir -p examples/wispr-flow/assets
+          curl -L --fail --retry 3 "https://ph-files.imgix.net/6be42b70-f01c-44d2-8d43-30126b37212d.png?auto=format&fit=crop" -o examples/wispr-flow/assets/wispr-auto-edit.png
+          curl -L --fail --retry 3 "https://images.hothardware.com/contentimages/newsitem/69918/content/1x1_1200x1200_highres-wispr-flow-android-news.jpg" -o examples/wispr-flow/assets/wispr-android.png
+      - name: Install dependencies
+        working-directory: x80-video-engine
+        run: npm install --no-audit --no-fund
+      - name: Build X80 workspaces
+        working-directory: x80-video-engine
+        run: npm run build
+      - name: Render 30-second reel
+        working-directory: x80-video-engine
+        run: node examples/wispr-flow/render.mjs
+      - name: Upload MP4 and previews
+        uses: actions/upload-artifact@v4
+        with:
+          name: wispr-flow-30s-reel
+          path: x80-video-engine/output/wispr-flow/
+          if-no-files-found: error
+          retention-days: 14
