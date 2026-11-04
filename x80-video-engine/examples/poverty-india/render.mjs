@@ -54,7 +54,8 @@ add({
     text('s2-title', 'Two different\nstarting lines.', 32, 250, 58, cream, { lineHeight: 1.12, opacity: fade(95, 112) }),
     // Small home: fragile roof and walls.
     rect('hut-wall', 70, 570, 155, 115, '#806b55'),
-    rect('hut-roof-left', 88, 525, 80, 18, '#bd8050', { rotation: -40 }),\n    rect('hut-roof-right', 145, 525, 80, 18, '#bd8050', { rotation: 40 }),
+    rect('hut-roof-left', 88, 525, 80, 18, '#bd8050', { rotation: -40 }),
+    rect('hut-roof-right', 145, 525, 80, 18, '#bd8050', { rotation: 40 }),
     rect('hut-door', 130, 615, 38, 70, '#342b25'),
     rect('hut-ground', 35, 685, 230, 5, '#b38a61'),
     // Larger home / city block.
@@ -132,6 +133,10 @@ const plan = {
   composition: {
     id: 'poverty-in-india', width: W, height: H, fps: FPS, durationInFrames: DURATION,
     root: { id: 'root', type: 'container', children: scenes },
+  },
+  timeline: {
+    kind: 'sequence', from: 0, durationInFrames: DURATION,
+    children: scenes.map((node) => ({ kind: 'leaf', ref: node.id })),
   },
 };
 
