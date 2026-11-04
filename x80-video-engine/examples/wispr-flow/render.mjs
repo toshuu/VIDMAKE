@@ -5,7 +5,7 @@
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { renderFrame } from '../../packages/core/dist/index.js';
-import { SkiaRenderer, createSkiaMeasurer } from '../../packages/renderer-skia/dist/index.js';
+import { SkiaRenderer, createSkiaMeasurer, preloadImages } from '../../packages/renderer-skia/dist/index.js';
 import { renderToMp4 } from '../../packages/encoding/dist/index.js';
 
 const W=540,H=960,FPS=30,N=900,OUT=new URL('../../output/wispr-flow/',import.meta.url);
@@ -17,15 +17,11 @@ const move=(a,b,x,y)=>I(a,b,x,y);
 const R=(id,x,y,w,h,fill,extra={})=>({id,type:'rrect',x,y,width:w,height:h,radius:extra.radius??18,fill,...extra});
 const T=(id,value,x,y,size,fill='#f8f7f4',extra={})=>({id,type:'text',text:value,x,y,fontFamily:'sans-serif',fontSize:size,fontWeight:700,fill,...extra});
 const C=(id,x,y,r,fill,extra={})=>({id,type:'circle',x,y,radius:r,fill,...extra});
-const S=(id,svg,x,y,w,h,extra={})=>({id,type:'svg',svg,x,y,width:w,height:h,...extra});
+const Img=(id,src,x,y,w,h,extra={})=>({id,type:'image',src,x,y,width:w,height:h,fit:'contain',...extra});
 const scene=(id,start,end,children)=>({id,type:'container',opacity:{binding:'interpolate',inputRange:[start,start+15,end-15,end],outputRange:[0,1,1,0],options:clamp},children});
 const ink='#111116',paper='#f7f5f1',violet='#8b70ff',lime='#d5ff70',muted='#aaa8b4';
-const screenshot1=readFileSync(new URL('./assets/wispr-auto-edit.png',import.meta.url)).toString('base64');
-const screenshot2=readFileSync(new URL('./assets/wispr-android.png',import.meta.url)).toString('base64');
-const imgSvg=(b64,ratio='1.777')=>`<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200"><defs><clipPath id="c"><rect x="0" y="0" width="900" height="1200" rx="44"/></clipPath></defs><g clip-path="url(#c)"><rect width="900" height="1200" fill="#19191f"/><image href="data:image/png;base64,${b64}" x="0" y="0" width="900" height="1200" preserveAspectRatio="xMidYMid slice"/></g></svg>`;
 const nodes=[];
 nodes.push(R('base',0,0,W,H,ink,{radius:0}));
-nodes.push(S('ambient',`<svg xmlns="http://www.w3.org/2000/svg" width="540" height="960"><defs><radialGradient id="g"><stop stop-color="#6550c8" stop-opacity=".48"/><stop offset="1" stop-color="#111116" stop-opacity="0"/></radialGradient></defs><ellipse cx="290" cy="400" rx="390" ry="470" fill="url(#g)"/></svg>`,0,0,W,H));
 nodes.push(T('brand','wispr flow',32,58,18,paper,{letterSpacing:1.5}));
 nodes.push(C('brand-dot',22,48,4,lime));
 nodes.push(T('index','VOICE / 001',410,58,12,muted,{letterSpacing:1.5}));
@@ -50,7 +46,7 @@ nodes.push(scene('solution',300,480,[
  T('solution-k','MEET WISPR FLOW',34,190,16,lime,{letterSpacing:2}),
  T('solution-title','Just speak.',34,275,64,paper,{opacity:fade(310,332),y:move(310,332,325,275)}),
  T('solution-copy','Flow turns your voice into clear,\npolished writing — right where\nyou are already working.',36,385,22,muted,{fontWeight:400,lineHeight:1.4,opacity:fade(330,350)}),
- S('product-shot',imgSvg(screenshot1),48,570,444,280,{opacity:fade(350,372),scaleY:I(350,372,.92,1)}),
+ Img('product-shot','wispr-auto-edit',48,570,444,280,{opacity:fade(350,372),scaleY:I(350,372,.92,1)}),
  T('shot-caption','SPEAK NATURALLY. FLOW REFINES IT.',52,885,12,lime,{letterSpacing:1.2})
 ]));
 nodes.push(scene('refine',465,650,[
@@ -68,7 +64,7 @@ nodes.push(scene('refine',465,650,[
 nodes.push(scene('everywhere',635,795,[
  T('everywhere-k','ONE FLOW. EVERYWHERE.',34,170,15,lime,{letterSpacing:2}),
  T('everywhere-title','Your apps.\nYour voice.',34,250,56,paper,{lineHeight:1.1}),
- S('phone-shot',imgSvg(screenshot2),140,430,260,350,{opacity:fade(660,680)}),
+ Img('phone-shot','wispr-android',140,430,260,350,{opacity:fade(660,680)}),
  ...[['MAC','#d6d2ff'],['WINDOWS','#91c9ff'],['IPHONE','#d5ff70'],['ANDROID','#a8e4b7']].map(([label,color],i)=>R('platform-'+i,35+i*120,825,108,38,'#282630',{radius:19,stroke:color,strokeWidth:1})),
  ...[['MAC'],['WINDOWS'],['IPHONE'],['ANDROID']].map(([label],i)=>T('platform-label-'+i,label,47+i*120,850,10,paper,{letterSpacing:.5})),
  T('languages','100+ LANGUAGES  •  INCLUDING HINDI',34,900,12,muted,{letterSpacing:1})
@@ -84,7 +80,7 @@ nodes.push(scene('end',780,900,[
  T('end-url','wisprflow.ai',36,900,13,muted,{opacity:fade(860,880)})
 ]));
 const plan={composition:{id:'wispr-flow-promo',width:W,height:H,fps:FPS,durationInFrames:N,root:{id:'root',type:'container',children:nodes}},timeline:{kind:'sequence',from:0,durationInFrames:N,children:nodes.map(n=>({kind:'leaf',ref:n.id}))}};
-const renderer=new SkiaRenderer(),measureText=createSkiaMeasurer(),surface=renderer.createSurface(W,H);
-for(const frame of [40,190,370,540,700,860]){renderer.clear(surface,ink);renderFrame(renderer,surface,plan,frame,{measureText});writeFileSync(new URL('preview-'+frame+'.png',OUT),await renderer.encodePng(surface));}
-const mp4=await renderToMp4({width:W,height:H,fps:FPS,frameCount:N,renderFrame:(frame)=>{renderer.clear(surface,ink);renderFrame(renderer,surface,plan,frame,{measureText});return Buffer.from(renderer.readPixels(surface).data);},onProgress:(f,t)=>{if(f%150===0)console.log('Encoded',f,'/',t);}});
+const renderer=new SkiaRenderer(),measureText=createSkiaMeasurer(),surface=renderer.createSurface(W,H);\nconst assets=await preloadImages({'wispr-auto-edit':readFileSync(new URL('./assets/wispr-auto-edit.png',import.meta.url)),'wispr-android':readFileSync(new URL('./assets/wispr-android.png',import.meta.url))});\nconst renderOptions={measureText,resolveAsset:(src)=>assets.get(src),assetInfo:(src)=>({width:src==='wispr-auto-edit'?900:1200,height:1200})};
+for(const frame of [40,190,370,540,700,860]){renderer.clear(surface,ink);renderFrame(renderer,surface,plan,frame,renderOptions);writeFileSync(new URL('preview-'+frame+'.png',OUT),await renderer.encodePng(surface));}
+const mp4=await renderToMp4({width:W,height:H,fps:FPS,frameCount:N,renderFrame:(frame)=>{renderer.clear(surface,ink);renderFrame(renderer,surface,plan,frame,renderOptions);return Buffer.from(renderer.readPixels(surface).data);},onProgress:(f,t)=>{if(f%150===0)console.log('Encoded',f,'/',t);}});
 writeFileSync(new URL('wispr-flow-promo.mp4',OUT),mp4);renderer.destroySurface(surface);console.log('WISPR_FLOW_RENDER_COMPLETE',mp4.length,'bytes');
